@@ -1,11 +1,18 @@
 name: BMSrv
 version: 0.0.1
-description: A minimal command-line application.
-#author: <your name> <email@example.com>
-#homepage: https://www.example.com
+description: LifeContorol backend.
 environment:
-  sdk: '>=1.0.0 <2.0.0'
-#dependencies:
-#  foo_bar: '>=1.0.0 <2.0.0'
+  sdk: '>=1.9.1 <2.0.0'
+dependencies:
+  OntoORM:
+    path: ../OntoORM
+  dart_orm: '>=0.0.13 <0.1.0'
+  dart_orm_adapter_mysql: '>=0.0.8 <0.1.0'
+  di: '>=3.3.4 <4.0.0'
+  event_bus: '>=0.3.0+3 <0.4.0'
+  redstone: '>=0.5.21 <0.6.0'
+  redstone_mapper: '>=0.1.13 <0.2.0'
+  shelf: '>=0.5.5 <0.7.0'
+  shelf_auth: '>=0.4.0 <0.5.0'
 dev_dependencies:
-  unittest: any
+  unittest: '>=0.11.5+4 <0.12.0'
