@@ -3,9 +3,9 @@ library LifeControlSrv.Utils.DbAdapter;
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:dart_orm_adapter_mysql/dart_orm_adapter_mysql.dart';
 
-String _User = 'LfApp';
-String _Pass = 'LfApp1089';
-String _DBName = 'LifeControl';
+String _User = 'BMSrv';
+String _Pass = 'BMSrv1089';
+String _DBName = 'BM';
 
 bool _OrmInit = false;
 MySQLDBAdapter _dbAdapter = null;
