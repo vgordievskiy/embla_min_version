@@ -2,20 +2,17 @@ library BMSrv.UserService;
 import 'dart:async';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:redstone/server.dart' as app;
-import 'package:shelf/shelf.dart' as shelf;
 import 'package:redstone_mapper/plugin.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
 
-import 'package:BMSrv/Utils/Encrypter.dart' as Enc;
-import 'package:BMSrv/Models/User.dart';
-import 'package:BMSrv/Models/UserPeper/UserPaper.dart';
-import 'package:BMSrv/Utils/DbAdapter.dart';
-
 import 'package:BMSrv/Events/Event.dart';
-
+import 'package:BMSrv/Utils/DbAdapter.dart';
+import 'package:BMSrv/Utils/Encrypter.dart' as Enc;
+import 'package:BMSrv/Controllers/UserManager.dart';
 import 'package:BMSrv/Models/JsonWrappers/OntoUser.dart';
-
+import 'package:BMSrv/Models/UserPeper/UserPaper.dart';
+import 'package:BMSrv/Models/User.dart';
 
 bool _isEmpty(String value) => value == "";
 
