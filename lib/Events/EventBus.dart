@@ -1,4 +1,4 @@
-library LifeControlSrv.Events.EventSys;
+library BMSrv.Events.EventSys;
 
 export 'dart:async';
 export 'package:event_bus/event_bus.dart';
