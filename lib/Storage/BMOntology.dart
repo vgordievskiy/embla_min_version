@@ -5,7 +5,7 @@ import 'SemplexStorage.dart' as Storage;
 
 import 'dart:async';
 
-class LifeControlOnto {
+class BMOnto {
   static final String BaseOntoName = "LifeControl";
   static Storage.Ontology BaseOnto = null;
   static bool isIntitilizing = false;
@@ -21,7 +21,7 @@ class LifeControlOnto {
     isIntitilizing = false;
   }
 
-  LifeControlOnto() {}
+  BMOnto() {}
 
   Future<Storage.OntoClass> GetClass(String name) async {
     if (BaseOnto == null) await InitBaseOnto();
@@ -29,12 +29,12 @@ class LifeControlOnto {
   }
 }
 
-LifeControlOnto _def_L_F_Onto = new LifeControlOnto();
+BMOnto _def_L_F_Onto = new BMOnto();
 
-Future LF_Init() async {
-  await LifeControlOnto.InitBaseOnto();
+Future IntitOntology() async {
+  await BMOnto.InitBaseOnto();
 }
 
-LifeControlOnto GetLifeControlStorage() {
+BMOnto GetLifeControlStorage() {
   return _def_L_F_Onto;
 }
