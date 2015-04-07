@@ -156,6 +156,12 @@ authenticationFilter() async
   shelf.Response resp = null;
   shelf.Request req = _CopyRequest_OnlyHeadersContains(app.request);
 
+  if (req.url.pathSegments.length == 0) {
+    app.response = new shelf.Response.forbidden("access denied");
+    app.chain.interrupt();
+    return;
+  }
+  
   bool isValid = false;
 
   await defaultAuthMiddleware((shelf.Request request){
