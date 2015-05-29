@@ -48,6 +48,7 @@ class BMOnto {
 BMOnto _def_Onto = null;
 
 Future IntitOntology() async {
+  await BMOnto.InitBaseOnto();
   _def_Onto = new BMOnto();
 }
 
