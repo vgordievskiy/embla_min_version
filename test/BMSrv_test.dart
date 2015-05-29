@@ -39,10 +39,9 @@ main() async {
 }
 
 Future defineTests() async {
-  
+  await Init();
   //load handlers in 'services' library
   setUp(() async {
-    await Init();
     app.addPlugin(getMapperPlugin());
     app.addModule(new Module()..bind(DBAdapter));
     app.addModule(new Module()..bind(EventSys));
@@ -54,7 +53,21 @@ Future defineTests() async {
   //remove all loaded handlers
   tearDown(() => app.tearDown());
   
-  test("hello service", () {
+  test("create user", () {
+    Map<String, String> data = new Map();
+    data['username'] = "t1";
+    data['password'] = "1";
+    data['name'] = "test";
+    data['email'] = "test@mail.com";
+    var req = new MockRequest("/users", method: app.POST, body: data, isMultipart: true);
+    return app.dispatch(req).then((resp) {
+      //verify the response
+      expect(resp.statusCode, equals(200));
+      //expect(resp.mockContent, equals("hello, luiz"));
+    });
+  });
+  
+  /*test("hello service", () {
     //create a mock request
     var req = new MockRequest("/users/1");
     //dispatch the request
@@ -63,7 +76,7 @@ Future defineTests() async {
       expect(resp.statusCode, equals(200));
       //expect(resp.mockContent, equals("hello, luiz"));
     });
-  });
+  });*/
 
   return;
 }
