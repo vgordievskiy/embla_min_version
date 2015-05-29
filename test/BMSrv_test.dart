@@ -59,7 +59,7 @@ Future defineTests() async {
     data['password'] = "1";
     data['name'] = "test";
     data['email'] = "test@mail.com";
-    var req = new MockRequest("/users", method: app.POST, body: data, isMultipart: true, bodyType: app.FORM);
+    var req = new MockRequest("/users", method: app.POST, body: data, isMultipart: true, bodyType: app.FORM, contentType: "multipart/form-data");
     return app.dispatch(req).then((resp) {
       //verify the response
       expect(resp.statusCode, equals(200));
