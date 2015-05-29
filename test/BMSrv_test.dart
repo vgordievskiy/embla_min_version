@@ -6,10 +6,20 @@ library BMSrv_test;
 import 'dart:async';
 
 import 'package:BMSrv/BMSrv.dart';
+import 'package:BMSrv/Events/EventBus.dart';
+import 'package:BMSrv/Utils/DbAdapter.dart';
+import 'package:di/di.dart';
+import 'package:redstone_mapper/plugin.dart';
 import 'package:unittest/unittest.dart';
 import 'package:logging/logging.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:sync_socket/sync_socket.dart';
+
+import 'package:redstone/server.dart' as app;
+import 'package:redstone/mocks.dart';
+
+import 'package:BMSrv/Services/UserService.dart';
+
 
 void setupConsoleLog([Level level = Level.INFO]) {
   Logger.root.level = level;
@@ -29,7 +39,31 @@ main() async {
 }
 
 Future defineTests() async {
-  await Init();
+  
+  //load handlers in 'services' library
+  setUp(() async {
+    await Init();
+    app.addPlugin(getMapperPlugin());
+    app.addModule(new Module()..bind(DBAdapter));
+    app.addModule(new Module()..bind(EventSys));
+    //app.setUp([#BMSrv.Interceptors]);
+    //app.setUp([#BMSrv.LoginService]);
+    app.setUp([#BMSrv.UserService]);
+  });
+  
+  //remove all loaded handlers
+  tearDown(() => app.tearDown());
+  
+  test("hello service", () {
+    //create a mock request
+    var req = new MockRequest("/users/1");
+    //dispatch the request
+    return app.dispatch(req).then((resp) {
+      //verify the response
+      expect(resp.statusCode, equals(200));
+      //expect(resp.mockContent, equals("hello, luiz"));
+    });
+  });
 
   return;
 }
