@@ -5,7 +5,7 @@ import 'package:dart_orm_adapter_postgresql/dart_orm_adapter_postgresql.dart';
 
 String _User = 'BMSrvApp';
 String _Pass = 'BMSrvAppbno9mjc';
-String _DBName = 'investnets';
+String _DBName = 'investments';
 
 bool _OrmInit = false;
 PostgresqlDBAdapter _dbAdapter = null;
