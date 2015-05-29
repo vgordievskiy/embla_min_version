@@ -1,20 +1,20 @@
 library BMSrv.Storage.BMSrv;
 
 export 'SemplexStorage.dart';
-import 'SemplexStorage.dart' as Storage;
+import 'SemplexStorage.dart';
 
 import 'dart:async';
 
 class BMOnto {
   static final String BaseOntoName = "investments";
-  static Storage.Ontology BaseOnto = null;
+  static Ontology BaseOnto = null;
   static bool isIntitilizing = false;
 
   static InitBaseOnto() async {
     if (isIntitilizing) return;
     isIntitilizing = true;
     if (BaseOnto == null) {
-      Storage.SemplexStorage storage = await Storage.GetStorage();
+      SemplexStorage storage = await GetStorage();
       BaseOnto = await storage.GetOntology(BaseOntoName);
       await BaseOnto.LoadMetaInfo();
     }
@@ -23,7 +23,7 @@ class BMOnto {
 
   BMOnto() {}
 
-  Future<Storage.OntoClass> GetClass(String name) async {
+  Future<OntoClass> GetClass(String name) async {
     if (BaseOnto == null) await InitBaseOnto();
     return await BaseOnto.GetClass(name);
   }
@@ -35,6 +35,17 @@ Future IntitOntology() async {
   await BMOnto.InitBaseOnto();
 }
 
-BMOnto GetLifeControlStorage() {
+BMOnto GetOntology() {
   return _def_Onto;
+}
+
+class BaseOnto {
+  static OntoClass OwnerClass = null;
+    
+  static dynamic InitBaseClass() async {
+    if (OwnerClass == null) {
+      OwnerClass = await GetOntology().GetClass("User");
+    }
+    return OwnerClass;
+  }
 }
