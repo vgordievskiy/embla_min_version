@@ -34,7 +34,7 @@ class BMOnto {
     BaseOnto.GetClasses().then((List<String> classes) async {
       for(String name in classes) {
         _classes[name] = await BaseOnto.GetClass(name);
-        _log.info("Load Class ${name}");
+        _log.info("Add Ontology Class ${_classes[name].Name}");
       }
     });
   }
