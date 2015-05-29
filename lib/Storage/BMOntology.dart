@@ -39,7 +39,7 @@ class BMOnto {
     });
   }
 
-  Future<OntoClass> GetClass(String name) async {
+  OntoClass GetClass(String name) {
     assert(BaseOnto != null);
     return _classes[name];
   }
@@ -55,13 +55,11 @@ BMOnto GetOntology() {
   return _def_Onto;
 }
 
-class BaseOnto {
-  static OntoClass OwnerClass = null;
-    
-  static dynamic InitBaseClass() async {
-    if (OwnerClass == null) {
-      OwnerClass = await GetOntology().GetClass("User");
-    }
-    return OwnerClass;
+class OntoEntity {
+  OntoClass OwnerClass = null;
+  
+  void InitOnto(String className) {
+    OwnerClass = GetOntology().GetClass(className);
   }
+  
 }

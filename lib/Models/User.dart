@@ -5,15 +5,10 @@ import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
 
 @ORM.DBTable('users')
-class User extends ORM.Model {
-
-  static OntoClass OwnerClass = null;
-      
-  static dynamic InitBaseClass() async {
-    if (OwnerClass == null) {
-      OwnerClass = await GetOntology().GetClass("User");
-    }
-    return OwnerClass;
+class User extends ORM.Model with OntoEntity {
+  
+  User() {
+    InitOnto("User");
   }
   
   @ORM.DBField()
