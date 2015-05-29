@@ -62,7 +62,8 @@ class UserService {
   @app.Route("/:id")
   @Encode()
   Future<dynamic> getUserById(String id) async {
-    return "OK get ${id}";
+    User user = await User.GetUser(id);
+    return user.toString();
   }
 
 }

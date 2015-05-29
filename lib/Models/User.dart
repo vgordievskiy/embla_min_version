@@ -1,5 +1,7 @@
 library BMSrv.Models.User;
 
+import 'dart:async';
+
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
@@ -9,6 +11,15 @@ class User extends ORM.Model with OntoEntity {
   
   User() {
     InitOnto("User");
+  }
+  
+  static Future<User> GetUser(String id) {
+    ORM.FindOne findOneItem = new ORM.FindOne(User)
+                                  ..whereEquals('id', id);
+    if (findOneItem != null) {
+      return findOneItem.execute();
+    }
+    throw "not found ${id}";
   }
   
   @ORM.DBField()
