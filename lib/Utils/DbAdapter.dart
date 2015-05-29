@@ -1,19 +1,19 @@
 library LifeControlSrv.Utils.DbAdapter;
 
 import 'package:dart_orm/dart_orm.dart' as ORM;
-import 'package:dart_orm_adapter_mysql/dart_orm_adapter_mysql.dart';
+import 'package:dart_orm_adapter_postgresql/dart_orm_adapter_postgresql.dart';
 
-String _User = 'BMSrv';
-String _Pass = 'BMSrv1089';
-String _DBName = 'BM';
+String _User = 'BMSrvApp';
+String _Pass = 'BMSrvAppbno9mjc';
+String _DBName = 'investnets';
 
 bool _OrmInit = false;
-MySQLDBAdapter _dbAdapter = null;
+PostgresqlDBAdapter _dbAdapter = null;
 
 dynamic _InitORM() async {
   if (_OrmInit == false) {
     ORM.AnnotationsParser.initialize();
-    _dbAdapter = new MySQLDBAdapter('mysql://${_User}:${_Pass}@127.0.0.1:3306/${_DBName}');
+    _dbAdapter = new PostgresqlDBAdapter('postgres://${_User}:${_Pass}@localhost:5432/${_DBName}');
     await _dbAdapter.connect();
     ORM.Model.ormAdapter = _dbAdapter;
     try {

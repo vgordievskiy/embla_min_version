@@ -6,7 +6,7 @@ import 'SemplexStorage.dart' as Storage;
 import 'dart:async';
 
 class BMOnto {
-  static final String BaseOntoName = "LifeControl";
+  static final String BaseOntoName = "investments";
   static Storage.Ontology BaseOnto = null;
   static bool isIntitilizing = false;
 
@@ -29,12 +29,12 @@ class BMOnto {
   }
 }
 
-BMOnto _def_L_F_Onto = new BMOnto();
+BMOnto _def_Onto = new BMOnto();
 
 Future IntitOntology() async {
   await BMOnto.InitBaseOnto();
 }
 
 BMOnto GetLifeControlStorage() {
-  return _def_L_F_Onto;
+  return _def_Onto;
 }

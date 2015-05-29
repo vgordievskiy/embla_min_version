@@ -8,11 +8,14 @@ dependencies:
     path: ../OntoORM
   dart_orm: '>=0.0.13 <0.1.0'
   dart_orm_adapter_mysql: '>=0.0.8 <0.1.0'
+  dart_orm_adapter_postgresql: any
   di: '>=3.3.4 <4.0.0'
-  event_bus: '>=0.3.0+3 <0.4.0'
-  redstone: '>=0.5.21 <0.6.0'
+  event_bus: '>=0.4.0 <0.5.0'
+  observe: any
+  redstone: '>=0.5.21+1 <0.6.0'
   redstone_mapper: '>=0.1.13 <0.2.0'
   shelf: '>=0.5.5 <0.7.0'
   shelf_auth: '>=0.4.0 <0.5.0'
+  sync_socket: ^1.0.2+1
 dev_dependencies:
   unittest: '>=0.11.5+4 <0.12.0'
