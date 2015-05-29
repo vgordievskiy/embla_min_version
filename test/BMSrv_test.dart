@@ -33,6 +33,8 @@ void setupConsoleLog([Level level = Level.INFO]) {
   });
 }
 
+Logger _log = new Logger("BMSrv.Test");
+
 main() async {
   setupConsoleLog();
   return defineTests();
@@ -54,7 +56,7 @@ Future defineTests() async {
   //remove all loaded handlers
   tearDown(() => app.tearDown());
   
-  test("create user", () {
+  skip_test("create user", () {
     Map<String, String> data = new Map();
     data['username'] = "t1";
     data['password'] = "1";
@@ -65,22 +67,25 @@ Future defineTests() async {
                               bodyType: app.FORM,
                               body: data);
     return app.dispatch(req).then((resp) {
-      //verify the response
       expect(resp.statusCode, equals(200));
-      //expect(resp.mockContent, equals("hello, luiz"));
     });
   });
   
-  /*test("hello service", () {
-    //create a mock request
-    var req = new MockRequest("/users/1");
-    //dispatch the request
+  test("login user", () {
+    Map<String, String> data = new Map();
+    data["username"] = "t1";
+    data["password"] = "1";
+    data["submit"] = "fromDartTest";
+    
+    var req = new MockRequest("/login",
+                              method: app.POST,
+                              bodyType: app.FORM,
+                              body: data);
     return app.dispatch(req).then((resp) {
-      //verify the response
       expect(resp.statusCode, equals(200));
-      //expect(resp.mockContent, equals("hello, luiz"));
+      _log.info("${resp.mockContent}");
     });
-  });*/
+  });
 
   return;
 }

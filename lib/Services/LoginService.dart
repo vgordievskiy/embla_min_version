@@ -121,11 +121,11 @@ checkUserPass() async {
 
     User dbUser = await GetUser(userName);
 
-    UserLogged event = new UserLogged(dbUser.id);
+   // UserLogged event = new UserLogged(dbUser.id);
 
-    EventSys.GetEventBus().fire(event);
+   // EventSys.GetEventBus().fire(event);
 
-    var userTmp = await event.Result;
+   // var userTmp = await event.Result;
 
     final String userPath = "/users/${dbUser.id}";
     shelf.Response response = new shelf.Response.ok(userPath);
