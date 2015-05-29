@@ -40,13 +40,14 @@ main() async {
 
 Future defineTests() async {
   await Init();
+  await InitORM();
   //load handlers in 'services' library
   setUp(() async {
     app.addPlugin(getMapperPlugin());
     app.addModule(new Module()..bind(DBAdapter));
     app.addModule(new Module()..bind(EventSys));
-    //app.setUp([#BMSrv.Interceptors]);
-    //app.setUp([#BMSrv.LoginService]);
+    app.setUp([#BMSrv.Interceptors]);
+    app.setUp([#BMSrv.LoginService]);
     app.setUp([#BMSrv.UserService]);
   });
   
