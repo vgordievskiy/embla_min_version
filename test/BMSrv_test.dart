@@ -45,6 +45,7 @@ Future defineTests() async {
   await InitORM();
   //load handlers in 'services' library
   setUp(() async {
+    _log.info("!!!!");
     app.addPlugin(getMapperPlugin());
     app.addModule(new Module()..bind(DBAdapter));
     app.addModule(new Module()..bind(EventSys));
@@ -86,6 +87,22 @@ Future defineTests() async {
       _log.info("${resp.mockContent}");
     });
   });
+  
+  test("login user1", () {
+     Map<String, String> data = new Map();
+     data["username"] = "t1";
+     data["password"] = "1";
+     data["submit"] = "fromDartTest";
+     
+     var req = new MockRequest("/login",
+                               method: app.POST,
+                               bodyType: app.FORM,
+                               body: data);
+     return app.dispatch(req).then((resp) {
+       expect(resp.statusCode, equals(200));
+       _log.info("${resp.mockContent}");
+     });
+   });
 
   return;
 }
