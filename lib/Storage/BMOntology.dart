@@ -40,8 +40,8 @@ class BMOnto {
   }
 
   Future<OntoClass> GetClass(String name) async {
-    if (BaseOnto == null) await InitBaseOnto();
-    return await BaseOnto.GetClass(name);
+    assert(BaseOnto != null);
+    return _classes[name];
   }
 }
 
