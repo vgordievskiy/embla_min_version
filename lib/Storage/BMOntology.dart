@@ -27,11 +27,12 @@ class BMOnto {
   Map<String, OntoClass> _classes = new Map();
   
   BMOnto() {
-    InitBaseOnto().then((e) => _initClasses());
+    InitBaseOnto().then((e) => initClasses());
   }
   
-  _initClasses() {
-    BaseOnto.GetClasses().then((List<String> classes) async {
+  initClasses() async {
+    await BaseOnto.GetClasses().then((List<String> classes) async {
+      if (!_classes.isEmpty) return;
       for(String name in classes) {
         _classes[name] = await BaseOnto.GetClass(name);
         _log.info("Add Ontology Class ${_classes[name].Name}");
@@ -50,6 +51,7 @@ BMOnto _def_Onto = null;
 Future IntitOntology() async {
   await BMOnto.InitBaseOnto();
   _def_Onto = new BMOnto();
+  await _def_Onto.initClasses();
 }
 
 BMOnto GetOntology() {
