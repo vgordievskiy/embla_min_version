@@ -3,6 +3,8 @@ library BMSrv.Storage.BMSrv;
 export 'SemplexStorage.dart';
 import 'SemplexStorage.dart';
 
+import 'package:logging/logging.dart';
+
 import 'dart:async';
 
 class BMOnto {
@@ -10,7 +12,7 @@ class BMOnto {
   static Ontology BaseOnto = null;
   static bool isIntitilizing = false;
 
-  static InitBaseOnto() async {
+  static Future InitBaseOnto() async {
     if (isIntitilizing) return;
     isIntitilizing = true;
     if (BaseOnto == null) {
@@ -21,7 +23,21 @@ class BMOnto {
     isIntitilizing = false;
   }
 
-  BMOnto() {}
+  Logger _log = new Logger("BMSrv.BMOnto");
+  Map<String, OntoClass> _classes = new Map();
+  
+  BMOnto() {
+    InitBaseOnto().then((e) => _initClasses());
+  }
+  
+  _initClasses() {
+    BaseOnto.GetClasses().then((List<String> classes) async {
+      for(String name in classes) {
+        _classes[name] = await BaseOnto.GetClass(name);
+        _log.info("Load Class ${name}");
+      }
+    });
+  }
 
   Future<OntoClass> GetClass(String name) async {
     if (BaseOnto == null) await InitBaseOnto();
@@ -29,10 +45,10 @@ class BMOnto {
   }
 }
 
-BMOnto _def_Onto = new BMOnto();
+BMOnto _def_Onto = null;
 
 Future IntitOntology() async {
-  await BMOnto.InitBaseOnto();
+  _def_Onto = new BMOnto();
 }
 
 BMOnto GetOntology() {
