@@ -54,6 +54,10 @@ Future defineTests() async {
   await Init();
   await InitORM();
   initServices();
+  
+  String authorization = null;
+  String userUrl = null;
+  String sessionId = "1";
 
   skip_test("create user", () {
     Map<String, String> data = new Map();
@@ -82,9 +86,22 @@ Future defineTests() async {
                               body: data);
     return app.dispatch(req).then((resp) {
       expect(resp.statusCode, equals(200));
-      _log.info("${resp.mockContent}");
+      authorization = resp.headers.value("authorization");
+      userUrl = resp.mockContent;
+      _log.info("${resp.mockContent} - auth: ${authorization}");
     });
   });
 
+  test("Get user", (){
+    var req = new MockRequest(userUrl,
+                              method: app.GET,
+                              headers: {'authorization' : authorization},
+                              session: new MockHttpSession(sessionId));
+    return app.dispatch(req).then((resp){
+      expect(resp.statusCode, equals(200));
+      _log.info("${resp.mockContent}");
+    });
+  });
+  
   return;
 }
