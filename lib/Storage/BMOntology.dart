@@ -61,8 +61,9 @@ BMOnto GetOntology() {
 
 abstract class OntoEntity extends ORM.Model {
   OntoClass OwnerClass = null;
-  
   OntoIndivid ind = null;
+  
+  int id;
   
   void InitOnto(String className) {
     OwnerClass = GetOntology().GetClass(className);
