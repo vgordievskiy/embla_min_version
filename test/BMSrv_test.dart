@@ -59,11 +59,14 @@ Future defineTests() async {
   String authorization = null;
   String userUrl = null;
   String sessionId = "1";
+  
+  String userName = "t3";
+  String userpass = "1";
 
   test("create user", () {
     Map<String, String> data = new Map();
-    data['username'] = "t1";
-    data['password'] = "1";
+    data['username'] = userName;
+    data['password'] = userpass;
     data['name'] = "test";
     data['email'] = "test@mail.com";
     var req = new MockRequest("/users",
@@ -77,8 +80,8 @@ Future defineTests() async {
   
   test("login user", () {
     Map<String, String> data = new Map();
-    data["username"] = "t1";
-    data["password"] = "1";
+    data["username"] = userName;
+    data["password"] = userpass;
     data["submit"] = "fromDartTest";
     
     var req = new MockRequest("/login",
