@@ -14,7 +14,7 @@ class User extends OntoEntity {
     InitOnto("User");
     initLog();
     loadOntoInfo().then((ind){
-      _log.info("!!!!!!!!!");
+      OntoIndivid.Get(ind);
     });
   }
   
@@ -56,6 +56,4 @@ class User extends OntoEntity {
   String toString(){
     return 'User { id: $id, userName: $userName, name: $name, email: $email, passowrd: $password }';
   }
-  
-  
 }
