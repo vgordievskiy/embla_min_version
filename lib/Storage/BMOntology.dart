@@ -85,12 +85,17 @@ abstract class OntoEntity extends ORM.Model {
   
   @override
   Future<bool> save() async {
-    try {
-      bool res = await super.save();
-      if (res == true) {
-        await this.createInd("${this.id}");
-      }
-    } catch(error) { throw error; }
+    if (this.id == null) {
+      try {
+        bool res = await super.save();
+        if (res == true) {
+          await this.createInd("${this.id}");
+        }
+        return res;
+      } catch(error) { throw error; }
+    } else {
+      return super.save();
+    }
   }
   
 }
