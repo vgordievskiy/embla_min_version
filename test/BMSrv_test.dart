@@ -60,10 +60,10 @@ Future defineTests() async {
   String userUrl = null;
   String sessionId = "1";
   
-  String userName = "t3";
+  String userName = "t4";
   String userpass = "1";
 
-  skip_test("create user", () {
+  test("create user", () {
     Map<String, String> data = new Map();
     data['username'] = userName;
     data['password'] = userpass;

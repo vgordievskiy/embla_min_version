@@ -39,7 +39,7 @@ class UserService {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
 
-    User newUser = new User();
+    User newUser = new User.Dummy();
     newUser.userName = data['username'];
     newUser.name = data['name'];
     newUser.password = Enc.encryptPassword(data["password"]);

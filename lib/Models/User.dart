@@ -12,6 +12,18 @@ class User extends OntoEntity {
   Logger _log;
   User() {
     InitOnto("User");
+    initLog();
+    loadOntoInfo().then((ind){
+      _log.info("!!!!!!!!!");
+    });
+  }
+  
+  User.Dummy() {
+    InitOnto("User");
+  }
+  
+  initLog() async {
+    _log = new Logger("BMSrv.User_$id");
   }
   
   static Future<User> GetUser(String id) {
