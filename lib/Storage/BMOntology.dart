@@ -75,7 +75,7 @@ abstract class OntoEntity extends ORM.Model {
   }
   
   /*shortcast for OntoIndivid getter*/
-  OntoIndivid get $ => ind;
+  OntoIndivid get $ {assert(ind!=null); return ind;}
   
   @override
   Future<bool> save() async {
