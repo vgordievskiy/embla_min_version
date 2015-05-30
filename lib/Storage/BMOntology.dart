@@ -103,6 +103,7 @@ abstract class OntoEntity extends ORM.Model with Observable {
         bool res = await super.save();
         if (res == true) {
           await this.createInd("${this.id}");
+          await loadOntoInfo();
         }
         return res;
       } catch(error) { throw error; }
