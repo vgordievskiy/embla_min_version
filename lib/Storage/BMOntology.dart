@@ -74,6 +74,12 @@ abstract class OntoEntity extends ORM.Model {
     ind = await OwnerClass.CreateIndivid(name);
   }
   
+  Future<OntoIndivid> loadOntoInfo() async {
+    assert(id != null);
+    ind = await OwnerClass.GetIndivid("$id");
+    return ind;
+  }
+  
   /*shortcast for OntoIndivid getter*/
   OntoIndivid get $ {assert(ind!=null); return ind;}
   
