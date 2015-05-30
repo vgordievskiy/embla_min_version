@@ -58,11 +58,18 @@ BMOnto GetOntology() {
   return _def_Onto;
 }
 
-class OntoEntity {
+abstract class OntoEntity {
   OntoClass OwnerClass = null;
+  
+  OntoIndivid ind = null;
   
   void InitOnto(String className) {
     OwnerClass = GetOntology().GetClass(className);
+  }
+  
+  Future createInd(String name) async {
+    assert(OwnerClass!=null);
+    ind = await OwnerClass.CreateIndivid(name);
   }
   
 }

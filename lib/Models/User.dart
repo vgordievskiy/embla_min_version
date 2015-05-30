@@ -43,4 +43,14 @@ class User extends ORM.Model with OntoEntity {
   String toString(){
     return 'User { id: $id, userName: $userName, name: $name, email: $email, passowrd: $password }';
   }
+  
+  @override
+  Future<bool> save() async {
+    try {
+      bool res = await super.save();
+      if (res == true) {
+        await this.createInd("${id}");
+      }
+    } catch(error) { throw error; }
+  }
 }

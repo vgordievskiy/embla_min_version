@@ -37,7 +37,8 @@ Logger _log = new Logger("BMSrv.Test");
 
 main() async {
   setupConsoleLog();
-  return defineTests();
+  await defineTests();
+  return;
 }
 
 initServices() {
@@ -59,7 +60,7 @@ Future defineTests() async {
   String userUrl = null;
   String sessionId = "1";
 
-  skip_test("create user", () {
+  test("create user", () {
     Map<String, String> data = new Map();
     data['username'] = "t1";
     data['password'] = "1";
@@ -103,5 +104,4 @@ Future defineTests() async {
     });
   });
   
-  return;
 }
