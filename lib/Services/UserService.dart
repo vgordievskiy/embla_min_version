@@ -50,10 +50,15 @@ class UserService {
     var saveResult = await newUser.save().catchError((var error){
       exception = error;
     });
-
+    
     if (exception != null) {
       return exception;
     } else {
+      
+      await newUser.$.AddData("hasUserName", newUser.name);
+      await newUser.$.AddData("hasEmail", newUser.email);
+      await newUser.$.AddData("hasUserId", newUser.id);
+      
       User dbUser = await _getUser(newUser.userName);
       return { "status" : "created" };
     }
