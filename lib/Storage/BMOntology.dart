@@ -3,6 +3,7 @@ library BMSrv.Storage.BMSrv;
 export 'SemplexStorage.dart';
 import 'SemplexStorage.dart';
 
+import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
 
 import 'dart:async';
@@ -58,7 +59,7 @@ BMOnto GetOntology() {
   return _def_Onto;
 }
 
-abstract class OntoEntity {
+abstract class OntoEntity extends ORM.Model {
   OntoClass OwnerClass = null;
   
   OntoIndivid ind = null;
@@ -70,6 +71,16 @@ abstract class OntoEntity {
   Future createInd(String name) async {
     assert(OwnerClass!=null);
     ind = await OwnerClass.CreateIndivid(name);
+  }
+  
+  @override
+  Future<bool> save() async {
+    try {
+      bool res = await super.save();
+      if (res == true) {
+        await this.createInd("${this.id}");
+      }
+    } catch(error) { throw error; }
   }
   
 }

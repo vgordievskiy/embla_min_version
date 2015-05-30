@@ -7,7 +7,7 @@ import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
 
 @ORM.DBTable('users')
-class User extends ORM.Model with OntoEntity {
+class User extends OntoEntity {
   
   User() {
     InitOnto("User");
@@ -44,13 +44,5 @@ class User extends ORM.Model with OntoEntity {
     return 'User { id: $id, userName: $userName, name: $name, email: $email, passowrd: $password }';
   }
   
-  @override
-  Future<bool> save() async {
-    try {
-      bool res = await super.save();
-      if (res == true) {
-        await this.createInd("${id}");
-      }
-    } catch(error) { throw error; }
-  }
+  
 }
