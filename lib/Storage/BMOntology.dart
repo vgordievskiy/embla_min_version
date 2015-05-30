@@ -3,6 +3,7 @@ library BMSrv.Storage.BMSrv;
 export 'SemplexStorage.dart';
 import 'SemplexStorage.dart';
 
+import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
 
@@ -59,11 +60,22 @@ BMOnto GetOntology() {
   return _def_Onto;
 }
 
-abstract class OntoEntity extends ORM.Model {
+abstract class OntoEntity extends ORM.Model with Observable {
   OntoClass OwnerClass = null;
+  @observable
   OntoIndivid ind = null;
   
   int id;
+  
+  _initChangesListener() {
+    assert(ind!=null);
+    ind.changes.listen((List<ChangeRecord> changes){
+      changes.forEach((ChangeRecord record){
+        notifyChange(record);
+      });
+      deliverChanges();
+    });
+  }
   
   void InitOnto(String className) {
     OwnerClass = GetOntology().GetClass(className);
@@ -77,6 +89,7 @@ abstract class OntoEntity extends ORM.Model {
   Future<OntoIndivid> loadOntoInfo() async {
     assert(id != null);
     ind = await OwnerClass.GetIndivid("$id");
+    _initChangesListener();
     return ind;
   }
   

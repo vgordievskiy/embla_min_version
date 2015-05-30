@@ -2,6 +2,7 @@ library BMSrv.Models.User;
 
 import 'dart:async';
 
+import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
@@ -14,6 +15,11 @@ class User extends OntoEntity {
     InitOnto("User");
     initLog();
     loadOntoInfo().then((ind){
+      this.changes.listen((List<dynamic> changes){
+        for(var change in changes) {
+          _log.info(change);
+        }
+      });
       OntoIndivid.Get(ind);
     });
   }
