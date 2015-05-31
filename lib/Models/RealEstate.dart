@@ -1,0 +1,56 @@
+library BMSrv.Models.RealEstate;
+
+import 'dart:async';
+
+import 'package:observe/observe.dart';
+import 'package:dart_orm/dart_orm.dart' as ORM;
+import 'package:BMSrv/Storage/SemplexStorage.dart';
+import 'package:BMSrv/Storage/BMOntology.dart';
+import 'package:logging/logging.dart';
+
+@ORM.DBTable('real_state_objects')
+class RealState extends OntoEntity {
+  Logger _log;
+  RealState() {
+    InitOnto("RealState");
+    initLog();
+    loadOntoInfo().then((ind){
+      this.changes.listen((List<dynamic> changes){
+        for(var change in changes) {
+          _log.info(change);
+        }
+      });
+      OntoIndivid.Get(ind);
+    });
+  }
+  
+  RealState.Dummy() {
+    InitOnto("RealState");
+  }
+  
+  initLog() async {
+    _log = new Logger("BMSrv.RealState_$id");
+  }
+  
+  static Future<RealState> GetUser(String id) {
+    ORM.FindOne findOneItem = new ORM.FindOne(RealState)
+                                  ..whereEquals('id', id);
+    if (findOneItem != null) {
+      return findOneItem.execute();
+    }
+    throw "not found ${id}";
+  }
+  
+  @ORM.DBField()
+  @ORM.DBFieldPrimaryKey()
+  @ORM.DBFieldType('SERIAL')
+  int id;
+
+  @ORM.DBField()
+  @ORM.DBFieldType('UNIQUE')
+  String objectName;
+
+  String toString(){
+    return 'User { id: $id, userName: $objectName}';
+  }
+}

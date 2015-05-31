@@ -10,6 +10,7 @@ import 'package:BMSrv/Events/Event.dart';
 import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Utils/Encrypter.dart' as Enc;
 import 'package:BMSrv/Models/User.dart';
+import 'package:BMSrv/Models/RealEstate.dart';
 
 bool _isEmpty(String value) => value == "";
 
