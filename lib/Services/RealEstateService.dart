@@ -29,14 +29,62 @@ class RealEstateService {
     _Generator = new Uuid();
   }
   
-  @app.DefaultRoute(methods: const[app.POST])
-  create(@app.Body(app.FORM) Map data) async {
+  @app.Route("/private/", methods: const[app.POST])
+  create_private(@app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']))
     {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
 
     REPrivate object = new REPrivate.Dummy();
+    
+    object.objectName = data['objectName'];
+
+    var exception = null;
+
+    var saveResult = await object.save().catchError((var error){
+      exception = error;
+    });
+    
+    if (exception != null) {
+      return exception;
+    } else {
+      return object.id;
+    }
+  }
+  
+  @app.Route("/commercial/", methods: const[app.POST])
+  create_commercial(@app.Body(app.FORM) Map data) async {
+    if (_isEmpty(data['objectName']))
+    {
+      throw new app.ErrorResponse(403, {"error": "data empty"});
+    }
+
+    RECommercial object = new RECommercial.Dummy();
+    
+    object.objectName = data['objectName'];
+
+    var exception = null;
+
+    var saveResult = await object.save().catchError((var error){
+      exception = error;
+    });
+    
+    if (exception != null) {
+      return exception;
+    } else {
+      return object.id;
+    }
+  }
+  
+  @app.Route("/land/", methods: const[app.POST])
+  create_land(@app.Body(app.FORM) Map data) async {
+    if (_isEmpty(data['objectName']))
+    {
+      throw new app.ErrorResponse(403, {"error": "data empty"});
+    }
+
+    RELand object = new RELand.Dummy();
     
     object.objectName = data['objectName'];
 
