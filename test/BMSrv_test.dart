@@ -51,6 +51,7 @@ initServices() {
   app.setUp([#BMSrv.LoginService]);
   app.setUp([#BMSrv.UserService]);
   app.setUp([#BMSrv.RealEstateService]);
+  app.setUp([#BMSrv.ObjectDealService]);
 }
 
 Future defineTests() async {
@@ -124,9 +125,9 @@ Future defineTests() async {
     });
   });
   
-  test("realestate", () async {
-    var req = new MockRequest("/realestate/1",
-                              method: app.GET,
+  test("realestate_assign", () async {
+    var req = new MockRequest("$userUrl/set_deal/1",
+                              method: app.PUT,
                               headers: {'authorization' : authorization},
                               session: new MockHttpSession(sessionId));
     return app.dispatch(req).then((resp){

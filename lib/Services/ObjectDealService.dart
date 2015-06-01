@@ -29,35 +29,4 @@ class ObjectDealService {
   {
     _Generator = new Uuid();
   }
-  
-  @app.DefaultRoute(methods: const[app.POST])
-  create(@app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['objectName']))
-    {
-      throw new app.ErrorResponse(403, {"error": "data empty"});
-    }
-
-    ObjectDeal object = new ObjectDeal.Dummy();
-    
-    //object.objectName = data['objectName'];
-
-    var exception = null;
-
-    /*var saveResult = await object.save().catchError((var error){
-      exception = error;
-    });*/
-    
-    if (exception != null) {
-      return exception;
-    } else {
-      return object.id;
-    }
-  }
-  
-  @app.Route("/:id")
-  @Encode()
-  getObjectById(String id) async {
-    ObjectDeal ret = await ObjectDeal.GetObject(id);
-    return ret;
-  }
 }

@@ -4,9 +4,11 @@ import 'dart:async';
 
 import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
+import 'package:logging/logging.dart';
 import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
-import 'package:logging/logging.dart';
+import 'package:BMSrv/Models/User.dart';
+import 'package:BMSrv/Models/RealEstate.dart';
 
 @ORM.DBTable('user_object_deal')
 class ObjectDeal extends OntoEntity {
@@ -24,8 +26,10 @@ class ObjectDeal extends OntoEntity {
     });
   }
   
-  ObjectDeal.Dummy() {
+  ObjectDeal.Dummy(User user, RealEstate object) {
     InitOnto("ObjectDeal");
+    userId = user.id;
+    objectId = object.id;
   }
   
   initLog() async {

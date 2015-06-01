@@ -11,6 +11,7 @@ import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Utils/Encrypter.dart' as Enc;
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate.dart';
+import 'package:BMSrv/Models/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -70,6 +71,24 @@ class UserService {
   getUserById(String id) async {
     User user = await User.GetUser(id);
     return user;
+  }
+  
+  @app.Route("/:id/set_deal/:realestateid", methods: const[app.PUT])
+  @Encode()
+  addDealForRealEstate(String id, String realestateid) async {
+    User user = await User.GetUser(id);
+    RealEstate object = await RealEstate.GetObject(realestateid);
+    
+    ObjectDeal deal = new ObjectDeal.Dummy(user, object);
+    
+    try {
+      await deal.save();
+      await deal.$.AddRelation('hasTargetRealEstate', object.$);
+      await deal.$.AddRelation('hasUserParticipant', object.$);
+      return deal.id;
+    } catch (error) {
+      return error; 
+    }
   }
 
 }
