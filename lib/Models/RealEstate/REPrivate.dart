@@ -1,4 +1,4 @@
-library BMSrv.Models.RealEstate;
+library BMSrv.Models.RealEstate.Private;
 
 import 'dart:async';
 
@@ -6,13 +6,14 @@ import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
+import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:logging/logging.dart';
 
-@ORM.DBTable('real_state_objects')
-class RealEstate extends OntoEntity {
+@ORM.DBTable('real_estate_objects_private')
+class REPrivate extends OntoEntity {
   Logger _log;
-  RealEstate() {
-    InitOnto("RealEstate");
+  REPrivate() {
+    InitOnto("RealEstatePrivate");
     initLog();
     loadOntoInfo().then((ind){
       this.changes.listen((List<dynamic> changes){
@@ -24,16 +25,16 @@ class RealEstate extends OntoEntity {
     });
   }
   
-  RealEstate.Dummy() {
-    InitOnto("RealEstate");
+  REPrivate.Dummy() {
+    InitOnto("RealEstatePrivate");
   }
   
   initLog() async {
-    _log = new Logger("BMSrv.RealEstate_$id");
+    _log = new Logger("BMSrv.REPrivate_$id");
   }
   
-  static Future<RealEstate> GetObject(String id) {
-    ORM.FindOne findOneItem = new ORM.FindOne(RealEstate)
+  static Future<REPrivate> GetObject(String id) {
+    ORM.FindOne findOneItem = new ORM.FindOne(REPrivate)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
       return findOneItem.execute();
@@ -51,6 +52,6 @@ class RealEstate extends OntoEntity {
   String objectName;
 
   String toString(){
-    return 'RealEstate { id: $id, ObjectName: $objectName}';
+    return 'REPrivate { id: $id, ObjectName: $objectName}';
   }
 }

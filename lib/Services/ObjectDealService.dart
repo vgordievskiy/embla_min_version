@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:BMSrv/Events/Event.dart';
 import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Models/User.dart';
-import 'package:BMSrv/Models/RealEstate.dart';
+import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";

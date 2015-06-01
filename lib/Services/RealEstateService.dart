@@ -9,7 +9,8 @@ import 'package:logging/logging.dart';
 import 'package:BMSrv/Events/Event.dart';
 import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Models/User.dart';
-import 'package:BMSrv/Models/RealEstate.dart';
+import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
+import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -36,7 +37,7 @@ class RealEstateService {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
 
-    RealEstate object = new RealEstate.Dummy();
+    REPrivate object = new REPrivate.Dummy();
     
     object.objectName = data['objectName'];
 
@@ -56,7 +57,7 @@ class RealEstateService {
   @app.Route("/:id")
   @Encode()
   getObjectById(String id) async {
-    RealEstate ret = await RealEstate.GetObject(id);
+    REPrivate ret = await REPrivate.GetObject(id);
     return ret;
   }
 }

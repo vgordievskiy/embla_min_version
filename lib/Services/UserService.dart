@@ -10,7 +10,8 @@ import 'package:BMSrv/Events/Event.dart';
 import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Utils/Encrypter.dart' as Enc;
 import 'package:BMSrv/Models/User.dart';
-import 'package:BMSrv/Models/RealEstate.dart';
+import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
+import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";
@@ -77,9 +78,9 @@ class UserService {
   @Encode()
   addDealForRealEstate(String id, String realestateid) async {
     User user = await User.GetUser(id);
-    RealEstate object = await RealEstate.GetObject(realestateid);
+    REPrivate object = await REPrivate.GetObject(realestateid);
     
-    ObjectDeal deal = new ObjectDeal.Dummy(user, object);
+    ObjectDeal deal = new ObjectDeal.DummyPrivate(user, object);
     
     try {
       await deal.save();

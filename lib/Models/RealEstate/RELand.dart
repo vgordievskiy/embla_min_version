@@ -1,21 +1,19 @@
-library BMSrv.Models.ObjectDeal;
+library BMSrv.Models.RealEstate.Land;
 
 import 'dart:async';
 
 import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
-import 'package:logging/logging.dart';
 import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
-import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
-import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
+import 'package:logging/logging.dart';
 
-@ORM.DBTable('user_object_deal')
-class ObjectDeal extends OntoEntity {
+@ORM.DBTable('real_estate_objects_land')
+class RELand extends OntoEntity {
   Logger _log;
-  ObjectDeal() {
-    InitOnto("ObjectDeal");
+  RELand() {
+    InitOnto("RealEstateLand");
     initLog();
     loadOntoInfo().then((ind){
       this.changes.listen((List<dynamic> changes){
@@ -27,18 +25,16 @@ class ObjectDeal extends OntoEntity {
     });
   }
   
-  ObjectDeal.DummyPrivate(User user, REPrivate object) {
-    InitOnto("ObjectDeal");
-    userId = user.id;
-    objectId = object.id;
+  RELand.Dummy() {
+    InitOnto("RealEstateLand");
   }
   
   initLog() async {
-    _log = new Logger("BMSrv.ObjectDeal_$id");
+    _log = new Logger("BMSrv.RELand_$id");
   }
   
-  static Future<ObjectDeal> GetObject(String id) {
-    ORM.FindOne findOneItem = new ORM.FindOne(ObjectDeal)
+  static Future<RELand> GetObject(String id) {
+    ORM.FindOne findOneItem = new ORM.FindOne(RELand)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
       return findOneItem.execute();
@@ -52,12 +48,10 @@ class ObjectDeal extends OntoEntity {
   int id;
 
   @ORM.DBField()
-  int objectId;
-  
-  @ORM.DBField()
-  int userId;
+  @ORM.DBFieldType('UNIQUE')
+  String objectName;
 
   String toString(){
-    return 'ObjectDeal { id: $id, objectId: $objectId userId: $userId}';
+    return 'RELand { id: $id, ObjectName: $objectName}';
   }
 }
