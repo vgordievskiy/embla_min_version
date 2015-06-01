@@ -13,6 +13,7 @@ import 'package:redstone_mapper/plugin.dart';
 import 'package:unittest/unittest.dart';
 import 'package:logging/logging.dart';
 import 'package:stack_trace/stack_trace.dart';
+import "package:threading/threading.dart";
 import 'package:sync_socket/sync_socket.dart';
 
 import 'package:redstone/server.dart' as app;
@@ -105,6 +106,15 @@ Future defineTests() async {
       expect(resp.statusCode, equals(200));
       _log.info("${resp.mockContent}");
     });
+  });
+  
+  test("thread", () async {
+    var thread = new Thread(() async {
+      for(int i=0; i<10; ++i )
+      print("Threaded $i");
+    });
+   
+    await thread.start();
   });
   
 }
