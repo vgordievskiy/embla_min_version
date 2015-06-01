@@ -113,7 +113,7 @@ Future defineTests() async {
   skip_test("create realEstate object", () {
     Map<String, String> data = new Map();
     data['objectName'] = "flat#1";
-    var req = new MockRequest("/realestate",
+    var req = new MockRequest("/realestate/private",
                               method: app.POST,
                               bodyType: app.FORM,
                               body: data,
