@@ -125,8 +125,8 @@ Future defineTests() async {
     });
   });
   
-  skip_test("realestate_assign", () async {
-    var req = new MockRequest("$userUrl/set_deal/1",
+  skip_test("realestate_assign_private", () async {
+    var req = new MockRequest("$userUrl/set_deal_private/1",
                               method: app.PUT,
                               headers: {'authorization' : authorization},
                               session: new MockHttpSession(sessionId));
