@@ -125,9 +125,20 @@ Future defineTests() async {
     });
   });
   
-  test("realestate_assign", () async {
+  skip_test("realestate_assign", () async {
     var req = new MockRequest("$userUrl/set_deal/1",
                               method: app.PUT,
+                              headers: {'authorization' : authorization},
+                              session: new MockHttpSession(sessionId));
+    return app.dispatch(req).then((resp){
+      expect(resp.statusCode, equals(200));
+      _log.info("${resp.mockContent}");
+    });
+  });
+  
+  test("get user deals", () async {
+    var req = new MockRequest("$userUrl/deals",
+                              method: app.GET,
                               headers: {'authorization' : authorization},
                               session: new MockHttpSession(sessionId));
     return app.dispatch(req).then((resp){

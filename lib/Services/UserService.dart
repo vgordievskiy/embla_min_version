@@ -90,5 +90,21 @@ class UserService {
       return error; 
     }
   }
+  
+  @app.Route("/:id/deals", methods: const[app.GET])
+  @Encode()
+  getUserDeals(String id) async {
+    User user = await User.GetUser(id);
+    
+    ORM.Find f = new ORM.Find(ObjectDeal)..where(new ORM.Equals('userId', id));
 
+    List<ObjectDeal> deals = await f.execute();
+    
+    String ret = "";
+    
+    for(ObjectDeal deal in deals) {
+      ret += "[${deal.toString()}]";
+    }
+    return ret;
+  }
 }

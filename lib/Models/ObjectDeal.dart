@@ -13,7 +13,7 @@ import 'package:BMSrv/Models/RealEstate.dart';
 @ORM.DBTable('user_object_deal')
 class ObjectDeal extends OntoEntity {
   Logger _log;
-  RealEstate() {
+  ObjectDeal() {
     InitOnto("ObjectDeal");
     initLog();
     loadOntoInfo().then((ind){
