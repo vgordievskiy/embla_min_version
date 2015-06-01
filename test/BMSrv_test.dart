@@ -109,6 +109,21 @@ Future defineTests() async {
     });
   });
   
+  test("create realEstate object", () {
+    Map<String, String> data = new Map();
+    data['objectName'] = "flat#1";
+    var req = new MockRequest("/realestate",
+                              method: app.POST,
+                              bodyType: app.FORM,
+                              body: data,
+                              headers: {'authorization' : authorization},
+                              session: new MockHttpSession(sessionId));
+    return app.dispatch(req).then((resp) {
+      expect(resp.statusCode, equals(200));
+      _log.info("${resp.mockContent}");
+    });
+  });
+  
   test("realestate", () async {
     var req = new MockRequest("/realestate/1",
                               method: app.GET,

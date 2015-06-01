@@ -49,7 +49,7 @@ class RealEstateService {
     if (exception != null) {
       return exception;
     } else {
-      return { "status" : "created" };
+      return object.id;
     }
   }
   
