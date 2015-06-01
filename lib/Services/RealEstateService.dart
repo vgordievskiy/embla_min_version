@@ -56,6 +56,6 @@ class RealEstateService {
   @app.Route("/:id")
   @Encode()
   getObjectById(String id) async {
-    return "test";
+    return "test realEstate service";
   }
 }

@@ -19,7 +19,7 @@ import 'package:sync_socket/sync_socket.dart';
 import 'package:redstone/server.dart' as app;
 import 'package:redstone/mocks.dart';
 
-import 'package:BMSrv/Services/UserService.dart';
+import 'package:BMSrv/BMSrv.dart';
 
 
 void setupConsoleLog([Level level = Level.INFO]) {
@@ -50,6 +50,7 @@ initServices() {
   app.setUp([#BMSrv.Interceptors]);
   app.setUp([#BMSrv.LoginService]);
   app.setUp([#BMSrv.UserService]);
+  app.setUp([#BMSrv.RealEstateService]);
 }
 
 Future defineTests() async {
@@ -108,7 +109,18 @@ Future defineTests() async {
     });
   });
   
-  test("thread", () async {
+  test("realestate", () async {
+    var req = new MockRequest("/realestate/1",
+                              method: app.GET,
+                              headers: {'authorization' : authorization},
+                              session: new MockHttpSession(sessionId));
+    return app.dispatch(req).then((resp){
+      expect(resp.statusCode, equals(200));
+      _log.info("${resp.mockContent}");
+    });
+  });
+  
+  skip_test("thread", () async {
     var thread = new Thread(() async {
       for(int i=0; i<10; ++i )
       print("Threaded $i");

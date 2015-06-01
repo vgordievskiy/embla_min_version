@@ -152,7 +152,7 @@ shelf.Request _CopyRequest_OnlyHeadersContains(app.Request appReq) {
   return req;
 }
 
-List<String> openResources = ['realestate'];
+List<String> openResources = [];//['realestate'];
 
 bool isOpenResources(List<String> path) {
   bool ret = false;
