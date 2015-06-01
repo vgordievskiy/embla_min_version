@@ -109,7 +109,7 @@ Future defineTests() async {
     });
   });
   
-  test("create realEstate object", () {
+  skip_test("create realEstate object", () {
     Map<String, String> data = new Map();
     data['objectName'] = "flat#1";
     var req = new MockRequest("/realestate",

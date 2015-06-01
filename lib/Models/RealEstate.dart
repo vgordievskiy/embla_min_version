@@ -32,7 +32,7 @@ class RealEstate extends OntoEntity {
     _log = new Logger("BMSrv.RealEstate_$id");
   }
   
-  static Future<RealEstate> GetUser(String id) {
+  static Future<RealEstate> GetObject(String id) {
     ORM.FindOne findOneItem = new ORM.FindOne(RealEstate)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
@@ -51,6 +51,6 @@ class RealEstate extends OntoEntity {
   String objectName;
 
   String toString(){
-    return 'RealEstate { id: $id, userName: $objectName}';
+    return 'RealEstate { id: $id, ObjectName: $objectName}';
   }
 }
