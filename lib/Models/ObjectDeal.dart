@@ -13,6 +13,11 @@ import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 
 @ORM.DBTable('user_object_deal')
 class ObjectDeal extends OntoEntity {
+  
+  final int Private = 0;
+  final int Commercial = 1;
+  final int Land = 2;
+  
   Logger _log;
   ObjectDeal() {
     InitOnto("ObjectDeal");
@@ -31,6 +36,27 @@ class ObjectDeal extends OntoEntity {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
+    initData(userId, object.id, Private);
+  }
+  
+  ObjectDeal.DummyCommercial(User user, RECommercial object) {
+    InitOnto("ObjectDeal");
+    userId = user.id;
+    objectId = object.id;
+    initData(userId, object.id, Commercial);
+  }
+  
+  ObjectDeal.DummyLand(User user, RELand object) {
+    InitOnto("ObjectDeal");
+    userId = user.id;
+    objectId = object.id;
+    initData(userId, object.id, Land);
+  }
+  
+  initData(int UserId, int REId, int typeId) {
+    userId = UserId;
+    objectId = REId;
+    type = typeId;
   }
   
   initLog() async {
@@ -56,8 +82,11 @@ class ObjectDeal extends OntoEntity {
   
   @ORM.DBField()
   int userId;
+  
+  @ORM.DBField()
+  int type;
 
   String toString(){
-    return 'ObjectDeal { id: $id, objectId: $objectId userId: $userId}';
+    return 'ObjectDeal { id: $id, objectId: $objectId userId: $userId, type: $type}';
   }
 }

@@ -10,7 +10,6 @@ import 'package:BMSrv/Events/Event.dart';
 import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
-import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 
 bool _isEmpty(String value) => value == "";
 

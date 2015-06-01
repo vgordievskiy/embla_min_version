@@ -11,7 +11,6 @@ import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Utils/Encrypter.dart' as Enc;
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
-import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";
@@ -74,13 +73,49 @@ class UserService {
     return user;
   }
   
-  @app.Route("/:id/set_deal/:realestateid", methods: const[app.PUT])
+  @app.Route("/:id/set_deal_private/:realestateid", methods: const[app.PUT])
   @Encode()
-  addDealForRealEstate(String id, String realestateid) async {
+  addDealForREPrivate(String id, String realestateid) async {
     User user = await User.GetUser(id);
     REPrivate object = await REPrivate.GetObject(realestateid);
     
     ObjectDeal deal = new ObjectDeal.DummyPrivate(user, object);
+    
+    try {
+      await deal.save();
+      await deal.$.AddRelation('hasTargetRealEstate', object.$);
+      await deal.$.AddRelation('hasUserParticipant', user.$);
+      return deal.id;
+    } catch (error) {
+      return error; 
+    }
+  }
+  
+  @app.Route("/:id/set_deal_commercial/:realestateid", methods: const[app.PUT])
+  @Encode()
+  addDealForRECommercial(String id, String realestateid) async {
+    User user = await User.GetUser(id);
+    RECommercial object = await RECommercial.GetObject(realestateid);
+    
+    ObjectDeal deal = new ObjectDeal.DummyCommercial(user, object);
+    
+    try {
+      await deal.save();
+      await deal.$.AddRelation('hasTargetRealEstate', object.$);
+      await deal.$.AddRelation('hasUserParticipant', user.$);
+      return deal.id;
+    } catch (error) {
+      return error; 
+    }
+  }
+  
+  @app.Route("/:id/set_deal_land/:realestateid", methods: const[app.PUT])
+  @Encode()
+  addDealForRELand(String id, String realestateid) async {
+    User user = await User.GetUser(id);
+    RELand object = await RELand.GetObject(realestateid);
+    
+    ObjectDeal deal = new ObjectDeal.DummyLand(user, object);
     
     try {
       await deal.save();
