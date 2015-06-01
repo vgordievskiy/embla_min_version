@@ -12,7 +12,7 @@ import 'package:logging/logging.dart';
 class RealEstate extends OntoEntity {
   Logger _log;
   RealEstate() {
-    InitOnto("RealState");
+    InitOnto("RealEstate");
     initLog();
     loadOntoInfo().then((ind){
       this.changes.listen((List<dynamic> changes){
@@ -25,7 +25,7 @@ class RealEstate extends OntoEntity {
   }
   
   RealEstate.Dummy() {
-    InitOnto("RealState");
+    InitOnto("RealEstate");
   }
   
   initLog() async {
