@@ -9,9 +9,9 @@ import 'package:BMSrv/Storage/BMOntology.dart';
 import 'package:logging/logging.dart';
 
 @ORM.DBTable('real_state_objects')
-class RealState extends OntoEntity {
+class RealEstate extends OntoEntity {
   Logger _log;
-  RealState() {
+  RealEstate() {
     InitOnto("RealState");
     initLog();
     loadOntoInfo().then((ind){
@@ -24,16 +24,16 @@ class RealState extends OntoEntity {
     });
   }
   
-  RealState.Dummy() {
+  RealEstate.Dummy() {
     InitOnto("RealState");
   }
   
   initLog() async {
-    _log = new Logger("BMSrv.RealState_$id");
+    _log = new Logger("BMSrv.RealEstate_$id");
   }
   
-  static Future<RealState> GetUser(String id) {
-    ORM.FindOne findOneItem = new ORM.FindOne(RealState)
+  static Future<RealEstate> GetUser(String id) {
+    ORM.FindOne findOneItem = new ORM.FindOne(RealEstate)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
       return findOneItem.execute();
@@ -51,6 +51,6 @@ class RealState extends OntoEntity {
   String objectName;
 
   String toString(){
-    return 'User { id: $id, userName: $objectName}';
+    return 'RealEstate { id: $id, userName: $objectName}';
   }
 }
