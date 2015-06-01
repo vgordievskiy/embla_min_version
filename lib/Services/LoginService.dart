@@ -146,8 +146,27 @@ Middleware defaultAuthMiddleware = authenticate([],
 shelf.Request _CopyRequest_OnlyHeadersContains(app.Request appReq) {
   shelf.Request req = new shelf.Request(appReq.method,
                                         appReq.requestedUri,
-                                        headers: appReq.headers);
+                                        headers: appReq.headers,
+                                        url: appReq.url,
+                                        scriptName: "");
   return req;
+}
+
+List<String> openResources = ['realestate'];
+
+bool isOpenResources(List<String> path) {
+  bool ret = false;
+  openResources.firstWhere((String el)
+  {
+    if(path[0] == el) {
+      ret = true;
+      return true;
+    } else { return false;}
+  }, orElse: () {
+    ret = false;
+    return "";
+  });
+  return ret;
 }
 
 @app.Interceptor(r'/.*', chainIdx: 1)
@@ -161,7 +180,7 @@ authenticationFilter() async
     app.chain.interrupt();
     return;
   }
-  
+  var tmp = req.url.pathSegments;
   bool isValid = false;
 
   await defaultAuthMiddleware((shelf.Request request){
@@ -175,6 +194,8 @@ authenticationFilter() async
   });
 
   if (_IsUserPost(app.request)) isValid = true;
+  
+  if(isOpenResources(req.url.pathSegments)) isValid = true;
 
   if (isValid) {
     app.response = new shelf.Response.ok(null);
