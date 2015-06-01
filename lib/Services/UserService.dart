@@ -84,7 +84,7 @@ class UserService {
     try {
       await deal.save();
       await deal.$.AddRelation('hasTargetRealEstate', object.$);
-      await deal.$.AddRelation('hasUserParticipant', object.$);
+      await deal.$.AddRelation('hasUserParticipant', user.$);
       return deal.id;
     } catch (error) {
       return error; 
