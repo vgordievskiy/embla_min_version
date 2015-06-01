@@ -50,9 +50,9 @@ class ObjectDeal extends OntoEntity {
   int objectId;
   
   @ORM.DBField()
-  List<int> users;
+  int userId;
 
   String toString(){
-    return 'ObjectDeal { id: $id, objectId: $objectId}';
+    return 'ObjectDeal { id: $id, objectId: $objectId userId: $userId}';
   }
 }
