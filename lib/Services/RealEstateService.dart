@@ -149,8 +149,23 @@ class RealEstateService {
   
   @app.Route("/private/:id", methods: const[app.GET])
   @Encode()
-  getPrivateById(String id) async {
-    
+  Future<REPrivateWrapper> getPrivateById(String id) async {
+    ORM.FindOne find = new ORM.FindOne(REPrivate)..whereEquals('id', id);
+    return REPrivateWrapper.Create(await find.execute());
+  }
+  
+  @app.Route("/commercial/:id", methods: const[app.GET])
+  @Encode()
+  Future<RECommercialWrapper> getCommercialById(String id) async {
+    ORM.FindOne find = new ORM.FindOne(RECommercial)..whereEquals('id', id);
+    return RECommercialWrapper.Create(await find.execute());
+  }
+  
+  @app.Route("/land/:id", methods: const[app.GET])
+  @Encode()
+  Future<RELandWrapper> getLandById(String id) async {
+    ORM.FindOne find = new ORM.FindOne(RELand)..whereEquals('id', id);
+    return RELandWrapper.Create(await find.execute());
   }
   
   @app.Route("/:id")
