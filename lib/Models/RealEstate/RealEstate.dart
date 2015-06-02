@@ -17,6 +17,7 @@ class RealEstate extends OntoEntity {
   RealEstate() {
     InitOnto("RealEstate");
     initLog();
+    if (ind == null) return;
     loadOntoInfo().then((ind){
       OntoIndivid.Get(ind);
     });

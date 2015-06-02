@@ -170,6 +170,18 @@ Future defineTests() async {
     });
   });
   
+  test("get all objects", () async {
+    assert(userUrl!=null);
+    var req = new MockRequest("/realestate",
+                              method: app.GET,
+                              headers: {'authorization' : authorization},
+                              session: new MockHttpSession(sessionId));
+    return app.dispatch(req).then((resp){
+      expect(resp.statusCode, equals(200));
+      _log.info("${resp.mockContent}");
+    });
+  });
+  
   skip_test("thread", () async {
     var thread = new Thread(() async {
       for(int i=0; i<10; ++i )

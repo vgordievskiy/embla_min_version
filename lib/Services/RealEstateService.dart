@@ -101,6 +101,18 @@ class RealEstateService {
     }
   }
   
+  @app.DefaultRoute()
+  getAllObjects() async {
+    RealEstate meta = new RealEstate();
+    List<String> ret = new List();
+    await meta.OwnerClass.GetAllIndivids().then((Map<String, dynamic> result){
+      for(String name in result.keys) {
+        ret.add(name);
+      }
+    });
+    return ret;
+  }
+  
   @app.Route("/private/:id", methods: const[app.GET])
   @Encode()
   getPrivateById(String id) async {
