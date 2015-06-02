@@ -14,6 +14,7 @@ class ObjectDealWrapper {
     ObjectDealWrapper ret = new ObjectDealWrapper();
     ret.id = deal.id;
     ret.type = deal.TypeName;
+    ret.objectId = deal.objectId;
     return ret;
   }
 
@@ -22,4 +23,7 @@ class ObjectDealWrapper {
   
   @Field()
   String type;
+  
+  @Field()
+  int objectId;
 }
