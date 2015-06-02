@@ -12,7 +12,7 @@ class RELandWrapper {
   {
     RELandWrapper ret = new RELandWrapper();
     ret.id = object.id;
-    ret.ojectName = object.objectName;
+    ret.objectName = object.objectName;
     return ret;
   }
 
@@ -23,5 +23,5 @@ class RELandWrapper {
   final String type = "land";
 
   @Field()
-  String ojectName;
+  String objectName;
 }

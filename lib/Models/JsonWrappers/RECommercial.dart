@@ -12,7 +12,7 @@ class RECommercialWrapper {
   {
     RECommercialWrapper ret = new RECommercialWrapper();
     ret.id = object.id;
-    ret.ojectName = object.objectName;
+    ret.objectName = object.objectName;
     return ret;
   }
 
@@ -23,5 +23,5 @@ class RECommercialWrapper {
   final String type = "commercial";
 
   @Field()
-  String ojectName;
+  String objectName;
 }

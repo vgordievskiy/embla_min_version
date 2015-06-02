@@ -12,7 +12,7 @@ class REPrivateWrapper {
   {
     REPrivateWrapper ret = new REPrivateWrapper();
     ret.id = object.id;
-    ret.ojectName = object.objectName;
+    ret.objectName = object.objectName;
     return ret;
   }
 
@@ -23,5 +23,5 @@ class REPrivateWrapper {
   final String type = "private";
 
   @Field()
-  String ojectName;
+  String objectName;
 }
