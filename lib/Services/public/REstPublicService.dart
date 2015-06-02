@@ -20,8 +20,6 @@ class RealEstatePublicService {
   RealEstatePublicService(RealEstateService this._impl)
   {}
   
-
-  
   @app.DefaultRoute()
   @Encode()
   Future<List<dynamic>> getAllObjects() async {
