@@ -151,20 +151,32 @@ class RealEstateService {
   @Encode()
   Future<REPrivateWrapper> getPrivateById(String id) async {
     ORM.FindOne find = new ORM.FindOne(REPrivate)..whereEquals('id', id);
-    return REPrivateWrapper.Create(await find.execute());
+    var ret = await find.execute();
+    if (ret == null) {
+      return  new app.ErrorResponse(404, {"error": "not found object"});
+    }
+    return REPrivateWrapper.Create(ret);
   }
   
   @app.Route("/commercial/:id", methods: const[app.GET])
   @Encode()
   Future<RECommercialWrapper> getCommercialById(String id) async {
     ORM.FindOne find = new ORM.FindOne(RECommercial)..whereEquals('id', id);
-    return RECommercialWrapper.Create(await find.execute());
+    var ret = await find.execute();
+    if (ret == null) {
+      return  new app.ErrorResponse(404, {"error": "not found object"});
+    }
+    return RECommercialWrapper.Create(ret);
   }
   
   @app.Route("/land/:id", methods: const[app.GET])
   @Encode()
   Future<RELandWrapper> getLandById(String id) async {
     ORM.FindOne find = new ORM.FindOne(RELand)..whereEquals('id', id);
-    return RELandWrapper.Create(await find.execute());
+    var ret = await find.execute();
+    if (ret == null) {
+      return  new app.ErrorResponse(404, {"error": "not found object"});
+    }
+    return RELandWrapper.Create(ret);
   }
 }

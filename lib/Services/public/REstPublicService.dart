@@ -47,7 +47,7 @@ class RealEstatePublicService {
   @app.Route("/private/:id", methods: const[app.GET])
   @Encode()
   Future<REPrivateWrapper> getPrivateById(String id) async {
-    return _impl.getLandById(id);
+    return _impl.getPrivateById(id);
   }
   
   @app.Route("/commercial/:id", methods: const[app.GET])
