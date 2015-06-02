@@ -18,11 +18,6 @@ class RealEstate extends OntoEntity {
     InitOnto("RealEstate");
     initLog();
     loadOntoInfo().then((ind){
-      this.changes.listen((List<dynamic> changes){
-        for(var change in changes) {
-          _log.info(change);
-        }
-      });
       OntoIndivid.Get(ind);
     });
   }

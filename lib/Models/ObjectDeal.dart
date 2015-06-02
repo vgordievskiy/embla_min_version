@@ -14,20 +14,20 @@ import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 @ORM.DBTable('user_object_deal')
 class ObjectDeal extends OntoEntity {
   
-  final int Private = 0;
-  final int Commercial = 1;
-  final int Land = 2;
+  static const int Private = 0;
+  static const int Commercial = 1;
+  static const int Land = 2;
   
   Logger _log;
   ObjectDeal() {
     InitOnto("ObjectDeal");
     initLog();
     loadOntoInfo().then((ind){
-      this.changes.listen((List<dynamic> changes){
+      /*this.changes.listen((List<dynamic> changes){
         for(var change in changes) {
           _log.info(change);
         }
-      });
+      });*/
       OntoIndivid.Get(ind);
     });
   }
@@ -63,13 +63,33 @@ class ObjectDeal extends OntoEntity {
     _log = new Logger("BMSrv.ObjectDeal_$id");
   }
   
-  static Future<ObjectDeal> GetObject(String id) {
+  static Future<ObjectDeal> Get(String id) {
     ORM.FindOne findOneItem = new ORM.FindOne(ObjectDeal)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
       return findOneItem.execute();
     }
     throw "not found ${id}";
+  }
+  
+  @ORM.DBField()
+  @ORM.DBFieldType('UNIQUE')
+  String ontoId;
+  
+  @override
+  Future<bool> save() async {
+    if (this.id == null) {
+      try {
+        bool res = await super.save();
+        if (res == true) {
+          this.ontoId = $.EntityName;
+          return super.save();
+        }
+        return res;
+      } catch(error) { throw error; }
+    } else {
+      return super.save();
+    }
   }
   
   @ORM.DBField()
@@ -85,6 +105,28 @@ class ObjectDeal extends OntoEntity {
   
   @ORM.DBField()
   int type;
+  
+  Future<User> GetUser() {
+    ORM.FindOne find = new ORM.FindOne(User)..whereEquals('id', userId);
+    return find.execute();
+  }
+  
+  Future<dynamic> GetObject() {
+    ORM.FindOne find;
+    switch(type) {
+      case Private :
+        find = new ORM.FindOne(REPrivate)..whereEquals('id', objectId);
+        break;
+      case Commercial :
+        find = new ORM.FindOne(RECommercial)..whereEquals('id', objectId);
+        break;
+      case Land :
+        find = new ORM.FindOne(RELand)..whereEquals('id', objectId);
+        break;
+    }
+    assert(find!=null);
+    return find.execute();
+  }
 
   String toString(){
     return 'ObjectDeal { id: $id, objectId: $objectId userId: $userId, type: $type}';

@@ -6,6 +6,7 @@ import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
+import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:logging/logging.dart';
 
 @ORM.DBTable('users')
@@ -15,11 +16,11 @@ class User extends OntoEntity {
     InitOnto("User");
     initLog();
     loadOntoInfo().then((ind){
-      this.changes.listen((List<dynamic> changes){
+      /*this.changes.listen((List<dynamic> changes){
         for(var change in changes) {
           _log.info(change);
         }
-      });
+      });*/
       OntoIndivid.Get(ind);
     });
   }
@@ -58,6 +59,11 @@ class User extends OntoEntity {
 
   @ORM.DBField()
   String password;
+  
+  Future<List<ObjectDeal>> GetDeals() {
+    ORM.Find find = new ORM.Find(ObjectDeal)..whereEquals('userId', id);
+    return find.execute(); 
+  }
 
   String toString(){
     return 'User { id: $id, userName: $userName, name: $name, email: $email, passowrd: $password }';
