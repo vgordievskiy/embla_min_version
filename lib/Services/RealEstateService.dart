@@ -167,11 +167,4 @@ class RealEstateService {
     ORM.FindOne find = new ORM.FindOne(RELand)..whereEquals('id', id);
     return RELandWrapper.Create(await find.execute());
   }
-  
-  @app.Route("/:id")
-  @Encode()
-  getObjectById(String id) async {
-    REPrivate ret = await REPrivate.Get(id);
-    return ret;
-  }
 }
