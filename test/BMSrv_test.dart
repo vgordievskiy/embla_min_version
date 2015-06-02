@@ -150,11 +150,11 @@ Future defineTests() async {
   test("login user", loginUser);
   test("Get user", getUserInfo);
   
-  test("create realEstate private object", () {
+  skip_test("create realEstate private object", () {
     return createRealEstateObject("private");
   });
   
-  test("realestate_assign_private", () async {
+  skip_test("realestate_assign_private", () async {
     return assignRealEstateObject("private");
   });
   
