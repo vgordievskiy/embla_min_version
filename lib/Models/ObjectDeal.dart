@@ -127,6 +127,19 @@ class ObjectDeal extends OntoEntity {
     assert(find!=null);
     return find.execute();
   }
+  
+  String get TypeName {
+    switch(type) {
+      case Private :
+        return "private";
+      case Commercial :
+        return "commercial";
+      case Land :
+        return "land";
+    }
+    assert(false);
+    return "";
+  }
 
   String toString(){
     return 'ObjectDeal { id: $id, objectId: $objectId userId: $userId, type: $type}';

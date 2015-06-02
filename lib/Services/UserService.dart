@@ -14,6 +14,7 @@ import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 
 import 'package:BMSrv/Models/JsonWrappers/User.dart';
+import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -130,13 +131,14 @@ class UserService {
   
   @app.Route("/:id/deals", methods: const[app.GET])
   @Encode()
-  getUserDeals(String id) async {
+  Future<List<ObjectDealWrapper>> getUserDeals(String id) async {
     User user = await User.GetUser(id);
 
-    String ret = "";
+    List<ObjectDealWrapper> ret = new List();
     
     for(ObjectDeal deal in await user.GetDeals()) {
-      ret += "[${deal.toString()}]";
+      var wrap = await ObjectDealWrapper.Create(deal);
+      ret.add(wrap);
     }
     return ret;
   }
