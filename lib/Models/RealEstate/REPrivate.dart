@@ -16,11 +16,11 @@ class REPrivate extends OntoEntity {
     InitOnto("RealEstatePrivate");
     initLog();
     loadOntoInfo().then((ind){
-      this.changes.listen((List<dynamic> changes){
+      /*this.changes.listen((List<dynamic> changes){
         for(var change in changes) {
           _log.info(change);
         }
-      });
+      });*/
       OntoIndivid.Get(ind);
     });
   }
