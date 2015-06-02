@@ -61,14 +61,8 @@ String sessionId = "1";
 String userName = "t1";
 String userpass = "1";
 
-
-
-Future defineTests() async {
-  await Init();
-  await InitORM();
-  initServices();
-  
-  skip_test("create user", () {
+Future<dynamic> createUser() {
+  {
     Map<String, String> data = new Map();
     data['username'] = userName;
     data['password'] = userpass;
@@ -81,61 +75,82 @@ Future defineTests() async {
     return app.dispatch(req).then((resp) {
       expect(resp.statusCode, equals(200));
     });
-  });
-  
-  test("login user", () {
-    Map<String, String> data = new Map();
-    data["username"] = userName;
-    data["password"] = userpass;
-    data["submit"] = "fromDartTest";
-    
-    var req = new MockRequest("/login",
-                              method: app.POST,
-                              bodyType: app.FORM,
-                              body: data);
-    return app.dispatch(req).then((resp) {
-      expect(resp.statusCode, equals(200));
-      authorization = resp.headers.value("authorization");
-      userUrl = resp.mockContent;
-      _log.info("${resp.mockContent} - auth: ${authorization}");
-    });
-  });
+  }
+}
 
-  test("Get user", (){
-    var req = new MockRequest(userUrl,
-                              method: app.GET,
-                              headers: {'authorization' : authorization},
-                              session: new MockHttpSession(sessionId));
-    return app.dispatch(req).then((resp){
-      expect(resp.statusCode, equals(200));
-      _log.info("${resp.mockContent}");
-    });
-  });
+Future<dynamic> loginUser() {
+  Map<String, String> data = new Map();
+  data["username"] = userName;
+  data["password"] = userpass;
+  data["submit"] = "fromDartTest";
   
- skip_test("create realEstate private object", () {
-    Map<String, String> data = new Map();
-    data['objectName'] = "flat#1";
-    var req = new MockRequest("/realestate/land",
-                              method: app.POST,
-                              bodyType: app.FORM,
-                              body: data,
-                              headers: {'authorization' : authorization},
-                              session: new MockHttpSession(sessionId));
-    return app.dispatch(req).then((resp) {
-      expect(resp.statusCode, equals(200));
-      _log.info("${resp.mockContent}");
-    });
+  var req = new MockRequest("/login",
+                            method: app.POST,
+                            bodyType: app.FORM,
+                            body: data);
+  return app.dispatch(req).then((resp) {
+    expect(resp.statusCode, equals(200));
+    authorization = resp.headers.value("authorization");
+    userUrl = resp.mockContent;
+    _log.info("${resp.mockContent} - auth: ${authorization}");
+  });
+}
+
+Future<dynamic> getUserInfo() {
+  var req = new MockRequest(userUrl,
+                            method: app.GET,
+                            headers: {'authorization' : authorization},
+                            session: new MockHttpSession(sessionId));
+  return app.dispatch(req).then((resp){
+    expect(resp.statusCode, equals(200));
+    _log.info("${resp.mockContent}");
+  });
+}
+
+/*type should be are private, commercial and land*/
+Future<dynamic> createRealEstateObject(String type) {
+  Map<String, String> data = new Map();
+  data['objectName'] = "flat#1";
+  var req = new MockRequest("/realestate/$type",
+                            method: app.POST,
+                            bodyType: app.FORM,
+                            body: data,
+                            headers: {'authorization' : authorization},
+                            session: new MockHttpSession(sessionId));
+  return app.dispatch(req).then((resp) {
+    expect(resp.statusCode, equals(200));
+    _log.info("${resp.mockContent}");
+  });
+}
+
+/*type should be are private, commercial and land*/
+Future<dynamic> assignRealEstateObject(String type) {
+  assert(userUrl!=null);
+  var req = new MockRequest("$userUrl/set_deal_$type/1",
+                             method: app.PUT,
+                             headers: {'authorization' : authorization},
+                             session: new MockHttpSession(sessionId));
+   return app.dispatch(req).then((resp){
+     expect(resp.statusCode, equals(200));
+     _log.info("${resp.mockContent}");
+   });
+}
+
+Future defineTests() async {
+  await Init();
+  await InitORM();
+  initServices();
+  
+  skip_test("create user", createUser);
+  test("login user", loginUser);
+  test("Get user", getUserInfo);
+  
+  skip_test("create realEstate private object", () {
+    return createRealEstateObject("private");
   });
   
   skip_test("realestate_assign_private", () async {
-    var req = new MockRequest("$userUrl/set_deal_land/1",
-                              method: app.PUT,
-                              headers: {'authorization' : authorization},
-                              session: new MockHttpSession(sessionId));
-    return app.dispatch(req).then((resp){
-      expect(resp.statusCode, equals(200));
-      _log.info("${resp.mockContent}");
-    });
+    return assignRealEstateObject("private");
   });
   
   test("get user deals", () async {
