@@ -101,6 +101,12 @@ class RealEstateService {
     }
   }
   
+  @app.Route("/private/:id", methods: const[app.GET])
+  @Encode()
+  getPrivateById(String id) async {
+    
+  }
+  
   @app.Route("/:id")
   @Encode()
   getObjectById(String id) async {
