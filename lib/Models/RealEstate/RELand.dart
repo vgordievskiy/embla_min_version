@@ -33,7 +33,7 @@ class RELand extends OntoEntity {
     _log = new Logger("BMSrv.RELand_$id");
   }
   
-  static Future<RELand> GetObject(String id) {
+  static Future<RELand> Get(String id) {
     ORM.FindOne findOneItem = new ORM.FindOne(RELand)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {

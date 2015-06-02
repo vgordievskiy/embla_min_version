@@ -79,7 +79,7 @@ class UserService {
   @Encode()
   addDealForREPrivate(String id, String realestateid) async {
     User user = await User.GetUser(id);
-    REPrivate object = await REPrivate.GetObject(realestateid);
+    REPrivate object = await REPrivate.Get(realestateid);
     
     ObjectDeal deal = new ObjectDeal.DummyPrivate(user, object);
     
@@ -97,7 +97,7 @@ class UserService {
   @Encode()
   addDealForRECommercial(String id, String realestateid) async {
     User user = await User.GetUser(id);
-    RECommercial object = await RECommercial.GetObject(realestateid);
+    RECommercial object = await RECommercial.Get(realestateid);
     
     ObjectDeal deal = new ObjectDeal.DummyCommercial(user, object);
     
@@ -115,7 +115,7 @@ class UserService {
   @Encode()
   addDealForRELand(String id, String realestateid) async {
     User user = await User.GetUser(id);
-    RELand object = await RELand.GetObject(realestateid);
+    RELand object = await RELand.Get(realestateid);
     
     ObjectDeal deal = new ObjectDeal.DummyLand(user, object);
     

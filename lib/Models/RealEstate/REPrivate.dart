@@ -33,7 +33,7 @@ class REPrivate extends OntoEntity {
     _log = new Logger("BMSrv.REPrivate_$id");
   }
   
-  static Future<REPrivate> GetObject(String id) {
+  static Future<REPrivate> Get(String id) {
     ORM.FindOne findOneItem = new ORM.FindOne(REPrivate)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {

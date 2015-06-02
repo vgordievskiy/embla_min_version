@@ -122,7 +122,7 @@ class RealEstateService {
   @app.Route("/:id")
   @Encode()
   getObjectById(String id) async {
-    REPrivate ret = await REPrivate.GetObject(id);
+    REPrivate ret = await REPrivate.Get(id);
     return ret;
   }
 }

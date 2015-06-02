@@ -33,7 +33,7 @@ class RECommercial extends OntoEntity {
     _log = new Logger("BMSrv.RECommercial_$id");
   }
   
-  static Future<RECommercial> GetObject(String id) {
+  static Future<RECommercial> Get(String id) {
     ORM.FindOne findOneItem = new ORM.FindOne(RECommercial)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
