@@ -1,4 +1,4 @@
-library BMSrv.Models.JsonWrappers.REPrivate;
+library BMSrv.Models.JsonWrappers.RELand;
 import 'dart:async';
 import 'package:redstone_mapper/mapper.dart';
 import 'package:redstone_mapper/plugin.dart';
@@ -18,6 +18,9 @@ class RELandWrapper {
 
   @Field()
   int id;
+  
+  @Field()
+  final String type = "land";
 
   @Field()
   String ojectName;

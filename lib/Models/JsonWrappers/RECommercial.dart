@@ -1,4 +1,4 @@
-library BMSrv.Models.JsonWrappers.REPrivate;
+library BMSrv.Models.JsonWrappers.RECommercial;
 import 'dart:async';
 import 'package:redstone_mapper/mapper.dart';
 import 'package:redstone_mapper/plugin.dart';
@@ -6,11 +6,11 @@ import 'package:redstone_mapper/plugin.dart';
 import 'package:BMSrv/Models/RealEstate/RECommercial.dart';
 
 @Decode()
-class REPCommercialWrapper {
+class RECommercialWrapper {
 
-  static Future<REPCommercialWrapper> Create(RECommercial object) async 
+  static Future<RECommercialWrapper> Create(RECommercial object) async 
   {
-    REPCommercialWrapper ret = new REPCommercialWrapper();
+    RECommercialWrapper ret = new RECommercialWrapper();
     ret.id = object.id;
     ret.ojectName = object.objectName;
     return ret;
@@ -18,6 +18,9 @@ class REPCommercialWrapper {
 
   @Field()
   int id;
+  
+  @Field()
+  final String type = "commercial";
 
   @Field()
   String ojectName;

@@ -10,6 +10,9 @@ import 'package:BMSrv/Events/Event.dart';
 import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
+import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
+import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
+import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -102,14 +105,45 @@ class RealEstateService {
   }
   
   @app.DefaultRoute()
-  getAllObjects() async {
-    RealEstate meta = new RealEstate();
-    List<String> ret = new List();
-    await meta.OwnerClass.GetAllIndivids().then((Map<String, dynamic> result){
-      for(String name in result.keys) {
-        ret.add(name);
-      }
-    });
+  @Encode()
+  Future<List<dynamic>> getAllObjects() async {
+    List<dynamic> ret = new List();
+    ret.addAll(await getAllPrivate());
+    ret.addAll(await getAllCommercial());
+    ret.addAll(await getAllLand());
+    return ret;
+  }
+  
+  @app.Route("/private", methods: const[app.GET])
+  @Encode()
+  Future<List<REPrivateWrapper>> getAllPrivate() async {
+    ORM.Find find = new ORM.Find(REPrivate);
+    List<REPrivateWrapper> ret = new List();
+    for(REPrivate obj in await find.execute()) {
+      ret.add(await REPrivateWrapper.Create(obj));
+    }
+    return ret;
+  }
+  
+  @app.Route("/commercial", methods: const[app.GET])
+  @Encode()
+  Future<List<RECommercialWrapper>> getAllCommercial() async {
+    ORM.Find find = new ORM.Find(RECommercial);
+    List<RECommercialWrapper> ret = new List();
+    for(RECommercial obj in await find.execute()) {
+      ret.add(await RECommercialWrapper.Create(obj));
+    }
+    return ret;
+  }
+  
+  @app.Route("/land", methods: const[app.GET])
+  @Encode()
+  Future<List<RELandWrapper>> getAllLand() async {
+    ORM.Find find = new ORM.Find(RELand);
+    List<RELandWrapper> ret = new List();
+    for(RELand obj in await find.execute()) {
+      ret.add(await RELandWrapper.Create(obj));
+    }
     return ret;
   }
   

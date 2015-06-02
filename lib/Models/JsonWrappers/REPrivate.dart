@@ -18,6 +18,9 @@ class REPrivateWrapper {
 
   @Field()
   int id;
+  
+  @Field()
+  final String type = "private";
 
   @Field()
   String ojectName;
