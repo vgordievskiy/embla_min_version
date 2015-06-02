@@ -46,10 +46,30 @@ class RECommercial extends OntoEntity {
   @ORM.DBFieldPrimaryKey()
   @ORM.DBFieldType('SERIAL')
   int id;
+  
+  @ORM.DBField()
+  @ORM.DBFieldType('UNIQUE')
+  String ontoId;
 
   @ORM.DBField()
   @ORM.DBFieldType('UNIQUE')
   String objectName;
+  
+  @override
+  Future<bool> save() async {
+    if (this.id == null) {
+      try {
+        bool res = await super.save();
+        if (res == true) {
+          this.ontoId = $.EntityName;
+          return super.save();
+        }
+        return res;
+      } catch(error) { throw error; }
+    } else {
+      return super.save();
+    }
+  }
 
   String toString(){
     return 'RECommercial { id: $id, ObjectName: $objectName}';

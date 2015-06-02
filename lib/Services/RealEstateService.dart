@@ -29,7 +29,7 @@ class RealEstateService {
     _Generator = new Uuid();
   }
   
-  @app.Route("/private/", methods: const[app.POST])
+  @app.Route("/private", methods: const[app.POST])
   create_private(@app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']))
     {
@@ -53,7 +53,7 @@ class RealEstateService {
     }
   }
   
-  @app.Route("/commercial/", methods: const[app.POST])
+  @app.Route("/commercial", methods: const[app.POST])
   create_commercial(@app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']))
     {
@@ -77,7 +77,7 @@ class RealEstateService {
     }
   }
   
-  @app.Route("/land/", methods: const[app.POST])
+  @app.Route("/land", methods: const[app.POST])
   create_land(@app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']))
     {
