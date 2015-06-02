@@ -75,7 +75,7 @@ class UserService {
     return UserWrapper.Create(await User.GetUser(id));
   }
   
-  @app.Route("/:id/set_deal_private/:realestateid", methods: const[app.PUT])
+  @app.Route("/:id/set_deal/private/:realestateid", methods: const[app.PUT])
   @Encode()
   addDealForREPrivate(String id, String realestateid) async {
     User user = await User.GetUser(id);
@@ -93,7 +93,7 @@ class UserService {
     }
   }
   
-  @app.Route("/:id/set_deal_commercial/:realestateid", methods: const[app.PUT])
+  @app.Route("/:id/set_deal/commercial/:realestateid", methods: const[app.PUT])
   @Encode()
   addDealForRECommercial(String id, String realestateid) async {
     User user = await User.GetUser(id);
@@ -111,7 +111,7 @@ class UserService {
     }
   }
   
-  @app.Route("/:id/set_deal_land/:realestateid", methods: const[app.PUT])
+  @app.Route("/:id/set_deal/land/:realestateid", methods: const[app.PUT])
   @Encode()
   addDealForRELand(String id, String realestateid) async {
     User user = await User.GetUser(id);

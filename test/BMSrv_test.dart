@@ -131,7 +131,7 @@ Future<dynamic> createRealEstateObject(String type) {
 /*type should be are private, commercial and land*/
 Future<dynamic> assignRealEstateObject(String type) {
   assert(userUrl!=null);
-  var req = new MockRequest("$userUrl/set_deal_$type/1",
+  var req = new MockRequest("$userUrl/set_deal/$type/2",
                              method: app.PUT,
                              headers: {'authorization' : authorization},
                              session: new MockHttpSession(sessionId));
@@ -150,11 +150,11 @@ Future defineTests() async {
   test("login user", loginUser);
   test("Get user", getUserInfo);
   
-  skip_test("create realEstate private object", () {
+  test("create realEstate private object", () {
     return createRealEstateObject("private");
   });
   
-  skip_test("realestate_assign_private", () async {
+  test("realestate_assign_private", () async {
     return assignRealEstateObject("private");
   });
   
