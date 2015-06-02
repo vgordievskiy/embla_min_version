@@ -154,6 +154,7 @@ Future defineTests() async {
   });
   
   test("get user deals", () async {
+    assert(userUrl!=null);
     var req = new MockRequest("$userUrl/deals",
                               method: app.GET,
                               headers: {'authorization' : authorization},
