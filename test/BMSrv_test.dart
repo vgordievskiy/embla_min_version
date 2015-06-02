@@ -54,18 +54,20 @@ initServices() {
   app.setUp([#BMSrv.ObjectDealService]);
 }
 
+String authorization = null;
+String userUrl = null;
+String sessionId = "1";
+
+String userName = "t1";
+String userpass = "1";
+
+
+
 Future defineTests() async {
   await Init();
   await InitORM();
   initServices();
   
-  String authorization = null;
-  String userUrl = null;
-  String sessionId = "1";
-  
-  String userName = "t1";
-  String userpass = "1";
-
   skip_test("create user", () {
     Map<String, String> data = new Map();
     data['username'] = userName;
@@ -110,10 +112,10 @@ Future defineTests() async {
     });
   });
   
-  skip_test("create realEstate private object", () {
+ skip_test("create realEstate private object", () {
     Map<String, String> data = new Map();
     data['objectName'] = "flat#1";
-    var req = new MockRequest("/realestate/private",
+    var req = new MockRequest("/realestate/land",
                               method: app.POST,
                               bodyType: app.FORM,
                               body: data,
@@ -126,7 +128,7 @@ Future defineTests() async {
   });
   
   skip_test("realestate_assign_private", () async {
-    var req = new MockRequest("$userUrl/set_deal_private/1",
+    var req = new MockRequest("$userUrl/set_deal_land/1",
                               method: app.PUT,
                               headers: {'authorization' : authorization},
                               session: new MockHttpSession(sessionId));
