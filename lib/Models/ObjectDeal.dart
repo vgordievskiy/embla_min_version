@@ -36,6 +36,7 @@ class ObjectDeal extends OntoEntity {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
+    isPending = true;
     initData(userId, object.id, Private);
   }
   
@@ -43,6 +44,7 @@ class ObjectDeal extends OntoEntity {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
+    isPending = true;
     initData(userId, object.id, Commercial);
   }
   
@@ -50,6 +52,7 @@ class ObjectDeal extends OntoEntity {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
+    isPending = true;
     initData(userId, object.id, Land);
   }
   
@@ -105,6 +108,9 @@ class ObjectDeal extends OntoEntity {
   
   @ORM.DBField()
   int type;
+  
+  @ORM.DBField()
+  bool isPending;
   
   Future<User> GetUser() {
     ORM.FindOne find = new ORM.FindOne(User)..whereEquals('id', userId);
