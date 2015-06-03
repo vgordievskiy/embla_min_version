@@ -15,6 +15,8 @@ class ObjectDealWrapper {
     ret.id = deal.id;
     ret.type = deal.TypeName;
     ret.objectId = deal.objectId;
+    ret.isPending = deal.isPending;
+    ret.part = deal.part;
     return ret;
   }
 
@@ -26,4 +28,10 @@ class ObjectDealWrapper {
   
   @Field()
   int objectId;
+  
+  @Field()
+  bool isPending;
+  
+  @Field()
+  double part;
 }
