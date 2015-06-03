@@ -32,27 +32,30 @@ class ObjectDeal extends OntoEntity {
     });
   }
   
-  ObjectDeal.DummyPrivate(User user, REPrivate object) {
+  ObjectDeal.DummyPrivate(User user, REPrivate object, double _part) {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
     isPending = true;
+    part = _part;
     initData(userId, object.id, Private);
   }
   
-  ObjectDeal.DummyCommercial(User user, RECommercial object) {
+  ObjectDeal.DummyCommercial(User user, RECommercial object, double _part) {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
     isPending = true;
+    part = _part;
     initData(userId, object.id, Commercial);
   }
   
-  ObjectDeal.DummyLand(User user, RELand object) {
+  ObjectDeal.DummyLand(User user, RELand object, double _part) {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
     isPending = true;
+    part = _part;
     initData(userId, object.id, Land);
   }
   
@@ -111,6 +114,9 @@ class ObjectDeal extends OntoEntity {
   
   @ORM.DBField()
   bool isPending;
+  
+  @ORM.DBField()
+  double part;
   
   Future<User> GetUser() {
     ORM.FindOne find = new ORM.FindOne(User)..whereEquals('id', userId);

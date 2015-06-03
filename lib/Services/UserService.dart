@@ -77,11 +77,16 @@ class UserService {
   
   @app.Route("/:id/set_deal/private/:realestateid", methods: const[app.PUT])
   @Encode()
-  addDealForREPrivate(String id, String realestateid) async {
+  addDealForREPrivate(String id, String realestateid, @app.Body(app.FORM) Map data) async {
+    if (_isEmpty(data['part']))
+    {
+      throw new app.ErrorResponse(403, {"error": "data empty"});
+    }
     User user = await User.GetUser(id);
     REPrivate object = await REPrivate.Get(realestateid);
     
-    ObjectDeal deal = new ObjectDeal.DummyPrivate(user, object);
+    double part = double.parse(data["part"]);
+    ObjectDeal deal = new ObjectDeal.DummyPrivate(user, object, part);
     
     try {
       await deal.save();
@@ -95,11 +100,16 @@ class UserService {
   
   @app.Route("/:id/set_deal/commercial/:realestateid", methods: const[app.PUT])
   @Encode()
-  addDealForRECommercial(String id, String realestateid) async {
+  addDealForRECommercial(String id, String realestateid, @app.Body(app.FORM) Map data) async {
+    if (_isEmpty(data['part']))
+    {
+      throw new app.ErrorResponse(403, {"error": "data empty"});
+    }
     User user = await User.GetUser(id);
     RECommercial object = await RECommercial.Get(realestateid);
     
-    ObjectDeal deal = new ObjectDeal.DummyCommercial(user, object);
+    double part = double.parse(data["part"]);
+    ObjectDeal deal = new ObjectDeal.DummyCommercial(user, object, part);
     
     try {
       await deal.save();
@@ -113,11 +123,16 @@ class UserService {
   
   @app.Route("/:id/set_deal/land/:realestateid", methods: const[app.PUT])
   @Encode()
-  addDealForRELand(String id, String realestateid) async {
+  addDealForRELand(String id, String realestateid, @app.Body(app.FORM) Map data) async {
+    if (_isEmpty(data['part']))
+    {
+      throw new app.ErrorResponse(403, {"error": "data empty"});
+    }
     User user = await User.GetUser(id);
     RELand object = await RELand.Get(realestateid);
     
-    ObjectDeal deal = new ObjectDeal.DummyLand(user, object);
+    double part = double.parse(data["part"]);
+    ObjectDeal deal = new ObjectDeal.DummyLand(user, object, part);
     
     try {
       await deal.save();

@@ -131,8 +131,12 @@ Future<dynamic> createRealEstateObject(String type) {
 /*type should be are private, commercial and land*/
 Future<dynamic> assignRealEstateObject(String type, String id) {
   assert(userUrl!=null);
+  Map<String, String> data = new Map();
+  data['part'] = "10.0";
   var req = new MockRequest("$userUrl/set_deal/$type/$id",
                              method: app.PUT,
+                             bodyType: app.FORM,
+                             body: data,
                              headers: {'authorization' : authorization},
                              session: new MockHttpSession(sessionId));
    return app.dispatch(req).then((resp){
