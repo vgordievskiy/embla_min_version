@@ -23,6 +23,23 @@ Future<User> _getUser(String name) async {
 
 bool _isEmpty(String value) => value == "";
 
+class GetterDeals<T> {
+  Future<List<ObjectDealWrapper>> Get(T obj) async {
+    ORM.FindOne find = new ORM.FindOne(T)..whereEquals('id', id);
+    T obj = await find.execute();
+    if (obj == null) {
+      return  new app.ErrorResponse(404, {"error": "not found object"});
+    }
+    
+    List<ObjectDealWrapper> ret = new List();
+    
+    for(ObjectDeal deal in await obj.GetPengindParts()) {
+      ret.add(await ObjectDealWrapper.Create(deal));
+    }
+    return ret;
+  }
+}
+
 @app.Group("/realestate")
 class RealEstateService {
   DBAdapter _Db;
@@ -32,6 +49,7 @@ class RealEstateService {
   {
     _Generator = new Uuid();
   }
+  
   
   @app.Route("/commercial", methods: const[app.POST])
   create_commercial(@app.Body(app.FORM) Map data) async {
