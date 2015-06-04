@@ -33,4 +33,9 @@ abstract class RealEstateBase {
     return _getParts(false);
   }
   
+  Future<List<ObjectDeal>> GetAllParts() async {
+    ORM.Find find = new ORM.Find(ObjectDeal)
+                        ..where(new ORM.Equals('objectId', this.id));
+    return find.execute();
+  }
 }
