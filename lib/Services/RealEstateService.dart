@@ -13,6 +13,7 @@ import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
 import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
+import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -156,6 +157,23 @@ class RealEstateService {
       return  new app.ErrorResponse(404, {"error": "not found object"});
     }
     return REPrivateWrapper.Create(ret);
+  }
+  
+  @app.Route("/private/:id/state", methods: const[app.GET])
+  @Encode()
+  Future<List<ObjectDealWrapper>> getPrivateStateById(String id) async {
+    ORM.FindOne find = new ORM.FindOne(REPrivate)..whereEquals('id', id);
+    REPrivate obj = await find.execute();
+    if (obj == null) {
+      return  new app.ErrorResponse(404, {"error": "not found object"});
+    }
+    
+    List<ObjectDealWrapper> ret = new List();
+    
+    for(ObjectDeal deal in await obj.GetPengindParts()) {
+      ret.add(await ObjectDealWrapper.Create(deal));
+    }
+    return ret;
   }
   
   @app.Route("/commercial/:id", methods: const[app.GET])

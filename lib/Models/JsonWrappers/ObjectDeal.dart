@@ -6,6 +6,8 @@ import 'package:redstone_mapper/plugin.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 
+export 'package:BMSrv/Models/ObjectDeal.dart';
+
 @Decode()
 class ObjectDealWrapper {
 
