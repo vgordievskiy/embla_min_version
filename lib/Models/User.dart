@@ -33,7 +33,7 @@ class User extends OntoEntity {
     _log = new Logger("BMSrv.User_$id");
   }
   
-  static Future<User> GetUser(String id) {
+  static Future<User> GetUser(String id) async {
     ORM.FindOne findOneItem = new ORM.FindOne(User)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
@@ -60,7 +60,7 @@ class User extends OntoEntity {
   @ORM.DBField()
   String password;
   
-  Future<List<ObjectDeal>> GetDeals() {
+  Future<List<ObjectDeal>> GetDeals() async {
     ORM.Find find = new ORM.Find(ObjectDeal)..whereEquals('userId', id);
     return find.execute(); 
   }
