@@ -70,7 +70,7 @@ class RECommercial extends OntoEntity with RealEstateBase {
     ORM.FindOne findOneItem = new ORM.FindOne(RECommercial)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
-      return findOneItem.execute();
+      return (findOneItem.execute() as Future<RECommercial>);
     }
     throw "not found ${id}";
   }

@@ -70,7 +70,7 @@ class RELand extends OntoEntity with RealEstateBase {
     ORM.FindOne findOneItem = new ORM.FindOne(RELand)
                                   ..whereEquals('id', id);
     if (findOneItem != null) {
-      return findOneItem.execute();
+      return (findOneItem.execute() as Future<RELand>);
     }
     throw "not found ${id}";
   }
