@@ -1,5 +1,6 @@
 library BMSrv.RealEstateService;
 import 'dart:async';
+import "dart:mirrors";
 
 import 'package:BMSrv/Events/Event.dart';
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
@@ -24,20 +25,7 @@ Future<User> _getUser(String name) async {
 bool _isEmpty(String value) => value == "";
 
 class GetterDeals<T> {
-  Future<List<ObjectDealWrapper>> Get(T obj) async {
-    ORM.FindOne find = new ORM.FindOne(T)..whereEquals('id', id);
-    T obj = await find.execute();
-    if (obj == null) {
-      return  new app.ErrorResponse(404, {"error": "not found object"});
-    }
-    
-    List<ObjectDealWrapper> ret = new List();
-    
-    for(ObjectDeal deal in await obj.GetPengindParts()) {
-      ret.add(await ObjectDealWrapper.Create(deal));
-    }
-    return ret;
-  }
+  
 }
 
 @app.Group("/realestate")
@@ -48,6 +36,21 @@ class RealEstateService {
   RealEstateService(DBAdapter this._Db)
   {
     _Generator = new Uuid();
+  }
+  
+  Future<List<ObjectDealWrapper>> _getDeals(Type type, String id) async {
+    ORM.FindOne find = new ORM.FindOne(type)..whereEquals('id', id);
+    var obj = await find.execute();
+    if (obj == null) {
+      return  new app.ErrorResponse(404, {"error": "not found object"});
+    }
+    
+    List<ObjectDealWrapper> ret = new List();
+    
+    for(ObjectDeal deal in await obj.GetPengindParts()) {
+      ret.add(await ObjectDealWrapper.Create(deal));
+    }
+    return ret;
   }
   
   
@@ -202,17 +205,18 @@ class RealEstateService {
   @app.Route("/private/:id/state", methods: const[app.GET])
   @Encode()
   Future<List<ObjectDealWrapper>> getPrivateStateById(String id) async {
-    ORM.FindOne find = new ORM.FindOne(REPrivate)..whereEquals('id', id);
-    REPrivate obj = await find.execute();
-    if (obj == null) {
-      return  new app.ErrorResponse(404, {"error": "not found object"});
-    }
-    
-    List<ObjectDealWrapper> ret = new List();
-    
-    for(ObjectDeal deal in await obj.GetPengindParts()) {
-      ret.add(await ObjectDealWrapper.Create(deal));
-    }
-    return ret;
+    return _getDeals(REPrivate, id);
+  }
+  
+  @app.Route("/commercial/:id/state", methods: const[app.GET])
+  @Encode()
+  Future<List<ObjectDealWrapper>> getCommercialStateById(String id) async {
+    return _getDeals(RECommercial, id);
+  }
+  
+  @app.Route("/land/:id/state", methods: const[app.GET])
+  @Encode()
+  Future<List<ObjectDealWrapper>> getLandStateById(String id) async {
+    return _getDeals(RELand, id);
   }
 }
