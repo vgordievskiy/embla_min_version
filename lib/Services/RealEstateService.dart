@@ -47,7 +47,7 @@ class RealEstateService {
     
     List<ObjectDealWrapper> ret = new List();
     
-    for(ObjectDeal deal in await obj.GetPengindParts()) {
+    for(ObjectDeal deal in await obj.GetAllParts()) {
       ret.add(await ObjectDealWrapper.Create(deal));
     }
     return ret;
