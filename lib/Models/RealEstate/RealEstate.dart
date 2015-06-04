@@ -12,24 +12,6 @@ import 'package:BMSrv/Storage/SemplexStorage.dart';
 import 'package:BMSrv/Storage/BMOntology.dart';
 import 'package:logging/logging.dart';
 
-class RealEstate extends OntoEntity {
-  Logger _log;
-  RealEstate() {
-    InitOnto("RealEstate");
-    initLog();
-    if (ind == null) return;
-    loadOntoInfo().then((ind){
-      OntoIndivid.Get(ind);
-    });
-  }
-  
-  RealEstate.Dummy() {
-    InitOnto("RealEstate");
-  }
-  
-  initLog() async {
-    _log = new Logger("BMSrv.RealEstate_$id");
-  }
-  
-  String objectName;
+abstract class RealEstateBase {
+  static OntoClass OwnerClass = GetOntology().GetClass("RealEstate");
 }

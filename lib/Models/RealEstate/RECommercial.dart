@@ -10,7 +10,7 @@ import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:logging/logging.dart';
 
 @ORM.DBTable('real_estate_objects_commercial')
-class RECommercial extends OntoEntity {
+class RECommercial extends OntoEntity with RealEstateBase {
   Logger _log;
   RECommercial() {
     InitOnto("RealEstateCommercial");

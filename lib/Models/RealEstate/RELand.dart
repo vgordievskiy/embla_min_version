@@ -10,7 +10,7 @@ import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:logging/logging.dart';
 
 @ORM.DBTable('real_estate_objects_land')
-class RELand extends OntoEntity {
+class RELand extends OntoEntity with RealEstateBase {
   Logger _log;
   RELand() {
     InitOnto("RealEstateLand");

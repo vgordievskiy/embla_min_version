@@ -10,7 +10,7 @@ import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:logging/logging.dart';
 
 @ORM.DBTable('real_estate_objects_private')
-class REPrivate extends OntoEntity {
+class REPrivate extends OntoEntity with RealEstateBase {
   Logger _log;
   REPrivate() {
     InitOnto("RealEstatePrivate");
