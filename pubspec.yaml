@@ -6,8 +6,7 @@ environment:
 dependencies:
   OntoORM:
     path: ../OntoORM
-  dart_orm:
-    git: https://github.com/ustims/DartORM.git
+  dart_orm: ^0.0.14
   dart_orm_adapter_postgresql: ^0.0.6
   di: '>=3.3.4 <4.0.0'
   event_bus: '>=0.4.0 <0.5.0'
