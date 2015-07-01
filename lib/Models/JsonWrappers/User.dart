@@ -11,14 +11,10 @@ class UserWrapper {
   static Future<UserWrapper> Create(User user) async 
   {
       UserWrapper ret = new UserWrapper();
-      ret.userName = user.userName;
       ret.name = user.name;
       ret.email = user.email;
       return ret;
   }
-
-  @Field()
-  String userName;
 
   @Field()
   String name;

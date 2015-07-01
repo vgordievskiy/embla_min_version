@@ -34,18 +34,14 @@ class UserService {
 
   @app.DefaultRoute(methods: const[app.POST])
   create(@app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['username']) ||
-        _isEmpty(data['password']) ||
+    if (_isEmpty(data['password']) ||
         _isEmpty(data['name']) ||
         _isEmpty(data['email']))
     {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
-    
-    int id = await UserPass.CreateUserPass(data['email'], data["password"]);
 
     User newUser = new User.Dummy();
-    newUser.id = id;
     newUser.name = data['name'];
     newUser.email = data['email'];
 
@@ -54,6 +50,8 @@ class UserService {
     var saveResult = await newUser.save().catchError((var error){
       exception = error;
     });
+    
+    await UserPass.CreateUserPass(data['email'], data["password"], newUser.id);
     
     if (exception != null) {
       return exception;

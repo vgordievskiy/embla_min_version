@@ -62,13 +62,12 @@ String authorization = null;
 String userUrl = null;
 String sessionId = "1";
 
-String userName = "t1";
+String userName = "test@mail.com";
 String userpass = "1";
 
 Future<dynamic> createUser() {
   {
     Map<String, String> data = new Map();
-    data['username'] = userName;
     data['password'] = userpass;
     data['name'] = "test";
     data['email'] = "test@mail.com";
@@ -148,7 +147,7 @@ Future defineTests() async {
   await Init();
   initServices();
   
-  test("create user", createUser);
+  skip_test("create user", createUser);
   test("login user", loginUser);
   test("Get user", getUserInfo);
   
