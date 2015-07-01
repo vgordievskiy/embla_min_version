@@ -16,8 +16,8 @@ import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";
 
-Future<User> _getUser(String name) async {
-  ORM.Find find = new ORM.Find(User)..where(new ORM.Equals('userName', name));
+Future<User> _getUser(String email) async {
+  ORM.Find find = new ORM.Find(User)..where(new ORM.Equals('email', email));
   List foundUsers = await find.execute();
   return foundUsers[0];
 }
@@ -41,11 +41,12 @@ class UserService {
     {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
+    
+    int id = await UserPass.CreateUserPass(data['email'], data["password"]);
 
     User newUser = new User.Dummy();
-    newUser.userName = data['username'];
+    newUser.id = id;
     newUser.name = data['name'];
-    newUser.password = encryptPassword(data["password"]);
     newUser.email = data['email'];
 
     var exception = null;
@@ -62,7 +63,7 @@ class UserService {
       await newUser.$.AddData("hasEmail", newUser.email);
       await newUser.$.AddData("hasUserId", newUser.id);
       
-      User dbUser = await _getUser(newUser.userName);
+      User dbUser = await _getUser(newUser.email);
       return { "status" : "created" };
     }
   }

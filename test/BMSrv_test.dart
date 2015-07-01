@@ -5,9 +5,8 @@ library BMSrv_test;
 
 import 'dart:async';
 
+import 'package:SrvCommon/SrvCommon.dart' as Common;
 import 'package:BMSrv/BMSrv.dart';
-import 'package:BMSrv/Events/EventBus.dart';
-import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:di/di.dart';
 import 'package:redstone_mapper/plugin.dart';
 import 'package:unittest/unittest.dart';
@@ -50,10 +49,10 @@ main() async {
 initServices() {
   _log.info("load handlers in 'services' library");
   app.addPlugin(getMapperPlugin());
-  app.addModule(new Module()..bind(DBAdapter));
-  app.addModule(new Module()..bind(EventSys));
-  app.setUp([#BMSrv.Interceptors]);
-  app.setUp([#BMSrv.LoginService]);
+  app.addModule(new Module()..bind(Common.DBAdapter));
+  app.addModule(new Module()..bind(Common.EventSys));
+  app.setUp([#SrvCommon.Interceptors]);
+  app.setUp([#SrvCommon.LoginService]);
   app.setUp([#BMSrv.UserService]);
   app.setUp([#BMSrv.RealEstateService]);
   app.setUp([#BMSrv.ObjectDealService]);
@@ -147,10 +146,9 @@ Future<dynamic> assignRealEstateObject(String type, String id) {
 
 Future defineTests() async {
   await Init();
-  await InitORM();
   initServices();
   
-  skip_test("create user", createUser);
+  test("create user", createUser);
   test("login user", loginUser);
   test("Get user", getUserInfo);
   

@@ -48,16 +48,10 @@ class User extends OntoEntity {
 
   @ORM.DBField()
   @ORM.DBFieldType('UNIQUE')
-  String userName;
-
-  @ORM.DBField()
-  String name;
-
-  @ORM.DBField()
   String email;
 
   @ORM.DBField()
-  String password;
+  String name;
   
   Future<List<ObjectDeal>> GetDeals() async {
     ORM.Find find = new ORM.Find(ObjectDeal)..whereEquals('userId', id);
@@ -65,6 +59,6 @@ class User extends OntoEntity {
   }
 
   String toString(){
-    return 'User { id: $id, userName: $userName, name: $name, email: $email, passowrd: $password }';
+    return 'User { id: $id, , name: $name, email: $email }';
   }
 }
