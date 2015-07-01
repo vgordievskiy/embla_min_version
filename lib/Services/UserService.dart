@@ -6,9 +6,7 @@ import 'package:redstone_mapper/plugin.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
 
-import 'package:BMSrv/Events/Event.dart';
-import 'package:BMSrv/Utils/DbAdapter.dart';
-import 'package:BMSrv/Utils/Encrypter.dart' as Enc;
+import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
@@ -47,7 +45,7 @@ class UserService {
     User newUser = new User.Dummy();
     newUser.userName = data['username'];
     newUser.name = data['name'];
-    newUser.password = Enc.encryptPassword(data["password"]);
+    newUser.password = encryptPassword(data["password"]);
     newUser.email = data['email'];
 
     var exception = null;

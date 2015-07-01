@@ -3,8 +3,7 @@ library BMSrv.Models.RealEstate.Commercial;
 import 'dart:async';
 
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
-import 'package:BMSrv/Storage/BMOntology.dart';
-import 'package:BMSrv/Storage/SemplexStorage.dart';
+import 'package:SrvCommon/SrvCommon.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';

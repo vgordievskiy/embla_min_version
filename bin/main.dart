@@ -2,9 +2,14 @@ import 'package:redstone/server.dart' as app;
 import 'package:di/di.dart';
 import 'package:redstone_mapper/plugin.dart';
 
+import 'package:SrvCommon/SrvCommon.dart' as Common;
+@app.Install()
+import 'package:SrvCommon/Services/Cors_Auth.dart';
+@app.Install()
+import 'package:SrvCommon/Services/LoginService.dart';
+
+/*Services*/
 import 'package:BMSrv/BMSrv.dart';
-import 'package:BMSrv/Events/EventBus.dart';
-import 'package:BMSrv/Utils/DbAdapter.dart';
 import 'package:BMSrv/Services/RealEstateService.dart';
 
 import 'package:logging/logging.dart';
@@ -31,8 +36,8 @@ void setupConsoleLog([Level level = Level.INFO]) {
 main() {
   Init().then((var res){
     app.addPlugin(getMapperPlugin());
-    app.addModule(new Module()..bind(DBAdapter));
-    app.addModule(new Module()..bind(EventSys));
+    app.addModule(new Module()..bind(Common.DBAdapter));
+    app.addModule(new Module()..bind(Common.EventSys));
     app.addModule(new Module()..bind(RealEstateService));
     setupConsoleLog();
 
