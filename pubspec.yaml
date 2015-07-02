@@ -5,9 +5,9 @@ environment:
   sdk: '>=1.9.1 <2.0.0'
 dependencies:
   OntoORM:
-    path: ../OntoORM
+    path: externals/OntoORM
   SrvCommon:
-    path: ../SrvCommon
+    path: externals/SrvCommon
   dart_orm: "^0.0.14"
   dart_orm_adapter_postgresql: '>=0.0.6 <0.1.0'
   di: '>=3.3.4 <4.0.0'
