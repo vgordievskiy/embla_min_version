@@ -20,17 +20,26 @@ abstract class RealEstateBase {
   
   int id;
   
-  Future<int> SaveGeometryFromGeoJson(String geoJson) async {
-    ORM.Table table = ORM.AnnotationsParser.getTableForInstance(this);
-    psql_connector.Connection conn = (ORM.Model.ormAdapter as ORM.SQLAdapter).connection;
+  ORM.Table get Table => ORM.AnnotationsParser.getTableForInstance(this);
+  
+  psql_connector.Connection get Connection {
     
+    return (ORM.Model.ormAdapter as ORM.SQLAdapter).connection;
+  }
+  
+  Future<int> SaveGeometryFromGeoJson(String geoJson) async {    
     Map<String, dynamic> obj = JSON.decode(geoJson);
     obj['geometry']['crs'] = { 'type' : 'name', 'properties' : { 'name' : 'EPSG:4326' } };
     
     geoJson = JSON.encode(obj['geometry']);
     
-    int res = await conn.execute("UPDATE ${table.tableName} SET obj_geom = ST_GeomFromGeoJSON('$geoJson') WHERE 'id'='${this.id}'");
+    int res = await Connection.execute("UPDATE ${Table.tableName} SET obj_geom = ST_GeomFromGeoJSON('$geoJson') WHERE id=${this.id}");
     return res;
+  }
+  
+  Future<String> GetGeometryAsGeoJson() async {
+    List<String> res = await Connection.query("SELECT ST_AsGeoJSON(obj_geom) FROM ${Table.tableName} WHERE id=${this.id}").toList();
+    return res[0];
   }
   
   Future<List<ObjectDeal>> _getParts(bool isPending) async {

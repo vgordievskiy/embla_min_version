@@ -74,6 +74,8 @@ class RealEstateService {
     
     int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
     
+    int pp = await object.GetGeometryAsGeoJson();
+    
     if (exception != null) {
       return exception;
     } else {
