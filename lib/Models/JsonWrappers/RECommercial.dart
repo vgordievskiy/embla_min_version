@@ -13,6 +13,7 @@ class RECommercialWrapper {
     RECommercialWrapper ret = new RECommercialWrapper();
     ret.id = object.id;
     ret.objectName = object.objectName;
+    ret.Geo = await object.GetGeometry();
     return ret;
   }
 
@@ -24,4 +25,7 @@ class RECommercialWrapper {
 
   @Field()
   String objectName;
+  
+  @Field()
+  Map<String, dynamic> Geo;
 }

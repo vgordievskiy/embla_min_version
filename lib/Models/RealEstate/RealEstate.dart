@@ -39,7 +39,7 @@ abstract class RealEstateBase {
   
   Future<String> GetGeometryAsGeoJson() async {
     List<String> res = await Connection.query("SELECT ST_AsGeoJSON(obj_geom) FROM ${Table.tableName} WHERE id=${this.id}").toList();
-    return res[0];
+    return res[0][0];
   }
   
   Future<Map<String, dynamic>> GetGeometry() async {
