@@ -15,7 +15,7 @@ import 'package:postgresql/postgresql.dart' as PG;
 import 'package:dart_orm/dart_orm.dart' as ORM;
 
 var uri = 'postgres://BMSrvApp:BMSrvAppbno9mjc@localhost:5432/investments';
-
+//CREATE INDEX [indexname] ON [tablename] USING GIST ( [geometryfield] );
 _postGisInit() async {
   PG.Connection conn = await PG.connect(uri);
   List<String> tables = ['real__estate__objects__commercial', 'real__estate__objects__private'];
@@ -23,6 +23,11 @@ _postGisInit() async {
   for(String table in tables) {
     try {
       await conn.execute("SELECT AddGeometryColumn( '$table', 'obj_geom', -1, 'GEOMETRY', 2)");
+    } catch(err) {
+      print(err);
+    }
+    try {
+      await conn.execute("CREATE INDEX ${table}_geom_indx ON $table USING GIST ( obj_geom )");
     } catch(err) {
       print(err);
     }
