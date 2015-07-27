@@ -56,7 +56,8 @@ class RealEstateService {
   
   @app.Route("/commercial", methods: const[app.POST])
   create_commercial(@app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['objectName']))
+    if (_isEmpty(data['objectName']) &&
+        _isEmpty(data['objectGeom']))
     {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }

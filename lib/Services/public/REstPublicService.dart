@@ -66,4 +66,10 @@ class RealEstatePublicService {
   test(String id) {
     return _impl.getPrivateStateById(id);
   }
+  
+  /*for Test only - remove it*/
+  @app.Route("/commercial", methods: const[app.POST])
+  create_commercial(@app.Body(app.FORM) Map data) {
+    return _impl.create_commercial(data);  
+  }
 }
