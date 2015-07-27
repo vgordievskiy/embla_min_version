@@ -67,10 +67,12 @@ class RealEstateService {
     object.objectName = data['objectName'];
 
     var exception = null;
-
+       
     var saveResult = await object.save().catchError((var error){
       exception = error;
     });
+    
+    int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
     
     if (exception != null) {
       return exception;
