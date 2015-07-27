@@ -42,6 +42,11 @@ abstract class RealEstateBase {
     return res[0];
   }
   
+  Future<Map<String, dynamic>> GetGeometry() async {
+    String res = await GetGeometryAsGeoJson();
+    return JSON.decode(res);
+  }
+  
   Future<List<ObjectDeal>> _getParts(bool isPending) async {
     ORM.Find find = new ORM.Find(ObjectDeal)
                             ..where(new ORM.Equals('objectId', this.id)
