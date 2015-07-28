@@ -1,6 +1,6 @@
 [submodule "externals/SrvCommon"]
 	path = externals/SrvCommon
-	url = ssh://gardi@93.185.181.43:443/opt/git/SrvCommon.git
+	url = ssh://gardi@lf.semplex.ru:443/opt/git/SrvCommon.git
 [submodule "externals/OntoORM"]
 	path = externals/OntoORM
-	url = ssh://gardi@93.185.181.43:443/opt/git/OntoORM.git
+	url = ssh://gardi@lf.semplex.ru:443/opt/git/OntoORM.git
