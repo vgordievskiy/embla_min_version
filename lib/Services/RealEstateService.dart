@@ -171,6 +171,22 @@ class RealEstateService {
     return ret;
   }
   
+  @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+  @Encode()
+  Future<List<RELandWrapper>> getAllLandsInBounds(String SWLng, String SWLat,
+                                                        String NELng, String NELat)
+  async {
+    Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
+    Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
+    var find = await new FindObjectsInBounds(RELand, sw, ne);
+    
+    List<RELandWrapper> ret = new List();
+    for(RELand obj in await find.execute()) {
+      ret.add(await RELandWrapper.Create(obj));
+    }
+    return ret;
+  }
+  
   @app.DefaultRoute()
   @Encode()
   Future<List<dynamic>> getAllObjects() async {
@@ -185,6 +201,22 @@ class RealEstateService {
   @Encode()
   Future<List<REPrivateWrapper>> getAllPrivate() async {
     ORM.Find find = new ORM.Find(REPrivate);
+    List<REPrivateWrapper> ret = new List();
+    for(REPrivate obj in await find.execute()) {
+      ret.add(await REPrivateWrapper.Create(obj));
+    }
+    return ret;
+  }
+  
+  @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+  @Encode()
+  Future<List<REPrivateWrapper>> getAllPrivatesInBounds(String SWLng, String SWLat,
+                                                     String NELng, String NELat)
+  async {
+    Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
+    Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
+    var find = await new FindObjectsInBounds(REPrivate, sw, ne);
+    
     List<REPrivateWrapper> ret = new List();
     for(REPrivate obj in await find.execute()) {
       ret.add(await REPrivateWrapper.Create(obj));
