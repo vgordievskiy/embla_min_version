@@ -197,6 +197,17 @@ class RealEstateService {
     return ret;
   }
   
+  @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+  @Encode()
+  Future<List<dynamic>> getAllPrivatesInBounds(String SWLng, String SWLat,
+                                                     String NELng, String NELat)
+  async {
+    List<dynamic> ret = new List();
+    ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
+    ret.addAll(await getAllCommercialInBounds(SWLng, SWLat, NELng, NELat));
+    ret.addAll(await getAllLandsInBounds(SWLng, SWLat, NELng, NELat));
+  }
+  
   @app.Route("/private", methods: const[app.GET])
   @Encode()
   Future<List<REPrivateWrapper>> getAllPrivate() async {
