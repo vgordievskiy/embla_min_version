@@ -151,9 +151,8 @@ class RealEstateService {
   async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var tmp = await new RealEstateGetter(new RECommercial()).getObjectsInBounds(sw, ne);
+    var find = await new FindObjectsInBounds(RECommercial, sw, ne);
     
-    ORM.Find find = new ORM.Find(RECommercial);
     List<RECommercialWrapper> ret = new List();
     for(RECommercial obj in await find.execute()) {
       ret.add(await RECommercialWrapper.Create(obj));
