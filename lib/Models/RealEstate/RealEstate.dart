@@ -28,7 +28,7 @@ abstract class RealEstateBase {
   }
   
   /*Lat are Geo.Point.y, Lng are Geo.Point.x*/
-  Future<List<int>> getObjectsInBounds(Geo.Point SW, Geo.Point NE) async {
+  static Future<List<int>> getObjectsInBounds(Geo.Point SW, Geo.Point NE) async {
     /*xmin, ymin, xmax, ymax*/
     final String box = "ST_MakeEnvelope(${SW.x}, ${SW.y}, ${NE.x}, ${NE.y}, 4326)";
     List<int> res = await Connection.query("SELECT id FROM ${Table.tableName} WHERE obj_geom && $box").toList();
