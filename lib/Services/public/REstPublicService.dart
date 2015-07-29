@@ -73,6 +73,14 @@ class RealEstatePublicService {
     return _impl.create_commercial(data);  
   }
   
+  @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+  @Encode()
+  Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
+                                       String NELng, String NELat)
+  {
+    return _impl.getAllInBounds(SWLng, SWLat, NELng, NELat);
+  }
+  
   @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
   @Encode()
   Future<List<RECommercialWrapper>> getAllCommercialInBounds(String SWLng, String SWLat,
