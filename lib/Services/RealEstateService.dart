@@ -200,7 +200,7 @@ class RealEstateService {
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
   @Encode()
   Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
-                                                     String NELng, String NELat)
+                                       String NELng, String NELat)
   async {
     List<dynamic> ret = new List();
     ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
