@@ -199,7 +199,7 @@ class RealEstateService {
   
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
   @Encode()
-  Future<List<dynamic>> getAllPrivatesInBounds(String SWLng, String SWLat,
+  Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
                                                      String NELng, String NELat)
   async {
     List<dynamic> ret = new List();
@@ -222,7 +222,7 @@ class RealEstateService {
   @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
   @Encode()
   Future<List<REPrivateWrapper>> getAllPrivatesInBounds(String SWLng, String SWLat,
-                                                     String NELng, String NELat)
+                                                        String NELng, String NELat)
   async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
