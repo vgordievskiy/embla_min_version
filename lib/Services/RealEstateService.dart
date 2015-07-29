@@ -206,6 +206,7 @@ class RealEstateService {
     ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
     ret.addAll(await getAllCommercialInBounds(SWLng, SWLat, NELng, NELat));
     ret.addAll(await getAllLandsInBounds(SWLng, SWLat, NELng, NELat));
+    return ret;
   }
   
   @app.Route("/private", methods: const[app.GET])
