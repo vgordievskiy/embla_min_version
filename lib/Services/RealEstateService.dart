@@ -16,6 +16,8 @@ import 'package:redstone/server.dart' as app;
 import 'package:redstone_mapper/plugin.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:simple_features/simple_features.dart' as Geo;
+
 Future<User> _getUser(String name) async {
   ORM.Find find = new ORM.Find(User)..where(new ORM.Equals('userName', name));
   List foundUsers = await find.execute();
@@ -134,6 +136,23 @@ class RealEstateService {
   @app.Route("/commercial", methods: const[app.GET])
   @Encode()
   Future<List<RECommercialWrapper>> getAllCommercial() async {
+    ORM.Find find = new ORM.Find(RECommercial);
+    List<RECommercialWrapper> ret = new List();
+    for(RECommercial obj in await find.execute()) {
+      ret.add(await RECommercialWrapper.Create(obj));
+    }
+    return ret;
+  }
+  
+  @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+  @Encode()
+  Future<List<RECommercialWrapper>> getAllCommercialInBounds(String SWLng, String SWLat,
+                                                             String NELng, String NELat)
+  async {
+    Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
+    Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
+    var tmp = await new RealEstateGetter(new RECommercial()).getObjectsInBounds(sw, ne);
+    
     ORM.Find find = new ORM.Find(RECommercial);
     List<RECommercialWrapper> ret = new List();
     for(RECommercial obj in await find.execute()) {

@@ -72,4 +72,12 @@ class RealEstatePublicService {
   create_commercial(@app.Body(app.FORM) Map data) {
     return _impl.create_commercial(data);  
   }
+  
+  @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+  @Encode()
+  Future<List<RECommercialWrapper>> getAllCommercialInBounds(String SWLng, String SWLat,
+                                                               String NELng, String NELat)
+  async {
+    return _impl.getAllCommercialInBounds(SWLng, SWLat, NELng, NELat);  
+  }
 }

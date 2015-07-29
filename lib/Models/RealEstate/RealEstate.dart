@@ -15,24 +15,30 @@ import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:logging/logging.dart';
 import 'package:simple_features/simple_features.dart' as Geo;
 
+class RealEstateGetter<T> {
+  T helper;
+  RealEstateGetter(this.helper); 
+ 
+  
+  /*Lat are Geo.Point.y, Lng are Geo.Point.x*/
+  Future<List<T>> getObjectsInBounds(Geo.Point SW, Geo.Point NE) async {
+    /*xmin, ymin, xmax, ymax*/
+    final String box = "ST_MakeEnvelope(${SW.x}, ${SW.y}, ${NE.x}, ${NE.y}, 4326)";
+    List<T> res = await helper.Connection.query("SELECT * FROM ${helper.Table.tableName} WHERE obj_geom && $box").toList();
+    return res;
+  }
+}
+
 abstract class RealEstateBase {
   static OntoClass OwnerClass = GetOntology().GetClass("RealEstate");
   
   int id;
   
-  static ORM.Table get Table => ORM.AnnotationsParser.getTableForType(RealEstateBase);
+  ORM.Table get Table => ORM.AnnotationsParser.getTableForInstance(this);
   
-  static psql_connector.Connection get Connection {
+  psql_connector.Connection get Connection {
     
     return (ORM.Model.ormAdapter as ORM.SQLAdapter).connection;
-  }
-  
-  /*Lat are Geo.Point.y, Lng are Geo.Point.x*/
-  static Future<List<int>> getObjectsInBounds(Geo.Point SW, Geo.Point NE) async {
-    /*xmin, ymin, xmax, ymax*/
-    final String box = "ST_MakeEnvelope(${SW.x}, ${SW.y}, ${NE.x}, ${NE.y}, 4326)";
-    List<int> res = await Connection.query("SELECT id FROM ${Table.tableName} WHERE obj_geom && $box").toList();
-    return res;
   }
   
   Future<int> SaveGeometryFromGeoJson(String geoJson) async {    
