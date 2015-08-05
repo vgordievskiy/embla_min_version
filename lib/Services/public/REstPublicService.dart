@@ -67,25 +67,42 @@ class RealEstatePublicService {
     return _impl.getPrivateStateById(id);
   }
   
+  @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+ @Encode()
+ Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
+                                      String NELng, String NELat)
+ {
+   return _impl.getAllInBounds(SWLng, SWLat, NELng, NELat);
+ }
+ 
+ @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+ @Encode()
+ Future<List<RECommercialWrapper>> getAllCommercialInBounds(String SWLng, String SWLat,
+                                                              String NELng, String NELat)
+ async {
+   return _impl.getAllCommercialInBounds(SWLng, SWLat, NELng, NELat);  
+ }
+ 
+ @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+ @Encode()
+ Future<List<RECommercialWrapper>> getAllPrivatesInBounds(String SWLng, String SWLat,
+                                                              String NELng, String NELat)
+ async {
+   return _impl.getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat);  
+ }
+ 
+ @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
+ @Encode()
+ Future<List<RECommercialWrapper>> getAllLandsInBounds(String SWLng, String SWLat,
+                                                              String NELng, String NELat)
+ async {
+   return _impl.getAllLandsInBounds(SWLng, SWLat, NELng, NELat);  
+ }
+  
   /*for Test only - remove it*/
   @app.Route("/commercial", methods: const[app.POST])
   create_commercial(@app.Body(app.FORM) Map data) {
     return _impl.create_commercial(data);  
   }
-  
-  @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
-  @Encode()
-  Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
-                                       String NELng, String NELat)
-  {
-    return _impl.getAllInBounds(SWLng, SWLat, NELng, NELat);
-  }
-  
-  @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
-  @Encode()
-  Future<List<RECommercialWrapper>> getAllCommercialInBounds(String SWLng, String SWLat,
-                                                               String NELng, String NELat)
-  async {
-    return _impl.getAllCommercialInBounds(SWLng, SWLat, NELng, NELat);  
-  }
+ 
 }
