@@ -5,6 +5,7 @@ import 'package:redstone_mapper/plugin.dart';
 
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
+import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
 
 export 'package:BMSrv/Models/ObjectDeal.dart';
 
@@ -16,7 +17,7 @@ class ObjectDealWrapper {
     ObjectDealWrapper ret = new ObjectDealWrapper();
     ret.id = deal.id;
     ret.type = deal.TypeName;
-    ret.objectId = deal.objectId;
+    ret.object = await REstateWrapper.Create(await deal.GetObject());
     ret.isPending = deal.isPending;
     ret.part = deal.part;
     return ret;
@@ -29,7 +30,7 @@ class ObjectDealWrapper {
   String type;
   
   @Field()
-  int objectId;
+  REstateWrapper object;
   
   @Field()
   bool isPending;
