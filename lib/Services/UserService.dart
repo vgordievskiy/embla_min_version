@@ -31,6 +31,22 @@ class UserService {
   {
     _Generator = new Uuid();
   }
+  
+  Future<double> _getBusyObjectParts(RealEstateBase object) async {
+    List<ObjectDeal> parts = await object.GetAllParts();
+    double busyParts = 0.0;
+    for(ObjectDeal deal in parts) {
+      busyParts += deal.part;
+    }
+    
+    return busyParts;
+  }
+  
+  Future _chackObjectParts(RealEstateBase object, double reqPart) async {
+    double busyPart = await _getBusyObjectParts(object);
+    final double avaliablePart = 100.0 - busyPart; 
+    if(avaliablePart < reqPart) throw new app.ErrorResponse(400, {'error': "part are not available"});
+  }
 
   @app.DefaultRoute(methods: const[app.POST])
   create(@app.Body(app.FORM) Map data) async {
@@ -83,6 +99,9 @@ class UserService {
     REPrivate object = await REPrivate.Get(realestateid);
     
     double part = double.parse(data["part"]);
+    
+    await _chackObjectParts(object, part);
+    
     ObjectDeal deal = new ObjectDeal.DummyPrivate(user, object, part);
     
     try {
@@ -106,6 +125,9 @@ class UserService {
     RECommercial object = await RECommercial.Get(realestateid);
     
     double part = double.parse(data["part"]);
+    
+    await _chackObjectParts(object, part);
+    
     ObjectDeal deal = new ObjectDeal.DummyCommercial(user, object, part);
     
     try {
@@ -129,6 +151,9 @@ class UserService {
     RELand object = await RELand.Get(realestateid);
     
     double part = double.parse(data["part"]);
+    
+    await _chackObjectParts(object, part);
+    
     ObjectDeal deal = new ObjectDeal.DummyLand(user, object, part);
     
     try {
