@@ -9,6 +9,8 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
 import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
+import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
+import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 import 'package:BMSrv/Services/RealEstateService.dart';
 
@@ -99,10 +101,21 @@ class RealEstatePublicService {
    return _impl.getAllLandsInBounds(SWLng, SWLat, NELng, NELat);  
  }
   
-  /*for Test only - remove it*/
-  @app.Route("/commercial", methods: const[app.POST])
-  create_commercial(@app.Body(app.FORM) Map data) {
-    return _impl.create_commercial(data);  
-  }
+ @app.Route("/private/:id/state", methods: const[app.GET])
+ @Encode()
+ Future<List<ObjectDealWrapper>> getPrivateStateById(String id) async {
+   return _impl.getPrivateStateById(id);
+ }
  
+ @app.Route("/commercial/:id/state", methods: const[app.GET])
+ @Encode()
+ Future<List<ObjectDealWrapper>> getCommercialStateById(String id) async {
+   return _impl.getCommercialStateById(id);
+ }
+ 
+ @app.Route("/land/:id/state", methods: const[app.GET])
+ @Encode()
+ Future<List<ObjectDealWrapper>> getLandStateById(String id) async {
+   return _impl.getLandStateById(id);
+ } 
 }
