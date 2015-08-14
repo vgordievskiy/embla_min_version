@@ -1,8 +1,10 @@
 library BMSrv.Models.RealEstate.Commercial;
+export 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 
 import 'dart:async';
 
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
+import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
@@ -10,6 +12,15 @@ import 'package:observe/observe.dart';
 
 @ORM.DBTable('real_estate_objects_commercial')
 class RECommercial extends OntoEntity with RealEstateBase {
+  static Future<RECommercial> Get(String id) {
+    ORM.FindOne findOneItem = new ORM.FindOne(RECommercial)
+                                  ..whereEquals('id', id);
+    if (findOneItem != null) {
+      return (findOneItem.execute() as Future<RECommercial>);
+    }
+    throw "not found ${id}";
+  }
+  
   Logger _log;
   @ORM.DBField()
   @ORM.DBFieldPrimaryKey()
@@ -61,16 +72,10 @@ class RECommercial extends OntoEntity with RealEstateBase {
     }
   }
   
+  Future<List<RERoom>> getRooms() => RERoomUtils.getForOwner(this);
+  
   String toString(){
     return 'RECommercial { id: $id, ObjectName: $objectName}';
   }
-
-  static Future<RECommercial> Get(String id) {
-    ORM.FindOne findOneItem = new ORM.FindOne(RECommercial)
-                                  ..whereEquals('id', id);
-    if (findOneItem != null) {
-      return (findOneItem.execute() as Future<RECommercial>);
-    }
-    throw "not found ${id}";
-  }
+  
 }
