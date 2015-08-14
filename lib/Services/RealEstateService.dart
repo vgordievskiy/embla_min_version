@@ -7,6 +7,7 @@ import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
 import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
+import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:SrvCommon/SrvCommon.dart';
@@ -158,11 +159,10 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms", methods: const [app.GET])
   @Encode()
-  Future<String> getAllRoomForObject(String type, String id) async {
+  Future<List<REstateWrapper>> getAllRoomForObject(String type, String id) async {
     ReType reType = ReUtils.str2Type(type);
-     if(reType != ReType.COMMERCIAL || reType != ReType.PRIVATE) throw new app.ErrorResponse(400, {"error": "wrong object type"});
-     RealEstateBase obj = await _getObject(reType, id);
-     return obj.getRooms();
+    RealEstateBase obj = await _getObject(reType, id);
+    return new HelperObjectConverter<REstateWrapper>().getFrom(await obj.getRooms());
    }
 
   @app.Route("/commercial", methods: const [app.POST])
