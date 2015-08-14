@@ -127,6 +127,22 @@ Future<dynamic> createRealEstateObject(String type) {
 }
 
 /*type should be are private, commercial and land*/
+Future<dynamic> createRealEstateRoom(String type, String id) {
+  Map<String, String> data = new Map();
+  data['objectName'] = "obj_{$type}_{$id}_room#1";
+  var req = new MockRequest("/realestate/$type/$id/add_room",
+                            method: app.POST,
+                            bodyType: app.FORM,
+                            body: data,
+                            headers: {'authorization' : authorization},
+                            session: new MockHttpSession(sessionId));
+  return app.dispatch(req).then((resp) {
+    expect(resp.statusCode, equals(200));
+    _log.info("${resp.mockContent}");
+  });
+}
+
+/*type should be are private, commercial and land*/
 Future<dynamic> assignRealEstateObject(String type, String id) {
   assert(userUrl!=null);
   Map<String, String> data = new Map();
@@ -158,6 +174,8 @@ Future defineTests() async {
   skip_test("realestate_assign_private", () async {
     return assignRealEstateObject("commercial", "1");
   });
+  
+  skip_test("test create room", () => createRealEstateRoom("commercial", "1"));
   
   test("get user deals", () async {
     assert(userUrl!=null);

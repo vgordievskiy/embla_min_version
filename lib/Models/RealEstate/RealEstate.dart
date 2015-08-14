@@ -56,6 +56,16 @@ class ReUtils {
         return "room";
     }
   }
+  
+  static ReType str2Type(String type) {
+    switch(type) {
+      case "private"    : return ReType.PRIVATE;
+      case "commercial" : return ReType.COMMERCIAL;
+      case "land"       : return ReType.LAND;
+      case "room"       : return ReType.ROOM;
+    }
+    throw "unknown type value";
+  }
 }
 
 class FindObjectsInBounds extends ORM.FindBase {

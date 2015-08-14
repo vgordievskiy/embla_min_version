@@ -58,18 +58,14 @@ class RERoom  extends OntoEntity with RealEstateBase {
      });
    }
    
-   RERoom.DummyCommercial(RECommercial ownerObject, double square) {
+   RERoom.DummyCommercial(RECommercial ownerObject) {
      InitOnto("RealEstateRoom");
      initData(ownerObject.id, ReType.COMMERCIAL);
-     
-     this.square = square;
    }
    
-   RERoom.DummyPrivate(REPrivate ownerObject, double square) {
+   RERoom.DummyPrivate(REPrivate ownerObject) {
      InitOnto("RealEstateRoom");
      initData(ownerObject.id, ReType.PRIVATE);
-     
-     this.square = square;
    }
    
    initData(int ownerId, ReType ownerType) {
