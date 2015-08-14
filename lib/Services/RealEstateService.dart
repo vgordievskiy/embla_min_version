@@ -37,6 +37,15 @@ class HelperObjectConverter<JsonWrapper> {
     }
     return ret;
   }
+  
+  Future<List<JsonWrapper>> getFrom(List<dynamic> objects) async {
+    List<JsonWrapper> ret = new List();
+    for (var obj in objects) {
+      var wrapper = await _Class.invoke(#Create, [obj]).reflectee;
+      ret.add(wrapper);
+    }
+    return ret;
+  }
 }
 
 @app.Group("/realestate")
@@ -151,50 +160,6 @@ class RealEstateService {
   @Encode()
   Future<List<REPrivateWrapper>> getAllPrivate() => new HelperObjectConverter<REPrivateWrapper>().get(REPrivateWrapper.OriginType);
   
-  @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
-      methods: const [app.GET])
-  @Encode()
-  Future<List<RECommercialWrapper>> getAllCommercialInBounds(
-      String SWLng, String SWLat, String NELng, String NELat) async {
-    Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
-    Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(RECommercial, sw, ne);
-
-    List<RECommercialWrapper> ret = new List();
-    for (RECommercial obj in await find.execute()) {
-      ret.add(await RECommercialWrapper.Create(obj));
-    }
-    return ret;
-  }
-  
-  @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
-  @Encode()
-  Future<List<dynamic>> getAllInBounds(
-      String SWLng, String SWLat, String NELng, String NELat) async {
-    List<dynamic> ret = new List();
-    ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
-    ret.addAll(await getAllCommercialInBounds(SWLng, SWLat, NELng, NELat));
-    ret.addAll(await getAllLandsInBounds(SWLng, SWLat, NELng, NELat));
-    return ret;
-  }
-
-
-  @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat",
-      methods: const [app.GET])
-  @Encode()
-  Future<List<RELandWrapper>> getAllLandsInBounds(
-      String SWLng, String SWLat, String NELng, String NELat) async {
-    Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
-    Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(RELand, sw, ne);
-
-    List<RELandWrapper> ret = new List();
-    for (RELand obj in await find.execute()) {
-      ret.add(await RELandWrapper.Create(obj));
-    }
-    return ret;
-  }
-
   @app.DefaultRoute()
   @Encode()
   Future<List<dynamic>> getAllObjects() async {
@@ -204,7 +169,30 @@ class RealEstateService {
     ret.addAll(await getAllLand());
     return ret;
   }
+  
+  @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
+             methods: const [app.GET])
+  @Encode()
+  Future<List<RECommercialWrapper>> getAllCommercialInBounds(
+      String SWLng, String SWLat, String NELng, String NELat) async {
+    Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
+    Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
+    var find = await new FindObjectsInBounds(RECommercial, sw, ne);
 
+    return new HelperObjectConverter<RECommercialWrapper>().getFrom(await find.execute());
+  }
+  
+  @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat",
+      methods: const [app.GET])
+  @Encode()
+  Future<List<RELandWrapper>> getAllLandsInBounds(
+      String SWLng, String SWLat, String NELng, String NELat) async {
+    Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
+    Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
+    var find = await new FindObjectsInBounds(RELand, sw, ne);
+
+    return new HelperObjectConverter<RELandWrapper>().getFrom(await find.execute());
+  }
 
   @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
@@ -215,10 +203,16 @@ class RealEstateService {
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
     var find = await new FindObjectsInBounds(REPrivate, sw, ne);
 
-    List<REPrivateWrapper> ret = new List();
-    for (REPrivate obj in await find.execute()) {
-      ret.add(await REPrivateWrapper.Create(obj));
-    }
+    return new HelperObjectConverter<REPrivateWrapper>().getFrom(await find.execute());
+  }
+  
+  @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
+  @Encode()
+  Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat, String NELng, String NELat) async {
+    List<dynamic> ret = new List();
+    ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
+    ret.addAll(await getAllCommercialInBounds(SWLng, SWLat, NELng, NELat));
+    ret.addAll(await getAllLandsInBounds(SWLng, SWLat, NELng, NELat));
     return ret;
   }
 
