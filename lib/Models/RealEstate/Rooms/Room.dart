@@ -10,6 +10,13 @@ import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 
+class RERoomUtils {
+  Future<RERoom> getForOwner(RealEstateBase obj) async {
+    ORM.Find find = new ORM.Find(RERoom)..whereEquals('ownerObjectId', obj.id);
+    return find.execute();
+  }
+}
+
 @ORM.DBTable('real_estate_objects_rooms')
 class RERoom  extends OntoEntity with RealEstateBase {
    
