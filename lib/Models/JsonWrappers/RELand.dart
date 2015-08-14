@@ -7,7 +7,8 @@ import 'package:BMSrv/Models/RealEstate/RELand.dart';
 
 @Decode()
 class RELandWrapper {
-
+  static final Type OriginType = RELand;
+  
   static Future<RELandWrapper> Create(RELand object) async 
   {
     RELandWrapper ret = new RELandWrapper();

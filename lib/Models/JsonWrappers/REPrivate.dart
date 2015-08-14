@@ -7,7 +7,8 @@ import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 
 @Decode()
 class REPrivateWrapper {
-
+  static final Type OriginType = REPrivate;
+  
   static Future<REPrivateWrapper> Create(REPrivate object) async 
   {
     REPrivateWrapper ret = new REPrivateWrapper();

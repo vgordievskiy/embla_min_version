@@ -8,6 +8,8 @@ import 'package:BMSrv/Models/RealEstate/RECommercial.dart';
 @Decode()
 class RECommercialWrapper {
 
+  static final Type OriginType = RECommercial; 
+  
   static Future<RECommercialWrapper> Create(RECommercial object) async 
   {
     RECommercialWrapper ret = new RECommercialWrapper();

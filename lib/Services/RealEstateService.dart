@@ -25,7 +25,19 @@ Future<User> _getUser(String name) async {
 
 bool _isEmpty(String value) => value == "";
 
-class GetterDeals<T> {}
+class HelperObjectConverter<JsonWrapper> {
+  ClassMirror _Class = reflectClass(JsonWrapper);
+  
+  Future<List<JsonWrapper>> get(Type type) async {
+    ORM.Find find = new ORM.Find(type);
+    List<JsonWrapper> ret = new List();
+    for (var obj in await find.execute()) {
+      var wrapper = await _Class.invoke(#Create, [obj]).reflectee;
+      ret.add(wrapper);
+    }
+    return ret;
+  }
+}
 
 @app.Group("/realestate")
 class RealEstateService {
@@ -129,15 +141,16 @@ class RealEstateService {
   
   @app.Route("/commercial", methods: const [app.GET])
   @Encode()
-  Future<List<RECommercialWrapper>> getAllCommercial() async {
-    ORM.Find find = new ORM.Find(RECommercial);
-    List<RECommercialWrapper> ret = new List();
-    for (RECommercial obj in await find.execute()) {
-      ret.add(await RECommercialWrapper.Create(obj));
-    }
-    return ret;
-  }
+  Future<List<RECommercialWrapper>> getAllCommercial() => new HelperObjectConverter<RECommercialWrapper>().get(RECommercialWrapper.OriginType);
 
+  @app.Route("/land", methods: const [app.GET])
+  @Encode()
+  Future<List<RELandWrapper>> getAllLand() => new HelperObjectConverter<RELandWrapper>().get(RELandWrapper.OriginType);
+  
+  @app.Route("/private", methods: const [app.GET])
+  @Encode()
+  Future<List<REPrivateWrapper>> getAllPrivate() => new HelperObjectConverter<REPrivateWrapper>().get(REPrivateWrapper.OriginType);
+  
   @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
   @Encode()
@@ -165,16 +178,6 @@ class RealEstateService {
     return ret;
   }
 
-  @app.Route("/land", methods: const [app.GET])
-  @Encode()
-  Future<List<RELandWrapper>> getAllLand() async {
-    ORM.Find find = new ORM.Find(RELand);
-    List<RELandWrapper> ret = new List();
-    for (RELand obj in await find.execute()) {
-      ret.add(await RELandWrapper.Create(obj));
-    }
-    return ret;
-  }
 
   @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
@@ -202,16 +205,6 @@ class RealEstateService {
     return ret;
   }
 
-  @app.Route("/private", methods: const [app.GET])
-  @Encode()
-  Future<List<REPrivateWrapper>> getAllPrivate() async {
-    ORM.Find find = new ORM.Find(REPrivate);
-    List<REPrivateWrapper> ret = new List();
-    for (REPrivate obj in await find.execute()) {
-      ret.add(await REPrivateWrapper.Create(obj));
-    }
-    return ret;
-  }
 
   @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
