@@ -129,7 +129,7 @@ Future<dynamic> createRealEstateObject(String type) {
 /*type should be are private, commercial and land*/
 Future<dynamic> createRealEstateRoom(String type, String id) {
   Map<String, String> data = new Map();
-  data['objectName'] = "obj_{$type}_{$id}_room#1";
+  data['objectName'] = "obj_${type}_${id}_room#1";
   var req = new MockRequest("/realestate/$type/$id/rooms",
                             method: app.POST,
                             bodyType: app.FORM,
