@@ -6,11 +6,13 @@ import 'package:redstone_mapper/plugin.dart';
 import 'package:BMSrv/Models/RealEstate/RECommercial.dart';
 import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 import 'package:BMSrv/Models/RealEstate/RELand.dart';
+import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 
 Map<Type, String> _converter = {
   RECommercial : "commercial",
   REPrivate : "private",
-  RELand : "land"
+  RELand : "land",
+  RERoom: "room"
 };
 
 @Decode()
