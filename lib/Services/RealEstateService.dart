@@ -77,6 +77,30 @@ class RealEstateService {
     _Generator = new Uuid();
   }
   
+  Future<List<ObjectDealWrapper>> _getDeals(Type type, String id) async {
+    ORM.FindOne find = new ORM.FindOne(type)..whereEquals('id', id);
+    var obj = await find.execute();
+    if (obj == null) {
+      return new app.ErrorResponse(404, {"error": "not found object"});
+    }
+
+    List<ObjectDealWrapper> ret = new List();
+
+    for (ObjectDeal deal in await obj.GetAllParts()) {
+      ret.add(await ObjectDealWrapper.Create(deal));
+    }
+    return ret;
+  }
+  
+  Future<dynamic> _getObject(ReType type, String id) {
+    switch (type) {
+      case ReType.PRIVATE : return REPrivate.Get(id);
+      case ReType.COMMERCIAL : return RECommercial.Get(id);
+      case ReType.LAND : return RELand.Get(id);
+      case ReType.ROOM : return RERoom.Get(id);
+    }
+  }
+  
   _create_object_by_type(String type, @app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']) /*&& _isEmpty(data['objectGeom'])*/) {
       throw new app.ErrorResponse(403, {"error": "data empty"});
@@ -137,6 +161,7 @@ class RealEstateService {
   Future<String> getAllRoomForObject(String type, String id) async {
     ReType reType = ReUtils.str2Type(type);
      if(reType != ReType.COMMERCIAL || reType != ReType.PRIVATE) throw new app.ErrorResponse(400, {"error": "wrong object type"});
+     
    }
 
   @app.Route("/commercial", methods: const [app.POST])
@@ -265,29 +290,5 @@ class RealEstateService {
   @Encode()
   Future<List<ObjectDealWrapper>> getPrivateStateById(String id) async {
     return _getDeals(REPrivate, id);
-  }
-
-  Future<List<ObjectDealWrapper>> _getDeals(Type type, String id) async {
-    ORM.FindOne find = new ORM.FindOne(type)..whereEquals('id', id);
-    var obj = await find.execute();
-    if (obj == null) {
-      return new app.ErrorResponse(404, {"error": "not found object"});
-    }
-
-    List<ObjectDealWrapper> ret = new List();
-
-    for (ObjectDeal deal in await obj.GetAllParts()) {
-      ret.add(await ObjectDealWrapper.Create(deal));
-    }
-    return ret;
-  }
-
-  Future<dynamic> _getObject(ReType type, String id) {
-    switch (type) {
-      case ReType.PRIVATE : return REPrivate.Get(id);
-      case ReType.COMMERCIAL : return RECommercial.Get(id);
-      case ReType.LAND : return RELand.Get(id);
-      case ReType.ROOM : return RERoom.Get(id);
-    }
   }
 }
