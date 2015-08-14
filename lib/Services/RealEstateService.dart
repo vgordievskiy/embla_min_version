@@ -74,9 +74,9 @@ class RealEstateService {
       exception = error;
     });
     
-    int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
-    
-    int pp = await object.GetGeometryAsGeoJson();
+    if(data.containsKey('objectGeom')) {
+      int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
+    }
     
     if (exception != null) {
       return exception;
@@ -102,6 +102,10 @@ class RealEstateService {
       exception = error;
     });
     
+    if(data.containsKey('objectGeom')) {
+      int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
+    }
+    
     if (exception != null) {
       return exception;
     } else {
@@ -125,6 +129,10 @@ class RealEstateService {
     var saveResult = await object.save().catchError((var error){
       exception = error;
     });
+    
+    if(data.containsKey('objectGeom')) {
+      int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
+    }
     
     if (exception != null) {
       return exception;
