@@ -152,11 +152,11 @@ Future defineTests() async {
   test("Get user", getUserInfo);
   
   skip_test("create realEstate private object", () {
-    return createRealEstateObject("private");
+    return createRealEstateObject("commercial");
   });
   
   skip_test("realestate_assign_private", () async {
-    return assignRealEstateObject("private", "1");
+    return assignRealEstateObject("commercial", "1");
   });
   
   test("get user deals", () async {
