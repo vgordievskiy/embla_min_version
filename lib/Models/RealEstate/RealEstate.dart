@@ -7,6 +7,7 @@ import 'dart:convert';
 export 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 export 'package:BMSrv/Models/RealEstate/RECommercial.dart';
 export 'package:BMSrv/Models/RealEstate/RELand.dart';
+export 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 
 import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
@@ -15,6 +16,47 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:logging/logging.dart';
 import 'package:simple_features/simple_features.dart' as Geo;
+
+enum ReType {
+  PRIVATE,
+  COMMERCIAL,
+  LAND,
+  ROOM
+}
+
+class ReUtils {
+  static int type2Int(ReType type) {
+    switch(type) {
+      case ReType.PRIVATE : return 0;
+      case ReType.COMMERCIAL : return 1;
+      case ReType.LAND : return 2;
+      case ReType.ROOM : return 3;
+    }
+  }
+  
+  static ReType int2Type(int type) {
+    switch(type) {
+      case 0 : return ReType.PRIVATE;
+      case 1 : return ReType.COMMERCIAL;
+      case 2 : return ReType.LAND;
+      case 3 : return ReType.ROOM;
+    }
+    throw "unknown type value";
+  }
+  
+  static String type2Str(ReType type) {
+    switch(type) {
+      case ReType.PRIVATE :
+        return "private";
+      case ReType.COMMERCIAL :
+        return "commercial";
+      case ReType.LAND :
+        return "land";
+      case ReType.ROOM :
+        return "room";
+    }
+  }
+}
 
 class FindObjectsInBounds extends ORM.FindBase {
   Type ModelType;

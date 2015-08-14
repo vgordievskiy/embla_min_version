@@ -2,7 +2,6 @@ library BMSrv.Models.ObjectDeal;
 
 import 'dart:async';
 
-import 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:SrvCommon/SrvCommon.dart';
@@ -10,12 +9,9 @@ import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';
 
+
 @ORM.DBTable('user_object_deal')
 class ObjectDeal extends OntoEntity {
-  
-  static const int Private = 0;
-  static const int Commercial = 1;
-  static const int Land = 2;
   
   Logger _log;
   @ORM.DBField()
@@ -61,7 +57,7 @@ class ObjectDeal extends OntoEntity {
     objectId = object.id;
     isPending = true;
     part = _part;
-    initData(userId, object.id, Commercial);
+    initData(userId, object.id, ReUtils.type2Int(ReType.COMMERCIAL));
   }
   
   ObjectDeal.DummyLand(User user, RELand object, double _part) {
@@ -70,7 +66,7 @@ class ObjectDeal extends OntoEntity {
     objectId = object.id;
     isPending = true;
     part = _part;
-    initData(userId, object.id, Land);
+    initData(userId, object.id, ReUtils.type2Int(ReType.LAND));
   }
 
   ObjectDeal.DummyPrivate(User user, REPrivate object, double _part) {
@@ -79,33 +75,27 @@ class ObjectDeal extends OntoEntity {
     objectId = object.id;
     isPending = true;
     part = _part;
-    initData(userId, object.id, Private);
+    initData(userId, object.id, ReUtils.type2Int(ReType.PRIVATE));
   }
   
   String get TypeName {
-    switch(type) {
-      case Private :
-        return "private";
-      case Commercial :
-        return "commercial";
-      case Land :
-        return "land";
-    }
-    assert(false);
-    return "";
+    return ReUtils.type2Str(ReUtils.int2Type(type));
   }
   
   Future<dynamic> GetObject() {
     ORM.FindOne find;
-    switch(type) {
-      case Private :
+    switch(ReUtils.int2Type(type)) {
+      case ReType.PRIVATE :
         find = new ORM.FindOne(REPrivate)..whereEquals('id', objectId);
         break;
-      case Commercial :
+      case ReType.COMMERCIAL :
         find = new ORM.FindOne(RECommercial)..whereEquals('id', objectId);
         break;
-      case Land :
+      case ReType.LAND :
         find = new ORM.FindOne(RELand)..whereEquals('id', objectId);
+        break;
+      case ReType.ROOM:
+        find = new ORM.FindOne(RERoom)..whereEquals('id', objectId);
         break;
     }
     assert(find!=null);
