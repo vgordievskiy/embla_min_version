@@ -11,11 +11,13 @@ export 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 
 import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
+import 'package:simple_features/simple_features.dart' as Geo;
 import 'package:postgresql/postgresql.dart' as psql_connector;
+import 'package:logging/logging.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
-import 'package:logging/logging.dart';
-import 'package:simple_features/simple_features.dart' as Geo;
+import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
+
 
 enum ReType {
   PRIVATE,
@@ -184,4 +186,6 @@ abstract class RealEstateBase {
                         ..where(new ORM.Equals('objectId', this.id));
     return find.execute();
   }
+  
+  Future<List<RERoom>> getRooms() => RERoomUtils.getForOwner(this);
 }

@@ -72,8 +72,6 @@ class RECommercial extends OntoEntity with RealEstateBase {
     }
   }
   
-  Future<List<RERoom>> getRooms() => RERoomUtils.getForOwner(this);
-  
   String toString(){
     return 'RECommercial { id: $id, ObjectName: $objectName}';
   }

@@ -71,9 +71,7 @@ class REPrivate extends OntoEntity with RealEstateBase {
       return super.save();
     }
   }
-  
-  Future<List<RERoom>> getRooms() => RERoomUtils.getForOwner(this);
-  
+    
   String toString(){
     return 'REPrivate { id: $id, ObjectName: $objectName}';
   }

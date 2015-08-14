@@ -161,7 +161,8 @@ class RealEstateService {
   Future<String> getAllRoomForObject(String type, String id) async {
     ReType reType = ReUtils.str2Type(type);
      if(reType != ReType.COMMERCIAL || reType != ReType.PRIVATE) throw new app.ErrorResponse(400, {"error": "wrong object type"});
-     
+     RealEstateBase obj = await _getObject(reType, id);
+     return obj.getRooms();
    }
 
   @app.Route("/commercial", methods: const [app.POST])
