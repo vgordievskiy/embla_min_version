@@ -130,13 +130,24 @@ Future<dynamic> createRealEstateObject(String type) {
 Future<dynamic> createRealEstateRoom(String type, String id) {
   Map<String, String> data = new Map();
   data['objectName'] = "obj_{$type}_{$id}_room#1";
-  var req = new MockRequest("/realestate/$type/$id/add_room",
+  var req = new MockRequest("/realestate/$type/$id/rooms",
                             method: app.POST,
                             bodyType: app.FORM,
                             body: data,
                             headers: {'authorization' : authorization},
                             session: new MockHttpSession(sessionId));
   return app.dispatch(req).then((resp) {
+    expect(resp.statusCode, equals(200));
+    _log.info("${resp.mockContent}");
+  });
+}
+
+Future<dynamic> getAllRoomsForObject(String type, String id) {
+  var req = new MockRequest("/realestate/$type/$id/rooms",
+                            method: app.GET,
+                            headers: {'authorization' : authorization},
+                            session: new MockHttpSession(sessionId));
+  return app.dispatch(req).then((resp){
     expect(resp.statusCode, equals(200));
     _log.info("${resp.mockContent}");
   });
@@ -167,15 +178,16 @@ Future defineTests() async {
   test("login user", loginUser);
   test("Get user", getUserInfo);
   
-  skip_test("create realEstate object", () {
-    return createRealEstateObject("commercial");
-  });
+  skip_test("create realEstate object", () => createRealEstateObject("private"));
+  skip_test("create realEstate object", () => createRealEstateObject("land"));
+  skip_test("create realEstate object", () => createRealEstateObject("commercial"));
   
   skip_test("realestate_assign_private", () async {
     return assignRealEstateObject("commercial", "1");
   });
   
   skip_test("test create room", () => createRealEstateRoom("commercial", "1"));
+  skip_test("test get all rooms", () => getAllRoomsForObject("commercial", "1"));
   
   test("get user deals", () async {
     assert(userUrl!=null);
