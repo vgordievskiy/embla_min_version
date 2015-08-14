@@ -29,134 +29,104 @@ class GetterDeals<T> {}
 
 @app.Group("/realestate")
 class RealEstateService {
+  
+  static final Map<ReType, Function> _reContructors = 
+  {
+    ReType.COMMERCIAL : () => new RECommercial.Dummy(),
+    ReType.PRIVATE : () => new REPrivate.Dummy(),
+    ReType.LAND : () => new RELand.Dummy()
+  };
+  
+  static final Map<ReType, Type> _reIntTypes = 
+  {
+    ReType.COMMERCIAL : RECommercial,
+    ReType.PRIVATE : REPrivate,
+    ReType.LAND : RELand,
+    ReType.ROOM: RERoom
+  };
+  
+  static RealEstateBase _getDummy(ReType type) => _reContructors[type]();
+  
+  static Type _getIntReType(ReType type) => _reIntTypes[type]; 
+  
   DBAdapter _Db;
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.RealEstateService");
   RealEstateService(DBAdapter this._Db) {
     _Generator = new Uuid();
   }
-
-  @app.Route("/commercial", methods: const [app.POST])
-  create_commercial(@app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['objectName']) && _isEmpty(data['objectGeom'])) {
+  
+  _create_object_by_type(String type, @app.Body(app.FORM) Map data) async {
+    if (_isEmpty(data['objectName']) /*&& _isEmpty(data['objectGeom'])*/) {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
-
-    RECommercial object = new RECommercial.Dummy();
-
-    object.objectName = data['objectName'];
+    final ReType reType = ReUtils.str2Type(type);
+    var newObj = _getDummy(reType);
+    
+    newObj.objectName = data['objectName'];
 
     var exception = null;
 
-    var saveResult = await object.save().catchError((var error) {
+    var saveResult = await newObj.save().catchError((var error) {
       exception = error;
     });
 
     if (data.containsKey('objectGeom')) {
-      int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
+      int res = await newObj.SaveGeometryFromGeoJson(data['objectGeom']);
     }
 
     if (exception != null) {
       return exception;
     } else {
-      return object.id;
+      return newObj.id;
     }
   }
-
-  @app.Route("/land", methods: const [app.POST])
-  create_land(@app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['objectName'])) {
-      throw new app.ErrorResponse(403, {"error": "data empty"});
-    }
-
-    RELand object = new RELand.Dummy();
-
-    object.objectName = data['objectName'];
-
-    var exception = null;
-
-    var saveResult = await object.save().catchError((var error) {
-      exception = error;
-    });
-
-    if (data.containsKey('objectGeom')) {
-      int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
-    }
-
-    if (exception != null) {
-      return exception;
-    } else {
-      return object.id;
-    }
-  }
-
-  @app.Route("/private", methods: const [app.POST])
-  create_private(@app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['objectName'])) {
-      throw new app.ErrorResponse(403, {"error": "data empty"});
-    }
-
-    REPrivate object = new REPrivate.Dummy();
-
-    object.objectName = data['objectName'];
-
-    var exception = null;
-
-    var saveResult = await object.save().catchError((var error) {
-      exception = error;
-    });
-
-    if (data.containsKey('objectGeom')) {
-      int res = await object.SaveGeometryFromGeoJson(data['objectGeom']);
-    }
-
-    if (exception != null) {
-      return exception;
-    } else {
-      return object.id;
-    }
-  }
-
-  @app.Route("/:type/:id/add_room", methods: const [app.POST])
-  @Encode()
+  
+  @app.Route("/:type/:id/rooms", methods: const [app.POST])
   create_room(String type, String id, @app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']) && _isEmpty(data['objectGeom'])
         && _isEmpty(data['square'])) {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
     var reObj = await _getObject(ReUtils.str2Type(type), id);
-    RERoom newRoom;
-    
-    switch(ReUtils.str2Type(type)) {
-      case ReType.COMMERCIAL :
-        newRoom = new RERoom.DummyCommercial(reObj);
-        break;
-      case ReType.PRIVATE :
-        newRoom = new RERoom.DummyPrivate(reObj);
-        break;
-      default:
-        throw new app.ErrorResponse(400, {"error": "wrong estate type"});
-    }
-    
+     
+    RERoom newRoom = new RERoom.Dummy(ReUtils.str2Type(type), reObj);
+  
     newRoom.objectName = data['objectName'];
     newRoom.square = data['square'];
+     
     var exception = null;
-
+  
     var saveResult = await newRoom.save().catchError((var error) {
       exception = error;
     });
-
+  
     if (data.containsKey('objectGeom')) {
       int res = await newRoom.SaveGeometryFromGeoJson(data['objectGeom']);
     }
-
     if (exception != null) {
       return exception;
     } else {
       return newRoom.id;
     }
   }
+  
+  @app.Route("/:type/:id/rooms", methods: const [app.GET])
+  @Encode()
+  Future<String> getAllRoomForObject(String type, String id) async {
+    ReType reType = ReUtils.str2Type(type);
+     if(reType != ReType.COMMERCIAL || reType != ReType.PRIVATE) throw new app.ErrorResponse(400, {"error": "wrong object type"});
+   }
 
+  @app.Route("/commercial", methods: const [app.POST])
+  create_commercial(@app.Body(app.FORM) Map data) => _create_object_by_type("commercial", data);
+
+  @app.Route("/land", methods: const [app.POST])
+  create_land(@app.Body(app.FORM) Map data) => _create_object_by_type("land", data);
+
+  @app.Route("/private", methods: const [app.POST])
+  create_private(@app.Body(app.FORM) Map data) => _create_object_by_type("private", data);
+  
   @app.Route("/commercial", methods: const [app.GET])
   @Encode()
   Future<List<RECommercialWrapper>> getAllCommercial() async {
@@ -183,7 +153,7 @@ class RealEstateService {
     }
     return ret;
   }
-
+  
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
   @Encode()
   Future<List<dynamic>> getAllInBounds(
