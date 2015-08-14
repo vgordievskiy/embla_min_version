@@ -11,7 +11,7 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 
 class RERoomUtils {
-  Future<RERoom> getForOwner(RealEstateBase obj) async {
+  static Future<RERoom> getForOwner(RealEstateBase obj) async {
     ORM.Find find = new ORM.Find(RERoom)..whereEquals('ownerObjectId', obj.id);
     return find.execute();
   }
