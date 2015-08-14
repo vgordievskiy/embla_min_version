@@ -42,6 +42,9 @@ class RERoom  extends OntoEntity with RealEstateBase {
    @ORM.DBFieldType('UNIQUE')
    String objectName;
    
+   @ORM.DBField()
+   double square;
+   
    RERoom() {
      InitOnto("RealEstateRoom");
      initLog();
@@ -55,14 +58,18 @@ class RERoom  extends OntoEntity with RealEstateBase {
      });
    }
    
-   RERoom.DummyCommercial(RECommercial ownerObject) {
+   RERoom.DummyCommercial(RECommercial ownerObject, double square) {
      InitOnto("RealEstateRoom");
      initData(ownerObject.id, ReType.COMMERCIAL);
+     
+     this.square = square;
    }
    
-   RERoom.DummyPrivate(REPrivate ownerObject) {
+   RERoom.DummyPrivate(REPrivate ownerObject, double square) {
      InitOnto("RealEstateRoom");
      initData(ownerObject.id, ReType.PRIVATE);
+     
+     this.square = square;
    }
    
    initData(int ownerId, ReType ownerType) {
