@@ -7,6 +7,7 @@ import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
 import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
+import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/User.dart';
@@ -159,10 +160,10 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms", methods: const [app.GET])
   @Encode()
-  Future<List<REstateWrapper>> getAllRoomForObject(String type, String id) async {
+  Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id) async {
     ReType reType = ReUtils.str2Type(type);
     RealEstateBase obj = await _getObject(reType, id);
-    return new HelperObjectConverter<REstateWrapper>().getFrom(await obj.getRooms());
+    return new HelperObjectConverter<RERoomWrapper>().getFrom(await obj.getRooms());
    }
 
   @app.Route("/commercial", methods: const [app.POST])
