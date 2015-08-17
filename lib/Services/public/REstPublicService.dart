@@ -9,6 +9,7 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
 import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
+import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
@@ -117,5 +118,11 @@ class RealEstatePublicService {
  @Encode()
  Future<List<ObjectDealWrapper>> getLandStateById(String id) async {
    return _impl.getLandStateById(id);
- } 
+ }
+ 
+ @app.Route("/:type/:id/rooms", methods: const [app.GET])
+ @Encode()
+ Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id) async {
+   return _impl.getAllRoomForObject(type, id);
+ }
 }
