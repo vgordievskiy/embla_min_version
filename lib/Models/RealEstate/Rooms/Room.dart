@@ -56,28 +56,18 @@ class RERoom  extends OntoEntity with RealEstateBase {
      InitOnto("RealEstateRoom");
      initLog();
      loadOntoInfo().then((ind){
-       this.changes.listen((List<dynamic> changes){
+       /*this.changes.listen((List<dynamic> changes){
          for(var change in changes) {
            _log.info(change);
          }
        });
-       OntoIndivid.Get(ind);
+       OntoIndivid.Get(ind);*/
      });
    }
    
    RERoom.Dummy(ReType type, RealEstateBase ownerObject) {
      InitOnto("RealEstateRoom");
      initData(ownerObject.id, type);
-   }
-   
-   RERoom.DummyCommercial(RECommercial ownerObject) {
-     InitOnto("RealEstateRoom");
-     initData(ownerObject.id, ReType.COMMERCIAL);
-   }
-   
-   RERoom.DummyPrivate(REPrivate ownerObject) {
-     InitOnto("RealEstateRoom");
-     initData(ownerObject.id, ReType.PRIVATE);
    }
    
    initData(int ownerId, ReType ownerType) {
