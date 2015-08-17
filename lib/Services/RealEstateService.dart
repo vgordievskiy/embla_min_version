@@ -165,6 +165,23 @@ class RealEstateService {
     RealEstateBase obj = await _getObject(reType, id);
     return new HelperObjectConverter<RERoomWrapper>().getFrom(await obj.getRooms());
    }
+  
+  @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
+  @Encode()
+  Future<List<ObjectDealWrapper>> getRoomState(String type, String id, String roomid) async
+  {
+    ReType reType = ReUtils.str2Type(type);
+    RERoom room = await _getObject(ReType.ROOM, roomid);
+    if(room.ownerObjectId != int.parse(id) ||
+       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+    
+    List<ObjectDealWrapper> ret = new List();
+
+    for (ObjectDeal deal in await room.GetAllParts()) {
+      ret.add(await ObjectDealWrapper.Create(deal));
+    }
+    return ret;
+  }
 
   @app.Route("/commercial", methods: const [app.POST])
   create_commercial(@app.Body(app.FORM) Map data) => _create_object_by_type("commercial", data);
@@ -254,12 +271,6 @@ class RealEstateService {
     return RECommercialWrapper.Create(ret);
   }
 
-  @app.Route("/commercial/:id/state", methods: const [app.GET])
-  @Encode()
-  Future<List<ObjectDealWrapper>> getCommercialStateById(String id) async {
-    return _getDeals(RECommercial, id);
-  }
-
   @app.Route("/land/:id", methods: const [app.GET])
   @Encode()
   Future<RELandWrapper> getLandById(String id) async {
@@ -271,12 +282,6 @@ class RealEstateService {
     return RELandWrapper.Create(ret);
   }
 
-  @app.Route("/land/:id/state", methods: const [app.GET])
-  @Encode()
-  Future<List<ObjectDealWrapper>> getLandStateById(String id) async {
-    return _getDeals(RELand, id);
-  }
-
   @app.Route("/private/:id", methods: const [app.GET])
   @Encode()
   Future<REPrivateWrapper> getPrivateById(String id) async {
@@ -286,11 +291,5 @@ class RealEstateService {
       return new app.ErrorResponse(404, {"error": "not found object"});
     }
     return REPrivateWrapper.Create(ret);
-  }
-
-  @app.Route("/private/:id/state", methods: const [app.GET])
-  @Encode()
-  Future<List<ObjectDealWrapper>> getPrivateStateById(String id) async {
-    return _getDeals(REPrivate, id);
   }
 }

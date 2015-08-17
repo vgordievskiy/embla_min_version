@@ -22,6 +22,15 @@ Future<User> _getUser(String email) async {
   return foundUsers[0];
 }
 
+Future<dynamic> _getObject(ReType type, String id) {
+  switch (type) {
+    case ReType.PRIVATE : return REPrivate.Get(id);
+    case ReType.COMMERCIAL : return RECommercial.Get(id);
+    case ReType.LAND : return RELand.Get(id);
+    case ReType.ROOM : return RERoom.Get(id);
+  }
+}
+
 @app.Group("/users")
 class UserService {
   DBAdapter _Db;
@@ -88,82 +97,31 @@ class UserService {
     return UserWrapper.Create(await User.GetUser(id));
   }
   
-  @app.Route("/:id/set_deal/private/:realestateid", methods: const[app.PUT])
+  @app.Route("/:id/set_deal/:type/:estateid/room/:roomid", methods: const[app.PUT])
   @Encode()
-  addDealForREPrivate(String id, String realestateid, @app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['part']))
-    {
-      throw new app.ErrorResponse(403, {"error": "data empty"});
-    }
+  addDealForRoom(String id, String type, String estateid, String roomid,
+                 @app.Body(app.FORM) Map data) async
+  {
     User user = await User.GetUser(id);
-    REPrivate object = await REPrivate.Get(realestateid);
+    RERoom room = await _getObject(ReType.ROOM, roomid);
+    if(room.ownerObjectId != int.parse(estateid) ||
+       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
     
     double part = double.parse(data["part"]);
     
-    await _chackObjectParts(object, part);
+    await _chackObjectParts(room, part);
     
-    ObjectDeal deal = new ObjectDeal.DummyPrivate(user, object, part);
-    
+    ObjectDeal deal = new ObjectDeal.DummyRoom(user, room, part);
+        
     try {
       await deal.save();
-      await deal.$.AddRelation('hasTargetRealEstate', object.$);
+      await deal.$.AddRelation('hasTargetRealEstate', room.$);
       await deal.$.AddRelation('hasUserParticipant', user.$);
       return deal.id;
     } catch (error) {
       return error; 
     }
-  }
-  
-  @app.Route("/:id/set_deal/commercial/:realestateid", methods: const[app.PUT])
-  @Encode()
-  addDealForRECommercial(String id, String realestateid, @app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['part']))
-    {
-      throw new app.ErrorResponse(403, {"error": "data empty"});
-    }
-    User user = await User.GetUser(id);
-    RECommercial object = await RECommercial.Get(realestateid);
     
-    double part = double.parse(data["part"]);
-    
-    await _chackObjectParts(object, part);
-    
-    ObjectDeal deal = new ObjectDeal.DummyCommercial(user, object, part);
-    
-    try {
-      await deal.save();
-      await deal.$.AddRelation('hasTargetRealEstate', object.$);
-      await deal.$.AddRelation('hasUserParticipant', user.$);
-      return deal.id;
-    } catch (error) {
-      return error; 
-    }
-  }
-  
-  @app.Route("/:id/set_deal/land/:realestateid", methods: const[app.PUT])
-  @Encode()
-  addDealForRELand(String id, String realestateid, @app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['part']))
-    {
-      throw new app.ErrorResponse(403, {"error": "data empty"});
-    }
-    User user = await User.GetUser(id);
-    RELand object = await RELand.Get(realestateid);
-    
-    double part = double.parse(data["part"]);
-    
-    await _chackObjectParts(object, part);
-    
-    ObjectDeal deal = new ObjectDeal.DummyLand(user, object, part);
-    
-    try {
-      await deal.save();
-      await deal.$.AddRelation('hasTargetRealEstate', object.$);
-      await deal.$.AddRelation('hasUserParticipant', user.$);
-      return deal.id;
-    } catch (error) {
-      return error; 
-    }
   }
   
   @app.Route("/:id/deals", methods: const[app.GET])

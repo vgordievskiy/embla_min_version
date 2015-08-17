@@ -106,12 +106,15 @@ class RERoom  extends OntoEntity with RealEstateBase {
    }
    
    Future<RealEstateBase> GetOwner() async {
-     switch(ReUtils.int2Type(ownerObjectType)) {
+     switch(OwnerType) {
        case ReType.COMMERCIAL : return RECommercial.Get(ownerObjectId.toString());
        case ReType.PRIVATE : return REPrivate.Get(ownerObjectId.toString());
+       case ReType.LAND : return RELand.Get(ownerObjectId.toString());
        default: throw "only got commercial or private";
      }
    }
+   
+   ReType get OwnerType => ReUtils.int2Type(ownerObjectType);
    
    String toString(){
      return 'RERoom { id: $id, ObjectName: $objectName}';

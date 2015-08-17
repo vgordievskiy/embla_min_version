@@ -64,12 +64,6 @@ class RealEstatePublicService {
     return _impl.getLandById(id);
   }
   
-  @app.Route("/private/:id/state", methods: const[app.GET])
-  @Encode()
-  test(String id) {
-    return _impl.getPrivateStateById(id);
-  }
-  
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
  @Encode()
  Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
@@ -101,28 +95,16 @@ class RealEstatePublicService {
  async {
    return _impl.getAllLandsInBounds(SWLng, SWLat, NELng, NELat);  
  }
-  
- @app.Route("/private/:id/state", methods: const[app.GET])
- @Encode()
- Future<List<ObjectDealWrapper>> getPrivateStateById(String id) async {
-   return _impl.getPrivateStateById(id);
- }
- 
- @app.Route("/commercial/:id/state", methods: const[app.GET])
- @Encode()
- Future<List<ObjectDealWrapper>> getCommercialStateById(String id) async {
-   return _impl.getCommercialStateById(id);
- }
- 
- @app.Route("/land/:id/state", methods: const[app.GET])
- @Encode()
- Future<List<ObjectDealWrapper>> getLandStateById(String id) async {
-   return _impl.getLandStateById(id);
- }
  
  @app.Route("/:type/:id/rooms", methods: const [app.GET])
  @Encode()
  Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id) async {
    return _impl.getAllRoomForObject(type, id);
+ }
+ 
+ @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
+ @Encode()
+ Future<List<ObjectDealWrapper>> getRoomState(String type, String id, String roomid) async {
+   return _impl.getRoomState(type, id, roomid);
  }
 }

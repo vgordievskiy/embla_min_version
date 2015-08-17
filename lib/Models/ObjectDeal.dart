@@ -51,31 +51,13 @@ class ObjectDeal extends OntoEntity {
     });
   }
   
-  ObjectDeal.DummyCommercial(User user, RECommercial object, double _part) {
+  ObjectDeal.DummyRoom(User user, RERoom object, double _part) {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
     isPending = true;
     part = _part;
-    initData(userId, object.id, ReUtils.type2Int(ReType.COMMERCIAL));
-  }
-  
-  ObjectDeal.DummyLand(User user, RELand object, double _part) {
-    InitOnto("ObjectDeal");
-    userId = user.id;
-    objectId = object.id;
-    isPending = true;
-    part = _part;
-    initData(userId, object.id, ReUtils.type2Int(ReType.LAND));
-  }
-
-  ObjectDeal.DummyPrivate(User user, REPrivate object, double _part) {
-    InitOnto("ObjectDeal");
-    userId = user.id;
-    objectId = object.id;
-    isPending = true;
-    part = _part;
-    initData(userId, object.id, ReUtils.type2Int(ReType.PRIVATE));
+    initData(userId, object.id, ReUtils.type2Int(ReType.ROOM));
   }
   
   String get TypeName {
