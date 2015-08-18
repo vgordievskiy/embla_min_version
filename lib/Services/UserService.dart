@@ -51,9 +51,9 @@ class UserService {
     return busyParts;
   }
   
-  Future _chackObjectParts(RealEstateBase object, double reqPart) async {
+  Future _chackObjectParts(RERoom object, double reqPart) async {
     double busyPart = await _getBusyObjectParts(object);
-    final double avaliablePart = 100.0 - busyPart; 
+    final double avaliablePart = object.square - busyPart; 
     if(avaliablePart < reqPart) throw new app.ErrorResponse(400, {'error': "part are not available"});
   }
 
