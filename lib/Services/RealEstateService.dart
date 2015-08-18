@@ -131,7 +131,7 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms", methods: const [app.PUT])
   create_room(String type, String id, @app.Body(app.FORM) Map data) async {
-    if (_isEmpty(data['objectName']) && _isEmpty(data['objectGeom'])
+    if (_isEmpty(data['objectName']) /*&& _isEmpty(data['objectGeom'])*/
         && _isEmpty(data['square'])) {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
