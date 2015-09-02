@@ -10,7 +10,7 @@ import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
 import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
-import 'package:BMSrv/Models/Utils/PopularObjects.dart';
+import 'package:BMSrv/Models/Utils/LikeObject.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
