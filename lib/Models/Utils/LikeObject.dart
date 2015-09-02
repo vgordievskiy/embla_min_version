@@ -49,4 +49,7 @@ class LikeObject extends ORM.Model {
   
   @ORM.DBField()
   int userId;
+  
+  Future<RERoom> get room => RERoomUtils.getById(roomId);
+  Future<User> get user => User.GetUser("$userId");
 }

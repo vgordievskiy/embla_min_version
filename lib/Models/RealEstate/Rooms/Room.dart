@@ -15,6 +15,11 @@ class RERoomUtils {
     ORM.Find find = new ORM.Find(RERoom)..whereEquals('ownerObjectId', obj.id);
     return find.execute();
   }
+  
+  static Future<RERoom> getById(int id) async {
+    ORM.FindOne find = new ORM.FindOne(RERoom)..whereEquals('id', id);
+    return find.execute();
+  }
 }
 
 @ORM.DBTable('real_estate_objects_rooms')
