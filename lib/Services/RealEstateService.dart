@@ -266,6 +266,7 @@ class RealEstateService {
   Future<RECommercialWrapper> getCommercialById(String id) async {
     ORM.FindOne find = new ORM.FindOne(RECommercial)..whereEquals('id', id);
     var ret = await find.execute();
+    
     if (ret == null) {
       return new app.ErrorResponse(404, {"error": "not found object"});
     }
