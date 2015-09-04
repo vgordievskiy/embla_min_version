@@ -161,11 +161,18 @@ class RealEstateService {
   
   @app.Route("/rooms", methods: const [app.GET])
   @Encode()
-  Future<List<RERoomWrapper>> getAllRooms(String type, String id,
-                                          @app.QueryParam("count") int count,
+  Future<List<RERoomWrapper>> getAllRooms(@app.QueryParam("count") int count,
                                           @app.QueryParam("page") int page) async
   {
     return new HelperObjectConverter<RERoomWrapper>().getFrom(await RERoomUtils.getRooms(count: count, page: page));
+  }
+  
+  @app.Route("/rooms/popular", methods: const [app.GET])
+  @Encode()
+  Future<List<RERoomWrapper>> getAllPopularRooms(@app.QueryParam("count") int count,
+                                                 @app.QueryParam("page") int page) async
+  {
+    return getAllRooms(count, page);
   }
   
   @app.Route("/:type/:id/rooms", methods: const [app.GET])
