@@ -11,8 +11,17 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 
 class RERoomUtils {
-  static Future<List<RERoom>> getForOwner(RealEstateBase obj) async {
+  static _setFindParams(ORM.Find find, int count, int page) {
+    if(count != null) find.setLimit(count);
+    if(count != null && page != null && page > 0) {
+      int offset = count * (page - 1);
+      find.setOffset(offset);
+    }
+  }
+  
+  static Future<List<RERoom>> getForOwner(RealEstateBase obj, {int count: null, int page: null}) async {
     ORM.Find find = new ORM.Find(RERoom)..whereEquals('ownerObjectId', obj.id);
+    _setFindParams(find, count, page);
     return find.execute();
   }
   
@@ -20,14 +29,10 @@ class RERoomUtils {
     ORM.FindOne find = new ORM.FindOne(RERoom)..whereEquals('id', id);
     return find.execute();
   }
-  
+
   static Future<RERoom> getRooms({int count: null, int page: null}) async {
     ORM.Find find = new ORM.Find(RERoom);
-    if(count != null) find.setLimit(count);
-    if(count != null && page != null && page > 0) {
-      int offset = count * (page - 1);
-      find.setOffset(offset);
-    }
+    _setFindParams(find, count, page);
     return find.execute();
   }
 }
