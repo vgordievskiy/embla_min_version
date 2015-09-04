@@ -20,6 +20,16 @@ class RERoomUtils {
     ORM.FindOne find = new ORM.FindOne(RERoom)..whereEquals('id', id);
     return find.execute();
   }
+  
+  static Future<RERoom> getRooms({int count: null, int page: null}) async {
+    ORM.Find find = new ORM.Find(RERoom);
+    if(count != null) find.setLimit(count);
+    if(count != null && page != null && page > 0) {
+      int offset = count * (page - 1);
+      find.setOffset(offset);
+    }
+    return find.execute();
+  }
 }
 
 @ORM.DBTable('real_estate_objects_rooms')
