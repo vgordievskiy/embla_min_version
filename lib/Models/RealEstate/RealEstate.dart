@@ -187,5 +187,5 @@ abstract class RealEstateBase {
     return find.execute();
   }
   
-  Future<List<RERoom>> getRooms() => RERoomUtils.getForOwner(this);
+  Future<List<RERoom>> getRooms({int count: null, int page: null}) => RERoomUtils.getForOwner(this, count: count, page: page);
 }

@@ -15,7 +15,8 @@ class RERoomUtils {
     if(count != null) find.setLimit(count);
     if(count != null && page != null && page > 0) {
       int offset = count * (page - 1);
-      find.setOffset(offset);
+      //find.setOffset(offset);
+      find.offset = offset;
     }
   }
   

@@ -161,11 +161,14 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms", methods: const [app.GET])
   @Encode()
-  Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id) async {
+  Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id,
+                                                 @app.QueryParam("count") int count,
+                                                 @app.QueryParam("page") int page) async
+  {
     ReType reType = ReUtils.str2Type(type);
     RealEstateBase obj = await _getObject(reType, id);
-    return new HelperObjectConverter<RERoomWrapper>().getFrom(await obj.getRooms());
-   }
+    return new HelperObjectConverter<RERoomWrapper>().getFrom(await obj.getRooms(count: count, page: page));
+  }
   
   @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
   @Encode()

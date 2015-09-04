@@ -187,9 +187,9 @@ Future defineTests() async {
   });
   
   skip_test("test create room", () => createRealEstateRoom("commercial", "1"));
-  test("test get all rooms", () => getAllRoomsForObject("commercial", "1"));
+  skip_test("test get all rooms", () => getAllRoomsForObject("commercial", "1"));
   
-  test("get user deals", () async {
+  skip_test("get user deals", () async {
     assert(userUrl!=null);
     var req = new MockRequest("$userUrl/deals",
                               method: app.GET,
