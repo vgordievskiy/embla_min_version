@@ -96,6 +96,22 @@ class RealEstatePublicService {
    return _impl.getAllLandsInBounds(SWLng, SWLat, NELng, NELat);  
  }
  
+ @app.Route("/rooms", methods: const [app.GET])
+ @Encode()
+ Future<List<RERoomWrapper>> getAllRooms(@app.QueryParam("count") int count,
+                                         @app.QueryParam("page") int page) async
+ {
+   return _impl.getAllRooms(count, page);
+ }
+ 
+ @app.Route("/rooms/popular", methods: const [app.GET])
+ @Encode()
+ Future<List<RERoomWrapper>> getAllPopularRooms(@app.QueryParam("count") int count,
+                                                @app.QueryParam("page") int page) async
+ {
+   return _impl.getAllPopularRooms(count, page);
+ }
+ 
  @app.Route("/:type/:id/rooms", methods: const [app.GET])
  @Encode()
  Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id) async {
