@@ -97,7 +97,7 @@ class UserService {
     return UserWrapper.Create(await User.GetUser(id));
   }
   
-  @app.Route("/:id/set_deal/:type/:estateid/room/:roomid", methods: const[app.PUT])
+  @app.Route("/:id/deals/:type/:estateid/room/:roomid", methods: const[app.PUT])
   @Encode()
   addDealForRoom(String id, String type, String estateid, String roomid,
                  @app.Body(app.FORM) Map data) async
