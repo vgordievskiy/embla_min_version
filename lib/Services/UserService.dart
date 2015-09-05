@@ -9,10 +9,13 @@ import 'package:logging/logging.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
+import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
+import 'package:BMSrv/Models/Utils/LikeObject.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 
 import 'package:BMSrv/Models/JsonWrappers/User.dart';
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
+import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -136,5 +139,27 @@ class UserService {
       ret.add(wrap);
     }
     return ret;
+  }
+  
+  @app.Route("/:id/likes", methods: const[app.GET])
+  @Encode()
+  Future<List<RERoomWrapper>> getUserLikes(String id) async {
+    User user = await User.GetUser(id);
+
+    List<RERoomWrapper> ret = new List();
+    
+    for(LikeObject obj in await LikeObjectsUtils.GetForUser(user)) {
+      RERoom room = await obj.room;
+      var wrap = await RERoomWrapper.Create(room);
+      ret.add(wrap);
+    }
+    return ret;
+  }
+  
+  @app.Route("/:id/likes/:roomId", methods: const[app.PUT])
+  Future addUserLike(String id, String roomId) async {
+    User user = await User.GetUser(id);
+    RERoom room = await RERoomUtils.getById(int.parse(roomId));
+    return LikeObjectsUtils.CreateLike(room, user);
   }
 }

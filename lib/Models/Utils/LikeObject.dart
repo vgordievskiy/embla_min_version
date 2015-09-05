@@ -5,7 +5,7 @@ import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 import 'package:BMSrv/Models/User.dart';
 
-class PopularObjectsUtils {
+class LikeObjectsUtils {
   static Future<List<LikeObject>> GetForRoom(RERoom room) async {
     ORM.Find find = new ORM.Find(LikeObject)..whereEquals('roomId', room.id);
     return find.execute();
