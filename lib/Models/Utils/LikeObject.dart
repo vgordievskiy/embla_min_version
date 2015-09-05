@@ -16,13 +16,22 @@ class LikeObjectsUtils {
     return find.execute();
   }
   
-  static Future<bool> HaveLike(RERoom room,User user) async {
+  static Future<bool> HaveLike(RERoom room, User user) async {
     ORM.Find find = new ORM.Find(LikeObject);
     ORM.Condition condition = new ORM.Equals('userId', user.id);
     condition.and(new ORM.Equals('roomId', room.id));
     find.where(condition);
     List<ORM.Model> result = await find.execute();
     return result.isEmpty == true ? false : true;
+  }
+  
+  static Future DeleteLike(RERoom room, User user) async {
+    ORM.FindOne find = new ORM.FindOne(LikeObject);
+    ORM.Condition condition = new ORM.Equals('userId', user.id);
+    condition.and(new ORM.Equals('roomId', room.id));
+    find.where(condition);
+    LikeObject like = await find.execute();
+    return like.delete();
   }
   
   static Future<bool> CreateLike(RERoom room, User user)

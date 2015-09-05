@@ -164,6 +164,13 @@ class UserService {
     return LikeObjectsUtils.HaveLike(room, user);
   }
   
+  @app.Route("/:id/likes/:roomId", methods: const[app.DELETE])
+  Future deleteLake(String id, roomId) async {
+    User user = await User.GetUser(id);
+    RERoom room = await RERoomUtils.getById(int.parse(roomId));
+    return LikeObjectsUtils.DeleteLike(room, user);
+  }
+  
   @app.Route("/:id/likes/:roomId", methods: const[app.PUT])
   Future addUserLike(String id, String roomId) async {
     User user = await User.GetUser(id);
