@@ -156,6 +156,14 @@ class UserService {
     return ret;
   }
   
+  @app.Route("/:id/likes/:roomId", methods: const[app.GET])
+  @Encode()
+  Future<bool> haveLake(String id, roomId) async {
+    User user = await User.GetUser(id);
+    RERoom room = await RERoomUtils.getById(int.parse(roomId));
+    return LikeObjectsUtils.HaveLike(room, user);
+  }
+  
   @app.Route("/:id/likes/:roomId", methods: const[app.PUT])
   Future addUserLike(String id, String roomId) async {
     User user = await User.GetUser(id);
