@@ -16,6 +16,15 @@ class LikeObjectsUtils {
     return find.execute();
   }
   
+  static Future<bool> HaveLike(RERoom room,User user) async {
+    ORM.Find find = new ORM.Find(LikeObject);
+    ORM.Condition condition = new ORM.Equals('userId', user.id);
+    condition.and(new ORM.Equals('roomId', room.id));
+    find.where(condition);
+    List<ORM.Model> result = await find.execute();
+    return result.isEmpty == true ? false : true;
+  }
+  
   static Future<bool> CreateLike(RERoom room, User user)
   {
     LikeObject newLike = new LikeObject.Dummy(room, user);
@@ -30,6 +39,8 @@ class LikeObject extends ORM.Model {
   @ORM.DBFieldType('SERIAL')
   int id;
 
+  LikeObject();
+  
   LikeObject.Dummy(RERoom room, User user)
   {
     objType = room.ownerObjectType;

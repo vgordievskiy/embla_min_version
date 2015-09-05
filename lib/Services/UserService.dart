@@ -160,6 +160,9 @@ class UserService {
   Future addUserLike(String id, String roomId) async {
     User user = await User.GetUser(id);
     RERoom room = await RERoomUtils.getById(int.parse(roomId));
+    if(await LikeObjectsUtils.HaveLike(room, user)) {
+      return new app.ErrorResponse(400, {"error": "already laked"});
+    }
     return LikeObjectsUtils.CreateLike(room, user);
   }
 }
