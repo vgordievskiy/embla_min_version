@@ -114,8 +114,10 @@ class RealEstatePublicService {
  
  @app.Route("/:type/:id/rooms", methods: const [app.GET])
  @Encode()
- Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id) async {
-   return _impl.getAllRoomForObject(type, id);
+ Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id,
+                                                 @app.QueryParam("count") int count,
+                                                 @app.QueryParam("page") int page) async {
+   return _impl.getAllRoomForObject(type, id, count, page);
  }
  
  @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
