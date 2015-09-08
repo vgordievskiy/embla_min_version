@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
 
+import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
 import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
 import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
@@ -124,5 +125,11 @@ class RealEstatePublicService {
  @Encode()
  Future<List<ObjectDealWrapper>> getRoomState(String type, String id, String roomid) async {
    return _impl.getRoomState(type, id, roomid);
+ }
+ 
+ @app.Route("/:type/:id/rooms/:roomid/data", methods: const [app.GET])
+ @Encode()
+ Future<REMetaDataWrapper> getDataForRoom(String type, String id, String roomid) async {
+   return _impl.getDataForRoom(type, id, roomid);
  }
 }
