@@ -4,6 +4,7 @@ import "dart:mirrors";
 import 'dart:async';
 
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
+import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
 import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
 import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
@@ -201,6 +202,18 @@ class RealEstateService {
       ret.add(await ObjectDealWrapper.Create(deal));
     }
     return ret;
+  }
+  
+  @app.Route("/:type/:id/rooms/:roomid/data", methods: const [app.GET])
+  @Encode()
+  Future<REMetaDataWrapper> getDataForRoom(String type, String id, String roomid) async {
+    ReType reType = ReUtils.str2Type(type);
+    RERoom room = await _getObject(ReType.ROOM, roomid);
+    if(room.ownerObjectId != int.parse(id) ||
+      ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+    
+    List<REMetaData> ret = await room.GetMetaData();
+    return REMetaDataWrapper.Create(ret);
   }
 
   @app.Route("/commercial", methods: const [app.POST])

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:mirrors';
 import 'dart:convert';
 
+export 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 export 'package:BMSrv/Models/RealEstate/REPrivate.dart';
 export 'package:BMSrv/Models/RealEstate/RECommercial.dart';
 export 'package:BMSrv/Models/RealEstate/RELand.dart';
