@@ -1,6 +1,7 @@
 library BMSrv.Models.RealEstate.REMetaData;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:SrvCommon/SrvCommon.dart';
@@ -19,4 +20,19 @@ class REMetaData extends ORM.Model with Observable {
   @ORM.DBFieldPrimaryKey()
   @ORM.DBFieldType('SERIAL')
   int id;
+  
+  @ORM.DBField()
+  String name;
+  
+  @ORM.DBField()
+  String metaName;
+  
+  @ORM.DBField()
+  int ownerType;
+  
+  @ORM.DBField()
+  int ownerId;
+  
+  @ORM.DBField()
+  LinkedHashMap<String, dynamic> data;
 }

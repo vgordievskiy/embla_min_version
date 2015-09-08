@@ -15,6 +15,7 @@ import 'package:simple_features/simple_features.dart' as Geo;
 import 'package:postgresql/postgresql.dart' as psql_connector;
 import 'package:logging/logging.dart';
 import 'package:SrvCommon/SrvCommon.dart';
+import 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 
