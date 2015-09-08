@@ -18,6 +18,7 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
+import 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 
 
 enum ReType {
@@ -166,6 +167,10 @@ abstract class RealEstateBase {
     String res = await GetGeometryAsGeoJson();
     return JSON.decode(res);
   }
+  
+  ReType get Type;
+  
+  Future<List<REMetaData>> GetMetaData() => REMetaDataUtils.getForObject(this);
   
   Future<List<ObjectDeal>> _getParts(bool isPending) async {
     ORM.Find find = new ORM.Find(ObjectDeal)

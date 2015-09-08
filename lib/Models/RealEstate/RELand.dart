@@ -61,6 +61,9 @@ class RELand extends OntoEntity with RealEstateBase {
     }
   }
   
+  @override
+  ReType get Type => ReType.LAND;
+  
   String toString(){
     return 'RELand { id: $id, ObjectName: $objectName}';
   }

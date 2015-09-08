@@ -116,6 +116,9 @@ class RERoom  extends OntoEntity with RealEstateBase {
      }
    }
    
+   @override
+   ReType get Type => ReType.ROOM;
+   
    Future<RealEstateBase> GetOwner() async {
      switch(OwnerType) {
        case ReType.COMMERCIAL : return RECommercial.Get(ownerObjectId.toString());

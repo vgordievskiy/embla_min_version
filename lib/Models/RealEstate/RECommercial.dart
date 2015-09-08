@@ -72,6 +72,9 @@ class RECommercial extends OntoEntity with RealEstateBase {
     }
   }
   
+  @override
+  ReType get Type => ReType.COMMERCIAL;
+  
   String toString(){
     return 'RECommercial { id: $id, ObjectName: $objectName}';
   }

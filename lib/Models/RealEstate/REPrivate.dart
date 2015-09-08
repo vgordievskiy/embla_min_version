@@ -71,6 +71,9 @@ class REPrivate extends OntoEntity with RealEstateBase {
       return super.save();
     }
   }
+  
+  @override
+  ReType get Type => ReType.PRIVATE;
     
   String toString(){
     return 'REPrivate { id: $id, ObjectName: $objectName}';
