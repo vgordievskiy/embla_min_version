@@ -15,7 +15,14 @@ class REMetaDataWrapper {
     ret.data = new Map();
     
     for(REMetaData item in data) {
-      ret.data[item.name] = item.data;
+      if(ret.data.containsKey(item.name)) {
+        if (!(ret.data[item.name] is List)) {
+          ret.data[item.name] = [ret.data[item.name]];
+        }
+        (ret.data[item.name] as List).add(item.data); 
+      } else {
+        ret.data[item.name] = item.data;
+      }
     }
     
     return ret;

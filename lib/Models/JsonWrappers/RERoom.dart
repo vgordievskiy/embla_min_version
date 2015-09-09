@@ -5,6 +5,7 @@ import 'package:redstone_mapper/plugin.dart';
 
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
+import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
 
 @Decode()
 class RERoomWrapper {
@@ -16,6 +17,8 @@ class RERoomWrapper {
     RERoomWrapper ret = new RERoomWrapper();
     ret.id = object.id;
     ret.ownerObject = await REstateWrapper.Create(await object.GetOwner());
+    REMetaDataWrapper metaData = await REMetaDataWrapper.Create(await object.GetMetaData());
+    ret.data = metaData.data;
     ret.objectName = object.objectName;
     ret.square = object.square;
     return ret;
@@ -23,6 +26,9 @@ class RERoomWrapper {
 
   @Field()
   int id;
+  
+  @Field()
+  Map<String, dynamic> data;
 
   @Field()
   REstateWrapper ownerObject;
