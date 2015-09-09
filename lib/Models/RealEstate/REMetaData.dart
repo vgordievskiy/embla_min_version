@@ -18,6 +18,16 @@ class REMetaDataUtils {
     find.where(condition);
     return await find.execute();
   }
+  
+  static Future<bool> addForObject(RealEstateBase obj, String name, String metaName, dynamic data) async {
+    REMetaData newItem = new REMetaData();
+    newItem.name = name;
+    newItem.metaName = metaName;
+    newItem.ownerType = ReUtils.type2Int(obj.Type);
+    newItem.ownerId = obj.id;
+    newItem.data = data;
+    return newItem.save();
+  }
 }
 
 @ORM.DBTable('real_estate_objects_meta_data')
