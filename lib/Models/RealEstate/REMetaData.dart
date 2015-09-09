@@ -2,6 +2,7 @@ library BMSrv.Models.RealEstate.REMetaData;
 
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:SrvCommon/SrvCommon.dart';
@@ -15,12 +16,18 @@ class REMetaDataUtils {
     ORM.Condition condition = new ORM.Equals('ownerType', ReUtils.type2Int(obj.Type));
     condition.and(new ORM.Equals('ownerId', obj.id));
     find.where(condition);
-    return find.execute();
+    return await find.execute();
   }
 }
 
 @ORM.DBTable('real_estate_objects_meta_data')
 class REMetaData extends ORM.Model with Observable {
+ 
+  static Map _converter(String value) {
+    value = value.replaceAll(new RegExp("'"), '"');
+    Map<String, dynamic> obj = JSON.decode(value);
+    return obj; 
+  }
   
   @ORM.DBField()
   @ORM.DBFieldPrimaryKey()
@@ -40,5 +47,6 @@ class REMetaData extends ORM.Model with Observable {
   int ownerId;
   
   @ORM.DBField()
+  @ORM.DBFieldConverter(_converter)
   LinkedHashMap<String, dynamic> data;
 }

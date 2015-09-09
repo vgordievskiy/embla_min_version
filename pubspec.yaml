@@ -16,5 +16,8 @@ dependencies:
   simple_features: any
   sync_socket: ^1.0.2+1
   threading: ^0.0.7
+dependency_overrides:
+  dart_orm:
+    git: https://github.com/vgordievskiy/DartORM.git
 dev_dependencies:
   unittest: '>=0.11.5+4 <0.12.0'

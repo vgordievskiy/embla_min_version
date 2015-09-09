@@ -212,7 +212,7 @@ class RealEstateService {
     if(room.ownerObjectId != int.parse(id) ||
       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
     
-    List<REMetaData> ret = await room.GetMetaData();
+    List<dynamic> ret = await room.GetMetaData();
     return REMetaDataWrapper.Create(ret);
   }
 
