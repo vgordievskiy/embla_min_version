@@ -172,6 +172,11 @@ abstract class RealEstateBase {
   ReType get Type;
   
   Future<List<REMetaData>> GetMetaData() => REMetaDataUtils.getForObject(this);
+  Future<bool> addMetaData(String name, String metaName,
+                           dynamic value) 
+  {
+    return REMetaDataUtils.addForObject(this, name, metaName, value);
+  }
   
   Future<List<ObjectDeal>> _getParts(bool isPending) async {
     ORM.Find find = new ORM.Find(ObjectDeal)
