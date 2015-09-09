@@ -68,6 +68,10 @@ class UserService {
     {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
+    
+    bool existUser = await UserPass.checExistkUser(data['email']);
+    
+    if (existUser) throw new app.ErrorResponse(400, {"error": "already exist"});
 
     User newUser = new User.Dummy();
     newUser.name = data['name'];
