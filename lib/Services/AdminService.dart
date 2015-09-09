@@ -43,22 +43,6 @@ class AdminService {
   {
     _Generator = new Uuid();
   }
-  
-  Future<double> _getBusyObjectParts(RealEstateBase object) async {
-    List<ObjectDeal> parts = await object.GetAllParts();
-    double busyParts = 0.0;
-    for(ObjectDeal deal in parts) {
-      busyParts += deal.part;
-    }
-    
-    return busyParts;
-  }
-  
-  Future _chackObjectParts(RERoom object, double reqPart) async {
-    double busyPart = await _getBusyObjectParts(object);
-    final double avaliablePart = object.square - busyPart; 
-    if(avaliablePart < reqPart) throw new app.ErrorResponse(400, {'error': "part are not available"});
-  }
 
   @app.DefaultRoute(methods: const[app.POST])
   create(@app.Body(app.FORM) Map data) async {
@@ -79,7 +63,7 @@ class AdminService {
       exception = error;
     });
     
-    await UserPass.CreateUserPass(data['email'], data["password"], newUser.id);
+    await UserPass.CreateAdminPass(data['email'], data["password"], newUser.id);
     
     if (exception != null) {
       return exception;
