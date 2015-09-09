@@ -216,13 +216,28 @@ class RealEstateService {
     return REMetaDataWrapper.Create(ret);
   }
   
+  @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.GET])
+  @Encode()
+  Future<REMetaDataWrapper> getDataForRoomByName(String type, String id,
+                                           String roomid, String param) async {
+    RERoom room = await _getObject(ReType.ROOM, roomid);
+    if(room.ownerObjectId != int.parse(id) ||
+      ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+    
+    List<REMetaData> ret = await room.GetMetaData(fieldName: param);
+    return REMetaDataWrapper.Create(ret);
+  }
+  
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.PUT])
   @Encode()
   Future<REMetaDataWrapper> addDataForRoom(String type, String id,
                                            String roomid, String param,
                                            @app.Body(app.FORM) Map data) async {
+    if (!REMetaDataUtils.checkMetaName(param)) {
+      throw new app.ErrorResponse(400, {"error": "wrong field name"});
+    }
     if (_isEmpty(data['value'])) {
-      throw new app.ErrorResponse(403, {"error": "data empty"});
+      throw new app.ErrorResponse(400, {"error": "data empty"}); 
     }
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||

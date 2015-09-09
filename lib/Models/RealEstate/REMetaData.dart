@@ -11,12 +11,19 @@ import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';
 
 class REMetaDataUtils {
-  static List<String> metaNames = ['electoPower', 'targetUsage'];
+  static List<String> metaNames = ['electoPower', 'targetUsage', 'description'];
   
-  static Future<List<REMetaData>> getForObject(RealEstateBase obj) async {
+  static bool checkMetaName(String name) {
+    return metaNames.contains(name);
+  }
+  
+  static Future<List<REMetaData>> getForObject(RealEstateBase obj, {String fieldName: null}) async {
     ORM.Find find = new ORM.Find(REMetaData);
     ORM.Condition condition = new ORM.Equals('ownerType', ReUtils.type2Int(obj.Type));
     condition.and(new ORM.Equals('ownerId', obj.id));
+    if (fieldName != null) {
+      condition.and(new ORM.Equals('name', fieldName));
+    }
     find.where(condition);
     return await find.execute();
   }

@@ -132,4 +132,12 @@ class RealEstatePublicService {
  Future<REMetaDataWrapper> getDataForRoom(String type, String id, String roomid) async {
    return _impl.getDataForRoom(type, id, roomid);
  }
+ 
+ @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.GET])
+ @Encode()
+ Future<REMetaDataWrapper> getDataForRoomByName(String type, String id,
+                                                String roomid, String param) async
+ {
+   return _impl.getDataForRoomByName(type, id, roomid, param);
+ }
 }
