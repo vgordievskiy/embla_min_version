@@ -48,5 +48,5 @@ class REMetaData extends ORM.Model with Observable {
   
   @ORM.DBField()
   @ORM.DBFieldConverter(_converter)
-  LinkedHashMap<String, dynamic> data;
+  dynamic data;
 }
