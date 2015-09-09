@@ -8,7 +8,7 @@ import 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 @Decode()
 class REMetaDataWrapper {
   
-  static Future<REMetaDataWrapper> Create(List<dynamic> data) async 
+  static Future<REMetaDataWrapper> Create(List<REMetaData> data) async 
   {
     REMetaDataWrapper ret = new REMetaDataWrapper();
     
