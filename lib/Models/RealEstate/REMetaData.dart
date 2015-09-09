@@ -11,6 +11,8 @@ import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';
 
 class REMetaDataUtils {
+  static List<String> metaNames = ['electoPower', 'targetUsage'];
+  
   static Future<List<REMetaData>> getForObject(RealEstateBase obj) async {
     ORM.Find find = new ORM.Find(REMetaData);
     ORM.Condition condition = new ORM.Equals('ownerType', ReUtils.type2Int(obj.Type));
