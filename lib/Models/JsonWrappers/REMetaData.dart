@@ -20,7 +20,17 @@ class REMetaDataWrapper {
     
     return ret;
   }
-
+  
+  static Future<Map<String, dynamic>> CreateAsMap(List<REMetaData> data) async {
+    Map<String, dynamic> ret = new Map();
+        
+    for(REMetaData item in data) {
+      ret[item.name] = item.data;
+    }
+    
+    return ret;
+  }
+  
   @Field()
   Map<String, dynamic> data;
 }

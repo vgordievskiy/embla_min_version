@@ -206,7 +206,7 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms/:roomid/data", methods: const [app.GET])
   @Encode()
-  Future<REMetaDataWrapper> getDataForRoom(String type, String id, String roomid) async {
+  Future<Map<String, dynamic>> getDataForRoom(String type, String id, String roomid) async {
     ReType reType = ReUtils.str2Type(type);
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
