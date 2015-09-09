@@ -228,7 +228,7 @@ class RealEstateService {
     return REMetaDataWrapper.Create(ret);
   }
   
-  @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.PUT])
+  @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.POST])
   @Encode()
   Future<REMetaDataWrapper> addDataForRoom(String type, String id,
                                            String roomid, String param,
