@@ -249,12 +249,15 @@ class RealEstateService {
   }
 
   @app.Route("/commercial", methods: const [app.POST])
+  @OnlyForUserGroup(const ['admin'])
   create_commercial(@app.Body(app.FORM) Map data) => _create_object_by_type("commercial", data);
 
   @app.Route("/land", methods: const [app.POST])
+  @OnlyForUserGroup(const ['admin'])
   create_land(@app.Body(app.FORM) Map data) => _create_object_by_type("land", data);
 
   @app.Route("/private", methods: const [app.POST])
+  @OnlyForUserGroup(const ['admin'])
   create_private(@app.Body(app.FORM) Map data) => _create_object_by_type("private", data);
   
   @app.Route("/commercial", methods: const [app.GET])
