@@ -3,10 +3,6 @@ import 'package:di/di.dart';
 import 'package:redstone_mapper/plugin.dart';
 
 import 'package:SrvCommon/SrvCommon.dart' as Common;
-@app.Install()
-import 'package:SrvCommon/Services/Cors_Auth.dart';
-@app.Install()
-import 'package:SrvCommon/Services/LoginService.dart';
 
 /*Services*/
 import 'package:BMSrv/BMSrv.dart';
