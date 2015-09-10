@@ -32,6 +32,7 @@ void setupConsoleLog([Level level = Level.INFO]) {
 main() {
   Init().then((var res){
     app.addPlugin(getMapperPlugin());
+    app.addPlugin(Common.UserGroupPlugin);
     app.addModule(new Module()..bind(Common.DBAdapter));
     app.addModule(new Module()..bind(Common.EventSys));
     app.addModule(new Module()..bind(RealEstateService));
