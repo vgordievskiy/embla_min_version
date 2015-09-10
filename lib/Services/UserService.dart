@@ -69,7 +69,7 @@ class UserService {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
     
-    bool existUser = await UserPass.checExistkUser(data['email']);
+    bool existUser = await UserPass.checkExistUser(data['email']);
     
     if (existUser) throw new app.ErrorResponse(400, {"error": "already exist"});
 
