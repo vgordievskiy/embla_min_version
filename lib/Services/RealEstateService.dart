@@ -132,6 +132,7 @@ class RealEstateService {
   }
   
   @app.Route("/:type/:id/rooms", methods: const [app.POST])
+  @OnlyForUserGroup(const ['admin'])
   create_room(String type, String id, @app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']) /*&& _isEmpty(data['objectGeom'])*/
         && _isEmpty(data['square'])) {
@@ -229,6 +230,7 @@ class RealEstateService {
   }
   
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.POST])
+  @OnlyForUserGroup(const ['admin'])
   @Encode()
   Future<REMetaDataWrapper> addDataForRoom(String type, String id,
                                            String roomid, String param,
