@@ -10,6 +10,24 @@ import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';
 
+class FindSql extends CustomFindObjects {
+  FindSql(Type modelType, String sql) : super(modelType) {
+    this.sqlQuery = sql;
+  }
+}
+
+Future<List<REMetaData>> testCustom() async {
+  final String sql = 'select * from real__estate__objects__meta__data where data ->> \'value\' > \'14.5\';';
+  FindSql find = new FindSql(REMetaData, sql);
+  try {
+    List<dynamic> res = await find.execute();
+    return res;
+  } catch(error) {
+    var tmp = error;
+  }
+  return [];
+}
+
 class REMetaDataUtils {
   static List<String> metaNames = ['electoPower', 'targetUsage', 'description'];
   
