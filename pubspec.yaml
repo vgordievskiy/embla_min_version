@@ -19,5 +19,7 @@ dependencies:
 dependency_overrides:
   dart_orm:
     git: https://github.com/vgordievskiy/DartORM.git
+  dart_orm_adapter_postgresql:
+    git: https://github.com/vgordievskiy/DartORM-PostgreSQL.git
 dev_dependencies:
   unittest: '>=0.11.5+4 <0.12.0'
