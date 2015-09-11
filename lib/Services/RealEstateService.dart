@@ -2,6 +2,7 @@ library BMSrv.RealEstateService;
 
 import "dart:mirrors";
 import 'dart:async';
+import "dart:convert";
 
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
@@ -245,7 +246,9 @@ class RealEstateService {
     if(room.ownerObjectId != int.parse(id) ||
       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
     
-    return room.addMetaData(param, param, data['value']);
+    var value = JSON.decode(data['value']);
+    
+    return room.addMetaData(param, param, value);
   }
   
   @app.Route("/:type/:id/rooms/:roomid/data/:param/:indx", methods: const [app.PUT])
@@ -269,7 +272,9 @@ class RealEstateService {
     
     int pos = int.parse(indx);
     
-    oldValue[pos].data = data['value'];
+    var value = JSON.decode(data['value']);
+    
+    oldValue[pos].Data = value;
     return oldValue[pos].save();
   }
 

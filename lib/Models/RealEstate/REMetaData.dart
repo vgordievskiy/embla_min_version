@@ -29,7 +29,7 @@ Future<List<REMetaData>> testCustom() async {
 }
 
 class REMetaDataUtils {
-  static List<String> metaNames = ['electoPower', 'targetUsage', 'description'];
+  static List<String> metaNames = ['electroPower', 'targetUsage', 'description'];
   
   static bool checkMetaName(String name) {
     return metaNames.contains(name);
@@ -53,7 +53,7 @@ class REMetaDataUtils {
     newItem.metaName = metaName;
     newItem.ownerType = ReUtils.type2Int(obj.Type);
     newItem.ownerId = obj.id;
-    newItem.data = data;
+    newItem.Data = data;
     return newItem.save();
   }
 }
@@ -63,8 +63,9 @@ class REMetaData extends ORM.Model with Observable {
  
   static Map _converter(String value) {
     value = value.replaceAll(new RegExp("'"), '"');
-    var obj = JSON.decode(value);
-    return obj; 
+    Map<String, dynamic> obj = JSON.decode(value);
+    assert(obj.containsKey('value'));
+    return obj['value']; 
   }
   
   @ORM.DBField()
@@ -86,5 +87,8 @@ class REMetaData extends ORM.Model with Observable {
   
   @ORM.DBField()
   @ORM.DBFieldConverter(_converter)
-  dynamic data;
+  dynamic _data;
+  
+  dynamic get Data => _data;
+  set Data(var obj) => _data = { "value" : obj };
 }

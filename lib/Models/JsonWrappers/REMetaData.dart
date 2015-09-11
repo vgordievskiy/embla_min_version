@@ -16,9 +16,9 @@ class REMetaDataWrapper {
     
     for(REMetaData item in data) {
       if (!ret.data.containsKey(item.name)) {
-        ret.data[item.name] = [item.data];
+        ret.data[item.name] = [item.Data];
       } else {
-        (ret.data[item.name] as List).add(item.data);
+        (ret.data[item.name] as List).add(item.Data);
       }
     }
     
@@ -29,7 +29,7 @@ class REMetaDataWrapper {
     Map<String, dynamic> ret = new Map();
         
     for(REMetaData item in data) {
-      ret[item.name] = item.data;
+      ret[item.name] = item.Data;
     }
     
     return ret;
