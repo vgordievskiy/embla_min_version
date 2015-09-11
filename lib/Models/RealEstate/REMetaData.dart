@@ -61,11 +61,9 @@ class REMetaDataUtils {
 @ORM.DBTable('real_estate_objects_meta_data')
 class REMetaData extends ORM.Model with Observable {
  
-  static Map _converter(String value) {
-    value = value.replaceAll(new RegExp("'"), '"');
-    Map<String, dynamic> obj = JSON.decode(value);
-    assert(obj.containsKey('value'));
-    return obj['value']; 
+  static Map _converter(Map<String, dynamic> value) {
+    assert(value.containsKey('value'));
+    return value['value']; 
   }
   
   @ORM.DBField()
