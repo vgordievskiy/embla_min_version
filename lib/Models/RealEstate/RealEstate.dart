@@ -73,65 +73,14 @@ class ReUtils {
   }
 }
 
-class FindObjectsInBounds extends ORM.FindBase {
-  Type ModelType;
+class FindObjectsInBounds extends CustomFindObjects {
   Geo.Point SW;
   Geo.Point NE;
-  FindObjectsInBounds(Type modelType, this.SW, this.NE): super(modelType)
+  
+  FindObjectsInBounds(Type modelType, this.SW, this.NE) : super(modelType)
   {
-    ModelType = modelType;
-  }
-  
-  psql_connector.Connection get Connection {
-   return (ORM.Model.ormAdapter as ORM.SQLAdapter).connection;
-  }
-  
-  List<Map> _convert(List rawRows) {
-    List<Map> results = new List<Map>();
-    // sql adapters usually returns a list of fields without field names
-    for (var rawRow in rawRows) {
-      Map<String, dynamic> row = new Map<String, dynamic>();
-
-      int fieldNumber = 0;
-      for (ORM.Field f in table.fields) {
-        row[f.fieldName] = rawRow[fieldNumber];
-        fieldNumber ++;
-      }
-
-      results.add(row);
-    }
-
-    return results;  
-  }
-  
-  List<ORM.Model> _convertToType(List rawRows) {
-    List<ORM.Model> result = new List();
-    ClassMirror modelMirror = reflectClass(ModelType);
-    for (Map<String, dynamic> row in _convert(rawRows)) {
-      InstanceMirror newInstance = modelMirror.newInstance(
-          new Symbol(''), [], new Map());
-
-      for (ORM.Field field in table.fields) {
-        var fieldValue = row[field.fieldName];
-        newInstance.setField(field.constructedFromPropertyName, fieldValue);
-      }
-
-      result.add(newInstance.reflectee);
-    }
-    return result;
-  }
- 
-  Future<List<ORM.Model>> execute() {
-    return _getObjectsInBounds(SW, NE);
-  }
-  
-  /*Lat are Geo.Point.y, Lng are Geo.Point.x*/
-  Future<List<ORM.Model>> _getObjectsInBounds(Geo.Point SW, Geo.Point NE) async {
-    /*xmin, ymin, xmax, ymax*/
     final String box = "ST_MakeEnvelope(${SW.x}, ${SW.y}, ${NE.x}, ${NE.y}, 4326)";
-    List rows = await Connection.query("SELECT * FROM ${table.tableName} WHERE obj_geom && $box").toList();
-   
-    return _convertToType(rows);
+    this.sqlQuery = "SELECT * FROM ${table.tableName} WHERE obj_geom && $box";
   }
 }
 
