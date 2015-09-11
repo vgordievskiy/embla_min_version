@@ -17,7 +17,7 @@ class FindSql extends CustomFindObjects {
 }
 
 Future<List<REMetaData>> testCustom() async {
-  final String sql = 'select * from real__estate__objects__meta__data where data ->> \'value\' > \'14.5\';';
+  final String sql = "select * from real__estate__objects__meta__data where _data -> 'value' > '10' and name = 'electroPower';";
   FindSql find = new FindSql(REMetaData, sql);
   try {
     List<dynamic> res = await find.execute();
