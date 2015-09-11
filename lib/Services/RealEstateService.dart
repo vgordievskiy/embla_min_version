@@ -247,6 +247,31 @@ class RealEstateService {
     
     return room.addMetaData(param, param, data['value']);
   }
+  
+  @app.Route("/:type/:id/rooms/:roomid/data/:param/:indx", methods: const [app.PUT])
+  @OnlyForUserGroup(const ['admin'])
+  @Encode()
+  Future<REMetaDataWrapper> changeDataForRoom(String type, String id,
+                                              String roomid, String param, String indx,
+                                              @app.Body(app.FORM) Map data) async
+  {
+    if (!REMetaDataUtils.checkMetaName(param)) {
+      throw new app.ErrorResponse(400, {"error": "wrong field name"});
+    }
+    if (_isEmpty(data['value'])) {
+      throw new app.ErrorResponse(400, {"error": "data empty"}); 
+    }
+    RERoom room = await _getObject(ReType.ROOM, roomid);
+    if(room.ownerObjectId != int.parse(id) ||
+      ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+    
+    List<REMetaData> oldValue = await room.GetMetaData(fieldName: param);
+    
+    int pos = int.parse(indx);
+    
+    oldValue[pos].data = data['value'];
+    return oldValue[pos].save();
+  }
 
   @app.Route("/commercial", methods: const [app.POST])
   @OnlyForUserGroup(const ['admin'])

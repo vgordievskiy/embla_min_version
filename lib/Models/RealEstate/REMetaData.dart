@@ -24,6 +24,7 @@ class REMetaDataUtils {
     if (fieldName != null) {
       condition.and(new ORM.Equals('name', fieldName));
     }
+    
     find.where(condition);
     return await find.execute();
   }
@@ -44,7 +45,7 @@ class REMetaData extends ORM.Model with Observable {
  
   static Map _converter(String value) {
     value = value.replaceAll(new RegExp("'"), '"');
-    Map<String, dynamic> obj = JSON.decode(value);
+    var obj = JSON.decode(value);
     return obj; 
   }
   

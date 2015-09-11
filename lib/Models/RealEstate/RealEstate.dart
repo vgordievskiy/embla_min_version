@@ -171,7 +171,9 @@ abstract class RealEstateBase {
   
   ReType get Type;
   
-  Future<List<REMetaData>> GetMetaData({String fieldName: null}) => REMetaDataUtils.getForObject(this, fieldName: fieldName);
+  Future<List<REMetaData>> GetMetaData({String fieldName: null})
+    => REMetaDataUtils.getForObject(this, fieldName: fieldName);
+  
   Future<bool> addMetaData(String name, String metaName,
                            dynamic value)
   {
