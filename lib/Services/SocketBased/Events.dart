@@ -6,11 +6,16 @@ import 'package:redstone/server.dart' as app;
 import 'package:redstone_web_socket/redstone_web_socket.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
-import 'package:SrvCommon/SrvCommon.dart';
+import 'package:SrvCommon/SrvCommon.dart' as Common;
 
-@WebSocketHandler("/events")
+@WebSocketHandler("events")
 class EventService {
   final log = new Logger("BMSrv.Services.SocketBased.Events");
+  
+  EventService() {
+    Common.LoginService login = new Common.LoginService();
+    login.addToOpenResource('events');
+  }
   
   @OnOpen()
   void onOpen(WebSocketSession session) {
