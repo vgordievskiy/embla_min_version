@@ -25,6 +25,7 @@ class EventService {
   @OnMessage()
   void onMessage(String message, WebSocketSession session) {
     log.info("message received: $message");
+    
     session.connection.add("pong");
   }
 
