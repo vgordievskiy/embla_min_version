@@ -12,8 +12,10 @@ import 'package:SrvCommon/SrvCommon.dart' as Common;
 class EventService {
   final log = new Logger("BMSrv.Services.SocketBased.Events");
   
+  Common.LoginService login;
+  
   EventService() {
-    Common.LoginService login = new Common.LoginService();
+    login = new Common.LoginService();
     login.addToOpenResource('events');
   }
   
@@ -23,10 +25,18 @@ class EventService {
   }
 
   @OnMessage()
-  void onMessage(String message, WebSocketSession session) {
+  void onMessage(String message, WebSocketSession session) async {
     log.info("message received: $message");
-    
-    session.connection.add("pong");
+    if (!session.attributes.containsKey('user')) {
+      try {
+        Common.Principal res = await login.authenticateToken(message);
+        session.connection.add("hello ${res.name}");
+        session.attributes['user'] = res;
+      } catch(error) {
+        session.connection.add("access denied");
+        session.connection.close();
+      }
+    }
   }
 
   @OnError()
