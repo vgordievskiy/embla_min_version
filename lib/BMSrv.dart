@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:BMSrv/Services/UserService.dart';
 import 'package:BMSrv/Services/RealEstateService.dart';
 import 'package:BMSrv/Services/ObjectDealService.dart';
+import 'package:BMSrv/Services/SocketBased/Events.dart';
 /*------Public api------------------------------*/
 import 'package:BMSrv/Services/public/REstPublicService.dart';
 /*------end Public------------------------------*/
