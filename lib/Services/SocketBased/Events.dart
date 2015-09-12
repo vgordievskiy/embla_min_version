@@ -30,7 +30,7 @@ class EventService {
     if (!session.attributes.containsKey('user')) {
       try {
         Common.Principal res = await login.authenticateToken(message);
-        session.connection.add("hello ${res.name}");
+        session.connection.add("success");
         session.attributes['user'] = res;
       } catch(error) {
         session.connection.add("access denied");
