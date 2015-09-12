@@ -1,6 +1,7 @@
 import 'package:redstone/server.dart' as app;
 import 'package:di/di.dart';
 import 'package:redstone_mapper/plugin.dart';
+import 'package:redstone_web_socket/redstone_web_socket.dart';
 
 import 'package:SrvCommon/SrvCommon.dart' as Common;
 
@@ -33,6 +34,7 @@ main() {
   Init().then((var res){
     app.addPlugin(getMapperPlugin());
     app.addPlugin(Common.UserGroupPlugin);
+    app.addPlugin(getWebSocketPlugin());
     app.addModule(new Module()..bind(Common.DBAdapter));
     app.addModule(new Module()..bind(Common.EventSys));
     app.addModule(new Module()..bind(RealEstateService));
