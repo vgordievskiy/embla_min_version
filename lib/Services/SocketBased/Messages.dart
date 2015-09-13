@@ -21,6 +21,23 @@ class MessageService {
     login.addToOpenResource('messages');
   }
   
+  bool _isAuthentificated(WebSocketSession session) {
+    return session.attributes.containsKey('user');
+  }
+  
+  Future<bool> _authConncetion(WebSocketSession session, String token) async {
+    if (!_isAuthentificated(session)) {
+      try {
+        Common.Principal res = await login.authenticateToken(token);
+        session.connection.add("success");
+        session.attributes['user'] = res;
+      } catch(error) {
+        session.connection.add("access denied");
+        session.connection.close();
+      }
+    }
+  }
+  
   @OnOpen()
   void onOpen(WebSocketSession session) {
     log.info("connection established");
@@ -29,15 +46,9 @@ class MessageService {
   @OnMessage()
   void onMessage(String message, WebSocketSession session) async {
     log.info("message received: $message");
-    if (!session.attributes.containsKey('user')) {
-      try {
-        Common.Principal res = await login.authenticateToken(message);
-        session.connection.add("success");
-        session.attributes['user'] = res;
-      } catch(error) {
-        session.connection.add("access denied");
-        session.connection.close();
-      }
+    if(!_isAuthentificated(session)) {
+      bool res = await _authConncetion(session, message);
+      return;
     }
   }
 
