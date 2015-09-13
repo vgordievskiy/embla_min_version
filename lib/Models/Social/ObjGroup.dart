@@ -91,4 +91,13 @@ class ObjGroup extends ORM.Model with Observable  {
     return save();
   }
   
+  Future<List<User>> getUsers() async {
+    List<User> ret = new List();
+    for(int id in Users) {
+      User usr = await User.GetUser("$id");
+      ret.add(usr);
+    }
+    return ret;
+  }
+  
 }
