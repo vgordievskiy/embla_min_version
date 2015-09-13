@@ -1,1 +1,0 @@
-library BMSrv.SocketBased.Chat;
