@@ -12,6 +12,7 @@ import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 import 'package:BMSrv/Models/Utils/LikeObject.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
+import 'package:BMSrv/Models/Social/ObjGroup.dart';
 
 import 'package:BMSrv/Models/JsonWrappers/User.dart';
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
@@ -58,6 +59,10 @@ class UserService {
     double busyPart = await _getBusyObjectParts(object);
     final double avaliablePart = object.square - busyPart; 
     if(avaliablePart < reqPart) throw new app.ErrorResponse(400, {'error': "part are not available"});
+  }
+  
+  Future _addUserToObjectGroup(RealEstateBase obj, User user) async {
+    ObjGroupUtils.addUserToGroup(obj, user);
   }
 
   @app.DefaultRoute(methods: const[app.POST])
@@ -122,6 +127,9 @@ class UserService {
         
     try {
       await deal.save();
+      
+      new Future(() => _addUserToObjectGroup(room, user));
+      
       await deal.$.AddRelation('hasTargetRealEstate', room.$);
       await deal.$.AddRelation('hasUserParticipant', user.$);
       return deal.id;

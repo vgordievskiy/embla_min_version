@@ -21,16 +21,20 @@ class ObjGroupUtils {
     return find.execute();
   }
   
-  static Future<bool> addUserToGroup(RealEstateBase obj, User user) async {
+  static Future<ObjGroup> addUserToGroup(RealEstateBase obj, User user) async {
     ObjGroup grp = await getForObject(obj);
-    return grp.addUser(user.id);
+    if (grp == null) {
+      grp = await createGroup(obj);
+    }
+    return  grp.addUser(user.id);
   }
   
-  static Future<bool> createGroup(RealEstateBase obj) {
+  static Future<ObjGroup> createGroup(RealEstateBase obj) async {
     ObjGroup grp = new ObjGroup.Dummy();
     grp.objectType = ReUtils.type2Int(obj.Type);
     grp.objId = obj.id;
-    return grp.save();
+    bool res = await grp.save();
+    return res == true ? getForObject(obj) : null;
   }
 }
 
@@ -46,7 +50,7 @@ class ObjGroup extends ORM.Model with Observable  {
   }
   
   ObjGroup.Dummy(): super() {
-    _data = [];
+    _data = { "users" : [] };
   }
   
   @ORM.DBField()
@@ -65,19 +69,25 @@ class ObjGroup extends ORM.Model with Observable  {
   dynamic _data;
     
   List<int> get Users => (_data as List<int>);
+  set Users(List<int> value) {
+    _data = { "users" : value };
+  }
   
   Future<bool> addUser(int userId) async {
     if (Users == null) _data = [];
     List<int> value = Users;
-    value.add(userId);
-    _data = value;
-    return save();
+    if (!value.contains(userId)){
+      value.add(userId);
+      Users = value;
+      return save();
+    }
+    return true;
   }
   
   Future<bool> removeUser(int userId) async {
     List<int> value = Users;
     value.remove(userId);
-    _data = value;
+    Users = value;
     return save();
   }
   
