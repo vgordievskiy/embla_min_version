@@ -50,6 +50,8 @@ class MessageService {
       bool res = await _authConncetion(session, message);
       return;
     }
+    
+    session.connection.add("ok: ${message}");
   }
 
   @OnError()
