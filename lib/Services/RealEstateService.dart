@@ -80,6 +80,8 @@ class RealEstateService {
   final log = new Logger("BMSrv.Services.RealEstateService");
   RealEstateService(DBAdapter this._Db) {
     _Generator = new Uuid();
+    
+    RERoomUtils.createPartition();
   }
   
   Future<List<ObjectDealWrapper>> _getDeals(Type type, String id) async {

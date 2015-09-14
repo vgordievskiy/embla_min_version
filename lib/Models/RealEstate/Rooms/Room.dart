@@ -6,6 +6,7 @@ export 'package:BMSrv/Models/RealEstate/RECommercial.dart';
 
 import 'package:logging/logging.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
+import 'package:postgresql/postgresql.dart' as psql;
 
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
@@ -36,11 +37,26 @@ class RERoomUtils {
     _setFindParams(find, count, page);
     return find.execute();
   }
+  
+  static Future<int> createPartition() async {
+    ORM.Find find = new ORM.Find(RERoom);
+    ORM.Field field = find.table.fields.firstWhere((ORM.Field f){
+      return f.propertyName == 'ownerObjectId'; 
+    });
+    String filedName = ORM.SQL.camelCaseToUnderscore(field.propertyName);
+    final String sql = "select _2gis_partition_magic('${find.table.tableName}', '${filedName}');";
+    try {
+      int res = await (ORM.Model.ormAdapter.connection as psql.Connection).execute(sql);
+      return res;
+    } catch (error) {
+      
+    }
+    return 0;
+  }
 }
 
 @ORM.DBTable('real_estate_objects_rooms')
-class RERoom  extends OntoEntity with RealEstateBase {
-   
+class RERoom  extends OntoEntity with RealEstateBase {  
   static Future<RERoom> Get(String id) {
     ORM.FindOne findOneItem = new ORM.FindOne(RERoom)
                                   ..whereEquals('id', id);
