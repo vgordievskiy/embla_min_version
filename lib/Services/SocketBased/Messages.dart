@@ -16,6 +16,8 @@ class MessageService {
   
   Common.LoginService login;
   
+  Map<String, WebSocketSession> _sessions = new Map();
+  
   MessageService() {
     login = new Common.LoginService();
     login.addToOpenResource('messages');
@@ -25,10 +27,23 @@ class MessageService {
     return session.attributes.containsKey('user');
   }
   
+  Future _sendAll(String message) async {
+    for(WebSocketSession session in _sessions.values) {
+      try {
+        session.connection.add(message);
+      } catch(err) {
+        log.warning(err);
+      }
+    }
+  }
+  
   Future<bool> _authConncetion(WebSocketSession session, String token) async {
     if (!_isAuthentificated(session)) {
       try {
         Common.Principal res = await login.authenticateToken(token);
+        {
+          _sessions[res.name] = session;
+        }
         session.connection.add("success");
         session.attributes['user'] = res;
       } catch(error) {
@@ -50,8 +65,7 @@ class MessageService {
       bool res = await _authConncetion(session, message);
       return;
     }
-    
-    session.connection.add("ok: ${message}");
+    _sendAll("${session.attributes['user'].name} : $message");
   }
 
   @OnError()
@@ -62,5 +76,8 @@ class MessageService {
   @OnClose()
   void onClose(WebSocketSession session) {
     log.info("connection closed");
+    {
+      _sessions.remove(session.attributes['user']);
+    }
   }
 }
