@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
+import 'package:postgresql/postgresql.dart' as psql;
 import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';
 
@@ -33,6 +34,22 @@ class MessageUtils {
       case 1:
         return MessageType.GROUP;
     }
+  }
+  
+  static Future<int> createPartition() async {
+    ORM.Find find = new ORM.Find(Message);
+    ORM.Field field = find.table.fields.firstWhere((ORM.Field f){
+      return f.propertyName == 'targetId'; 
+    });
+    String filedName = ORM.SQL.camelCaseToUnderscore(field.propertyName);
+    final String sql = "select _2gis_partition_magic('${find.table.tableName}', '${filedName}');";
+    try {
+      int res = await (ORM.Model.ormAdapter.connection as psql.Connection).execute(sql);
+      return res;
+    } catch (error) {
+      
+    }
+    return 0;
   }
 }
 

@@ -21,6 +21,7 @@ class MessageService {
   MessageService() {
     login = new Common.LoginService();
     login.addToOpenResource('messages');
+    MessageUtils.createPartition();
   }
   
   bool _isAuthentificated(WebSocketSession session) {
