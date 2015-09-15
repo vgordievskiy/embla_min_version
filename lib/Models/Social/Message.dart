@@ -53,6 +53,23 @@ class MessageUtils {
   }
 }
 
+@ORM.DBTable('userSocialMessageBodies')
+class MessageBody extends ORM.Model with Observable {
+  static List<int> _convMessage(Map<String, dynamic> value) {
+    assert(value.containsKey('message'));
+    return value['message']; 
+  }
+  
+  @ORM.DBField()
+  @ORM.DBFieldPrimaryKey()
+  @ORM.DBFieldType('SERIAL')
+  int id;
+  
+  @ORM.DBField()
+  @ORM.DBFieldConverter(_convMessage)
+  dynamic _message;
+}
+
 @ORM.DBTable('userSocialMessages')
 class Message extends ORM.Model with Observable  {
   static List<int> _converter(Map<String, dynamic> value) {
@@ -60,16 +77,10 @@ class Message extends ORM.Model with Observable  {
     return value['users']; 
   }
   
-  static List<int> _convMessage(Map<String, dynamic> value) {
-    assert(value.containsKey('message'));
-    return value['message']; 
-  }
-  
   Message(): super() {}
   
   Message.Dummy(): super() {
     _usersReaded = { "users" : [] };
-    _message = { "data" : "" };
   }
   
   @ORM.DBField()
@@ -90,8 +101,7 @@ class Message extends ORM.Model with Observable  {
   DateTime timeStamp;
   
   @ORM.DBField()
-  @ORM.DBFieldConverter(_convMessage)
-  dynamic _message;
+  int _messageBodyId;
   
   @ORM.DBField()
   @ORM.DBFieldConverter(_converter)
@@ -101,5 +111,4 @@ class Message extends ORM.Model with Observable  {
   set Users(List<int> value) {
     _usersReaded = { "users" : value };
   }
-  
 }
