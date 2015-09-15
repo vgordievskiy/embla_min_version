@@ -128,6 +128,6 @@ class REGeneric extends OntoEntity with RealEstateBase {
   ReType get Type => ReUtils.int2Type(type);
   
   String toString(){
-    return '${REGenericUtils.type2Onto(type)} { id: $id, ObjectName: $objectName}';
+    return '${REGenericUtils.type2Onto(ReUtils.int2Type(type))} { id: $id, ObjectName: $objectName}';
   }
 }
