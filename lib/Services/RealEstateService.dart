@@ -11,6 +11,8 @@ import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
 import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
 import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
+
+import 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/Utils/LikeObject.dart';
 import 'package:BMSrv/Models/User.dart';
@@ -81,6 +83,7 @@ class RealEstateService {
   RealEstateService(DBAdapter this._Db) {
     _Generator = new Uuid();
     
+    REGenericUtils.createPartition();
     RERoomUtils.createPartition();
   }
   
