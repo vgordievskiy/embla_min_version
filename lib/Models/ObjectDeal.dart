@@ -65,23 +65,13 @@ class ObjectDeal extends OntoEntity {
   }
   
   Future<dynamic> GetObject() {
-    ORM.FindOne find;
-    switch(ReUtils.int2Type(type)) {
-      case ReType.PRIVATE :
-        find = new ORM.FindOne(REPrivate)..whereEquals('id', objectId);
-        break;
-      case ReType.COMMERCIAL :
-        find = new ORM.FindOne(RECommercial)..whereEquals('id', objectId);
-        break;
-      case ReType.LAND :
-        find = new ORM.FindOne(RELand)..whereEquals('id', objectId);
-        break;
-      case ReType.ROOM:
-        find = new ORM.FindOne(RERoom)..whereEquals('id', objectId);
-        break;
+    
+    ReType intType = ReUtils.int2Type(type);
+    if (intType != ReType.ROOM) {
+      return REGeneric.Get(intType, id);
+    } else {
+      return RERoom.Get(id);
     }
-    assert(find!=null);
-    return find.execute();
   }
   
   Future<User> GetUser() {
