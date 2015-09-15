@@ -38,7 +38,7 @@ class ObjGroupUtils {
   }
 }
 
-@ORM.DBTable('users_social_group_by_object')
+@ORM.DBTable('usersSocialGroupByObject')
 class ObjGroup extends ORM.Model with Observable  {
   static List<int> _converter(Map<String, dynamic> value) {
     assert(value.containsKey('users'));

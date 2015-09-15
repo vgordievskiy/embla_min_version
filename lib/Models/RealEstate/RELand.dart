@@ -8,7 +8,7 @@ import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';
 
-@ORM.DBTable('real_estate_objects_land')
+@ORM.DBTable('realEstateObjectsLand')
 class RELand extends OntoEntity with RealEstateBase {
   Logger _log;
   @ORM.DBField()

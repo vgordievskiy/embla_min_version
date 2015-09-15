@@ -58,7 +58,7 @@ class REMetaDataUtils {
   }
 }
 
-@ORM.DBTable('real_estate_objects_meta_data')
+@ORM.DBTable('realEstateObjectsMetaData')
 class REMetaData extends ORM.Model with Observable {
  
   static Map _converter(Map<String, dynamic> value) {

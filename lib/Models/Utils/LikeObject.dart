@@ -41,7 +41,7 @@ class LikeObjectsUtils {
   }
 }
 
-@ORM.DBTable('like_for_objects')
+@ORM.DBTable('likeForObjects')
 class LikeObject extends ORM.Model {
   @ORM.DBField()
   @ORM.DBFieldPrimaryKey()

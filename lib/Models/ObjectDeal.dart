@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:observe/observe.dart';
 
 
-@ORM.DBTable('user_object_deal')
+@ORM.DBTable('userObjectDeal')
 class ObjectDeal extends OntoEntity {
   
   Logger _log;

@@ -20,7 +20,7 @@ var uri = 'postgres://BMSrvApp:BMSrvAppbno9mjc@localhost:5432/investments';
 
 _postGisInit() async {
   PG.Connection conn = await PG.connect(uri);
-  List<String> tables = ['real__estate__objects__commercial', 'real__estate__objects__private', 'real__estate__objects__land', 'real__estate__objects__rooms'];
+  List<String> tables = ['real_estate_objects_commercial', 'real_estate_objects_private', 'real_estate_objects_land', 'real_estate_objects_rooms'];
   
   for(String table in tables) {
     try {

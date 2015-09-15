@@ -146,7 +146,7 @@ class RealEstateService {
     RERoom newRoom = new RERoom.Dummy(ReUtils.str2Type(type), reObj);
   
     newRoom.objectName = data['objectName'];
-    newRoom.square = data['square'];
+    newRoom.square = JSON.decode(data['square']);
      
     var exception = null;
   

@@ -55,7 +55,7 @@ class RERoomUtils {
   }
 }
 
-@ORM.DBTable('real_estate_objects_rooms')
+@ORM.DBTable('realEstateObjectsRooms')
 class RERoom  extends OntoEntity with RealEstateBase {  
   static Future<RERoom> Get(String id) {
     ORM.FindOne findOneItem = new ORM.FindOne(RERoom)

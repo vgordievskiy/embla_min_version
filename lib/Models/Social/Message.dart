@@ -53,7 +53,7 @@ class MessageUtils {
   }
 }
 
-@ORM.DBTable('user_social_messages')
+@ORM.DBTable('userSocialMessages')
 class Message extends ORM.Model with Observable  {
   static List<int> _converter(Map<String, dynamic> value) {
     assert(value.containsKey('users'));
