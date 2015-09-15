@@ -57,13 +57,14 @@ class RERoomUtils {
 
 @ORM.DBTable('realEstateObjectsRooms')
 class RERoom  extends OntoEntity with RealEstateBase {  
-  static Future<RERoom> Get(String id) {
-    ORM.FindOne findOneItem = new ORM.FindOne(RERoom)
-                                  ..whereEquals('id', id);
-    if (findOneItem != null) {
-      return (findOneItem.execute() as Future<RERoom>);
-    }
-    throw "not found ${id}";
+  static Future<RERoom> Get(int ownerId, int id) {
+    ORM.FindOne find = new ORM.FindOne(RERoom);
+    
+    ORM.Condition cond = new ORM.Equals('ownerObjectId', ownerId);
+    cond.and(new ORM.Equals('ownerObjectId', ownerId));
+    find.where(cond);
+    
+    return (find.execute() as Future<RERoom>);
   }
    
    Logger _log;
@@ -136,12 +137,7 @@ class RERoom  extends OntoEntity with RealEstateBase {
    ReType get Type => ReType.ROOM;
    
    Future<RealEstateBase> GetOwner() async {
-     switch(OwnerType) {
-       case ReType.COMMERCIAL : return RECommercial.Get(ownerObjectId.toString());
-       case ReType.PRIVATE : return REPrivate.Get(ownerObjectId.toString());
-       case ReType.LAND : return RELand.Get(ownerObjectId.toString());
-       default: throw "only got commercial or private";
-     }
+     return REGeneric.Get(OwnerType, ownerObjectId);
    }
    
    ReType get OwnerType => ReUtils.int2Type(ownerObjectType);
