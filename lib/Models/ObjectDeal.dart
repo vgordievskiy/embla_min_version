@@ -65,7 +65,6 @@ class ObjectDeal extends OntoEntity {
   }
   
   Future<dynamic> GetObject() {
-    
     ReType intType = ReUtils.int2Type(type);
     if (intType != ReType.ROOM) {
       return REGeneric.Get(intType, id);
