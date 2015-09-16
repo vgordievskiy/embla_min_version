@@ -4,11 +4,9 @@ import 'dart:async';
 import 'dart:mirrors';
 import 'dart:convert';
 
-export 'package:BMSrv/Models/RealEstate/REMetaData.dart';
-export 'package:BMSrv/Models/RealEstate/REPrivate.dart';
-export 'package:BMSrv/Models/RealEstate/RECommercial.dart';
-export 'package:BMSrv/Models/RealEstate/RELand.dart';
+export 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
 export 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
+export 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 
 import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
@@ -16,8 +14,8 @@ import 'package:simple_features/simple_features.dart' as Geo;
 import 'package:postgresql/postgresql.dart' as psql_connector;
 import 'package:logging/logging.dart';
 import 'package:SrvCommon/SrvCommon.dart';
-import 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
+export 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 import 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 
@@ -77,10 +75,16 @@ class FindObjectsInBounds extends CustomFindObjects {
   Geo.Point SW;
   Geo.Point NE;
   
-  FindObjectsInBounds(Type modelType, this.SW, this.NE) : super(modelType)
+  FindObjectsInBounds(Type modelType, this.SW, this.NE, [ReType type]) : super(modelType)
   {
-    final String box = "ST_MakeEnvelope(${SW.x}, ${SW.y}, ${NE.x}, ${NE.y}, 4326)";
-    this.sqlQuery = "SELECT * FROM ${table.tableName} WHERE obj_geom && $box";
+    final String box =
+      "ST_MakeEnvelope(${SW.x}, ${SW.y}, ${NE.x}, ${NE.y}, 4326)";
+    
+    final String filter =
+      type == null ? "" : " type = ${ReUtils.type2Int(type)} and"; 
+     
+    this.sqlQuery =
+      "SELECT * FROM ${table.tableName} WHERE $filter obj_geom && $box";
   }
 }
 

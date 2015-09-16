@@ -1,8 +1,7 @@
 library BMSrv.Models.RealEstate.Rooms.Room;
 import 'dart:async';
 
-export 'package:BMSrv/Models/RealEstate/REPrivate.dart';
-export 'package:BMSrv/Models/RealEstate/RECommercial.dart';
+export 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
 
 import 'package:logging/logging.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
@@ -57,11 +56,11 @@ class RERoomUtils {
 
 @ORM.DBTable('realEstateObjectsRooms')
 class RERoom  extends OntoEntity with RealEstateBase {  
-  static Future<RERoom> Get(int ownerId, int id) {
+  static Future<RERoom> Get(int id, [int ownerId]) {
     ORM.FindOne find = new ORM.FindOne(RERoom);
     
-    ORM.Condition cond = new ORM.Equals('ownerObjectId', ownerId);
-    cond.and(new ORM.Equals('ownerObjectId', ownerId));
+    ORM.Condition cond = new ORM.Equals('id', id);
+    if (ownerId != null) cond.and(new ORM.Equals('ownerObjectId', ownerId));
     find.where(cond);
     
     return (find.execute() as Future<RERoom>);

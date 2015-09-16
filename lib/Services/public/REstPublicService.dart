@@ -7,11 +7,8 @@ import 'package:logging/logging.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 
 import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
-import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
-import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
-import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
-import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
+import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 import 'package:BMSrv/Services/RealEstateService.dart';
@@ -31,37 +28,37 @@ class RealEstatePublicService {
   
   @app.Route("/private", methods: const[app.GET])
   @Encode()
-  Future<List<REPrivateWrapper>> getAllPrivate() async {
+  Future<List<REstateWrapper>> getAllPrivate() async {
     return _impl.getAllPrivate();
   }
   
   @app.Route("/commercial", methods: const[app.GET])
   @Encode()
-  Future<List<RECommercialWrapper>> getAllCommercial() async {
+  Future<List<REstateWrapper>> getAllCommercial() async {
     return _impl.getAllCommercial();
   }
   
   @app.Route("/land", methods: const[app.GET])
   @Encode()
-  Future<List<RELandWrapper>> getAllLand() async {
+  Future<List<REstateWrapper>> getAllLand() async {
     return _impl.getAllLand();
   }
   
   @app.Route("/private/:id", methods: const[app.GET])
   @Encode()
-  Future<REPrivateWrapper> getPrivateById(String id) async {
+  Future<REstateWrapper> getPrivateById(String id) async {
     return _impl.getPrivateById(id);
   }
   
   @app.Route("/commercial/:id", methods: const[app.GET])
   @Encode()
-  Future<RECommercialWrapper> getCommercialById(String id) async {
+  Future<REstateWrapper> getCommercialById(String id) async {
     return _impl.getCommercialById(id);
   }
   
   @app.Route("/land/:id", methods: const[app.GET])
   @Encode()
-  Future<RELandWrapper> getLandById(String id) async {
+  Future<REstateWrapper> getLandById(String id) async {
     return _impl.getLandById(id);
   }
   
@@ -75,7 +72,7 @@ class RealEstatePublicService {
  
  @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
  @Encode()
- Future<List<RECommercialWrapper>> getAllCommercialInBounds(String SWLng, String SWLat,
+ Future<List<REstateWrapper>> getAllCommercialInBounds(String SWLng, String SWLat,
                                                               String NELng, String NELat)
  async {
    return _impl.getAllCommercialInBounds(SWLng, SWLat, NELng, NELat);  
@@ -83,7 +80,7 @@ class RealEstatePublicService {
  
  @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
  @Encode()
- Future<List<RECommercialWrapper>> getAllPrivatesInBounds(String SWLng, String SWLat,
+ Future<List<REstateWrapper>> getAllPrivatesInBounds(String SWLng, String SWLat,
                                                               String NELng, String NELat)
  async {
    return _impl.getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat);  
@@ -91,7 +88,7 @@ class RealEstatePublicService {
  
  @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const[app.GET])
  @Encode()
- Future<List<RECommercialWrapper>> getAllLandsInBounds(String SWLng, String SWLat,
+ Future<List<REstateWrapper>> getAllLandsInBounds(String SWLng, String SWLat,
                                                               String NELng, String NELat)
  async {
    return _impl.getAllLandsInBounds(SWLng, SWLat, NELng, NELat);  

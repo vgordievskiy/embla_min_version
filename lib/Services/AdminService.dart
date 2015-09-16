@@ -25,12 +25,12 @@ Future<User> _getUser(String email) async {
   return foundUsers[0];
 }
 
-Future<dynamic> _getObject(ReType type, String id) {
-  switch (type) {
-    case ReType.PRIVATE : return REPrivate.Get(id);
-    case ReType.COMMERCIAL : return RECommercial.Get(id);
-    case ReType.LAND : return RELand.Get(id);
-    case ReType.ROOM : return RERoom.Get(id);
+Future<dynamic> _getObject(ReType type, String idStr) {
+  int id = int.parse(idStr);
+  if (type != ReType.ROOM) {
+    return REGeneric.Get(type, id);
+  } else {
+    return RERoom.Get(id);
   }
 }
 

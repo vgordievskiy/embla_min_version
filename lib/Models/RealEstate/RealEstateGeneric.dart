@@ -1,4 +1,5 @@
 library BMSrv.Models.RealEstate.Generic;
+export 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 export 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 
 import 'dart:async';
@@ -26,6 +27,15 @@ class REGenericUtils {
     return null;
   }
   
+  static Future<List<REGeneric>> GetAllByType(ReType type) {
+    ORM.Find find = new ORM.Find(REGeneric);
+    
+    ORM.Condition cond = new ORM.Equals('type', ReUtils.type2Int(type));
+    find.where(cond);
+
+    return (find.execute() as Future<List<REGeneric>>);
+  }
+  
   static Future<int> createPartition() async {
     ORM.Find find = new ORM.Find(REGeneric);
     ORM.Field field = find.table.fields.firstWhere((ORM.Field f){
@@ -45,18 +55,14 @@ class REGenericUtils {
 
 @ORM.DBTable('realEstateObjectsGeneric')
 class REGeneric extends OntoEntity with RealEstateBase {
-  static Future<REGeneric> Get(ReType type, String id) {
+  static Future<REGeneric> Get(ReType type, int id) {
     ORM.FindOne find = new ORM.FindOne(REGeneric);
     
     ORM.Condition cond = new ORM.Equals('type', ReUtils.type2Int(type));
-    cond.and(new ORM.Equals('id', id));
-    
+    cond.and(new ORM.Equals('id', id)); 
     find.where(cond);
-    
-    if (find != null) {
-      return (find.execute() as Future<REGeneric>);
-    }
-    throw "not found ${id}";
+
+    return (find.execute() as Future<REGeneric>);
   }
   
   Logger _log;
@@ -91,20 +97,22 @@ class REGeneric extends OntoEntity with RealEstateBase {
       String onto = REGenericUtils.type2Onto(ReUtils.int2Type(type));
       InitOnto(onto);
       initLog();
-      loadOntoInfo().then((ind){
-        this.changes.listen((List<dynamic> changes){
-          for(var change in changes) {
-            _log.info(change);
-          }
+      if (id != null) {
+        loadOntoInfo().then((ind){
+          this.changes.listen((List<dynamic> changes){
+            for(var change in changes) {
+              _log.info(change);
+            }
+          });
+          OntoIndivid.Get(ind);
         });
-        OntoIndivid.Get(ind);
-      });
+      }
     } 
   }
   
   initLog() async {
     _log = new Logger('''
-      BMSrv.${REGenericUtils.type2Onto(ReUtils.int2Type(type))}
+      BMSrv.${REGenericUtils.type2Onto(Type)}
       _$id''');
   }
 

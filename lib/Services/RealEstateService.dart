@@ -6,11 +6,8 @@ import "dart:convert";
 
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
-import 'package:BMSrv/Models/JsonWrappers/RECommercial.dart';
-import 'package:BMSrv/Models/JsonWrappers/RELand.dart';
-import 'package:BMSrv/Models/JsonWrappers/REPrivate.dart';
-import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 import 'package:BMSrv/Models/JsonWrappers/REstate.dart';
+import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 
 import 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
@@ -57,26 +54,6 @@ class HelperObjectConverter<JsonWrapper> {
 
 @app.Group("/realestate")
 class RealEstateService {
-  
-  static final Map<ReType, Function> _reContructors = 
-  {
-    ReType.COMMERCIAL : () => new RECommercial.Dummy(),
-    ReType.PRIVATE : () => new REPrivate.Dummy(),
-    ReType.LAND : () => new RELand.Dummy()
-  };
-  
-  static final Map<ReType, Type> _reIntTypes = 
-  {
-    ReType.COMMERCIAL : RECommercial,
-    ReType.PRIVATE : REPrivate,
-    ReType.LAND : RELand,
-    ReType.ROOM: RERoom
-  };
-  
-  static RealEstateBase _getDummy(ReType type) => _reContructors[type]();
-  
-  static Type _getIntReType(ReType type) => _reIntTypes[type]; 
-  
   DBAdapter _Db;
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.RealEstateService");
@@ -87,27 +64,12 @@ class RealEstateService {
     RERoomUtils.createPartition();
   }
   
-  Future<List<ObjectDealWrapper>> _getDeals(Type type, String id) async {
-    ORM.FindOne find = new ORM.FindOne(type)..whereEquals('id', id);
-    var obj = await find.execute();
-    if (obj == null) {
-      return new app.ErrorResponse(404, {"error": "not found object"});
-    }
-
-    List<ObjectDealWrapper> ret = new List();
-
-    for (ObjectDeal deal in await obj.GetAllParts()) {
-      ret.add(await ObjectDealWrapper.Create(deal));
-    }
-    return ret;
-  }
-  
-  Future<dynamic> _getObject(ReType type, String id) {
-    switch (type) {
-      case ReType.PRIVATE : return REPrivate.Get(id);
-      case ReType.COMMERCIAL : return RECommercial.Get(id);
-      case ReType.LAND : return RELand.Get(id);
-      case ReType.ROOM : return RERoom.Get(id);
+  Future<dynamic> _getObject(ReType type, String idStr) {
+    int id = int.parse(idStr);
+    if (type != ReType.ROOM) {
+      return REGeneric.Get(type, id);
+    } else {
+      return RERoom.Get(id);
     }
   }
   
@@ -116,24 +78,20 @@ class RealEstateService {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
     final ReType reType = ReUtils.str2Type(type);
-    var newObj = _getDummy(reType);
+    var newObj = new REGeneric.Dummy(reType);
     
     newObj.objectName = data['objectName'];
 
     var exception = null;
 
-    var saveResult = await newObj.save().catchError((var error) {
-      exception = error;
-    });
-
-    if (data.containsKey('objectGeom')) {
-      int res = await newObj.SaveGeometryFromGeoJson(data['objectGeom']);
-    }
-
-    if (exception != null) {
-      return exception;
-    } else {
+    try {
+      var saveResult = await newObj.save();
+      if (data.containsKey('objectGeom')) {
+        int res = await newObj.SaveGeometryFromGeoJson(data['objectGeom']);
+      }
       return newObj.id;
+    } catch (error) {
+      return new app.ErrorResponse(400, {"error": error});
     }
   }
   
@@ -152,18 +110,15 @@ class RealEstateService {
     newRoom.square = JSON.decode(data['square']);
      
     var exception = null;
-  
-    var saveResult = await newRoom.save().catchError((var error) {
-      exception = error;
-    });
-  
-    if (data.containsKey('objectGeom')) {
-      int res = await newRoom.SaveGeometryFromGeoJson(data['objectGeom']);
-    }
-    if (exception != null) {
-      return exception;
-    } else {
+    
+    try {
+      var saveResult = await newRoom.save();
+      if (data.containsKey('objectGeom')) {
+        int res = await newRoom.SaveGeometryFromGeoJson(data['objectGeom']);
+      }
       return newRoom.id;
+    } catch (error) {
+      return new app.ErrorResponse(400, {"error": error});
     }
   }
   
@@ -297,15 +252,21 @@ class RealEstateService {
   
   @app.Route("/commercial", methods: const [app.GET])
   @Encode()
-  Future<List<RECommercialWrapper>> getAllCommercial() => new HelperObjectConverter<RECommercialWrapper>().get(RECommercialWrapper.OriginType);
+  Future<List<REstateWrapper>> getAllCommercial() async
+    => new HelperObjectConverter<REstateWrapper>()
+       .getFrom(await REGenericUtils.GetAllByType(ReType.COMMERCIAL));
 
   @app.Route("/land", methods: const [app.GET])
   @Encode()
-  Future<List<RELandWrapper>> getAllLand() => new HelperObjectConverter<RELandWrapper>().get(RELandWrapper.OriginType);
+  Future<List<REstateWrapper>> getAllLand() async
+    => new HelperObjectConverter<REstateWrapper>()
+           .getFrom(await REGenericUtils.GetAllByType(ReType.LAND));
   
   @app.Route("/private", methods: const [app.GET])
   @Encode()
-  Future<List<REPrivateWrapper>> getAllPrivate() => new HelperObjectConverter<REPrivateWrapper>().get(REPrivateWrapper.OriginType);
+  Future<List<REstateWrapper>> getAllPrivate() async 
+    => new HelperObjectConverter<REstateWrapper>()
+         .getFrom(await REGenericUtils.GetAllByType(ReType.PRIVATE));
   
   @app.DefaultRoute()
   @Encode()
@@ -320,37 +281,37 @@ class RealEstateService {
   @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
              methods: const [app.GET])
   @Encode()
-  Future<List<RECommercialWrapper>> getAllCommercialInBounds(
+  Future<List<REstateWrapper>> getAllCommercialInBounds(
       String SWLng, String SWLat, String NELng, String NELat) async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(RECommercial, sw, ne);
+    var find = await new FindObjectsInBounds(REGeneric, sw, ne, ReType.COMMERCIAL);
 
-    return new HelperObjectConverter<RECommercialWrapper>().getFrom(await find.execute());
+    return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
   }
   
   @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
   @Encode()
-  Future<List<RELandWrapper>> getAllLandsInBounds(
+  Future<List<REstateWrapper>> getAllLandsInBounds(
       String SWLng, String SWLat, String NELng, String NELat) async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(RELand, sw, ne);
+    var find = await new FindObjectsInBounds(REGeneric, sw, ne, ReType.LAND);
 
-    return new HelperObjectConverter<RELandWrapper>().getFrom(await find.execute());
+    return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
   }
 
   @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
   @Encode()
-  Future<List<REPrivateWrapper>> getAllPrivatesInBounds(
+  Future<List<REstateWrapper>> getAllPrivatesInBounds(
       String SWLng, String SWLat, String NELng, String NELat) async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(REPrivate, sw, ne);
+    var find = await new FindObjectsInBounds(REGeneric, sw, ne, ReType.PRIVATE);
 
-    return new HelperObjectConverter<REPrivateWrapper>().getFrom(await find.execute());
+    return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
   }
   
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
@@ -362,38 +323,34 @@ class RealEstateService {
     ret.addAll(await getAllLandsInBounds(SWLng, SWLat, NELng, NELat));
     return ret;
   }
-
+  
   @app.Route("/commercial/:id", methods: const [app.GET])
   @Encode()
-  Future<RECommercialWrapper> getCommercialById(String id) async {
-    ORM.FindOne find = new ORM.FindOne(RECommercial)..whereEquals('id', id);
-    var ret = await find.execute();
-    
+  Future<REstateWrapper> getCommercialById(String id) async {
+    REGeneric ret = await REGeneric.Get(ReType.COMMERCIAL, int.parse(id));
     if (ret == null) {
       return new app.ErrorResponse(404, {"error": "not found object"});
     }
-    return RECommercialWrapper.Create(ret);
+    return REstateWrapper.Create(ret);
   }
 
   @app.Route("/land/:id", methods: const [app.GET])
   @Encode()
-  Future<RELandWrapper> getLandById(String id) async {
-    ORM.FindOne find = new ORM.FindOne(RELand)..whereEquals('id', id);
-    var ret = await find.execute();
+  Future<REstateWrapper> getLandById(String id) async {
+    REGeneric ret = await REGeneric.Get(ReType.LAND, int.parse(id));
     if (ret == null) {
       return new app.ErrorResponse(404, {"error": "not found object"});
     }
-    return RELandWrapper.Create(ret);
+    return REstateWrapper.Create(ret);
   }
 
   @app.Route("/private/:id", methods: const [app.GET])
   @Encode()
-  Future<REPrivateWrapper> getPrivateById(String id) async {
-    ORM.FindOne find = new ORM.FindOne(REPrivate)..whereEquals('id', id);
-    var ret = await find.execute();
+  Future<REstateWrapper> getPrivateById(String id) async {
+    REGeneric ret = await REGeneric.Get(ReType.PRIVATE, int.parse(id));
     if (ret == null) {
       return new app.ErrorResponse(404, {"error": "not found object"});
     }
-    return REPrivateWrapper.Create(ret);
+    return REstateWrapper.Create(ret);
   }
 }
