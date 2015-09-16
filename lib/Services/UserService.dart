@@ -106,7 +106,7 @@ class UserService {
                  @app.Body(app.FORM) Map data) async
   {
     User user = await User.GetUser(id);
-    RERoom room = await _getObject(ReType.ROOM, roomid);
+    RERoom room = await RERoomUtils.getById(int.parse(roomid));
     if(room.ownerObjectId != int.parse(estateid) ||
        ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
     
