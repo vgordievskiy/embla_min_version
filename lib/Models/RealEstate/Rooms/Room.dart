@@ -142,10 +142,10 @@ class RERoom  extends OntoEntity with RealEstateBase {
    ReType get OwnerType => ReUtils.int2Type(ownerObjectType);
    
    Future<double> get Price async {
-     REMetaData data = await REMetaDataUtils.getForObject(this, fieldName: 'pricePerMeter');
-     if((data.Data as List).isEmpty) return 0.0;
-     assert((data.Data as List).length == 1);
-     return data.Data[0];
+     List<REMetaData> data = await REMetaDataUtils.getForObject(this, fieldName: 'pricePerMeter');
+     if(data.isEmpty) return 0.0;
+     assert(data.length == 1);
+     return data[0].Data;
    }
    
    String toString(){
