@@ -21,6 +21,7 @@ class RERoomWrapper {
     ret.data = metaData.data;
     ret.objectName = object.objectName;
     ret.square = object.square;
+    ret.price = await object.Price;
     return ret;
   }
 
@@ -38,4 +39,7 @@ class RERoomWrapper {
   
   @Field()
   double square;
+  
+  @Field()
+  double price;
 }
