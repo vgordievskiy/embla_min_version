@@ -208,6 +208,8 @@ class RealEstateService {
     
     var value = JSON.decode(data['value']);
     
+    if(value == null) throw new app.ErrorResponse(400, {"error": "data empty"});
+    
     return room.addMetaData(param, param, value);
   }
   
