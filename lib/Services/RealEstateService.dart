@@ -27,7 +27,7 @@ Future<User> _getUser(String name) async {
   return foundUsers[0];
 }
 
-bool _isEmpty(String value) => value == "";
+bool _isEmpty(String value) => value == null || value == "";
 
 class HelperObjectConverter<JsonWrapper> {
   ClassMirror _Class = reflectClass(JsonWrapper);
