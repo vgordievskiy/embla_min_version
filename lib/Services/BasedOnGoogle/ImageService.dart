@@ -29,7 +29,7 @@ class ImageService {
     
     file.readAsString().then((String cont){
       accountCredentials = new auth.ServiceAccountCredentials.fromJson(cont);
-      connect();
+      connect().then((_) => test());
     });
   }
   
@@ -37,10 +37,14 @@ class ImageService {
     try {
       Client  =  await auth_io.clientViaServiceAccount(accountCredentials, scopes);
       storageClient = new storage.StorageApi(Client);
-      Client.close();
     } catch (error) {
       log.warning(error);
     }
+  }
+  
+  test() async {
+    var options = DownloadOptions.FullMedia;
+    storage.Objects tmp = await storageClient.objects.list('semplex');
     
   }
   
