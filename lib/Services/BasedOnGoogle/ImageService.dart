@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:googleapis_auth/auth.dart' as auth;
 import 'package:googleapis_auth/auth_io.dart' as auth_io;
 import 'package:googleapis/storage/v1.dart' as storage;
+import 'package:googleapis/common/common.dart' show DownloadOptions, Media;
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:redstone/server.dart' as app;
 import 'package:redstone_mapper/plugin.dart';
