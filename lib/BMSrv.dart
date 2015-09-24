@@ -7,6 +7,7 @@ import 'package:BMSrv/Services/RealEstateService.dart';
 import 'package:BMSrv/Services/ObjectDealService.dart';
 import 'package:BMSrv/Services/SocketBased/Events.dart';
 import 'package:BMSrv/Services/SocketBased/Messages.dart';
+import 'package:BMSrv/Services/BasedOnGoogle/ImageService.dart';
 /*------Public api------------------------------*/
 import 'package:BMSrv/Services/public/REstPublicService.dart';
 /*------end Public------------------------------*/
