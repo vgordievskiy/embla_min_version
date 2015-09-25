@@ -80,7 +80,7 @@ class ImageService {
     
     {
       Map<String, String> params = { 'value' : publicUrl};
-      await _estateSrv.addDataForRoom(type, id, roomId, 'mainImageUrl', data);
+      await _estateSrv.addDataForRoom(type, id, roomId, 'mainImageUrl', params);
     }
     
   }
