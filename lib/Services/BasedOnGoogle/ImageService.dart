@@ -1,6 +1,7 @@
 library BMSrv.BasedOnGoogle.ImageService;
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import 'package:googleapis_auth/auth.dart' as auth;
 import 'package:googleapis_auth/auth_io.dart' as auth_io;
@@ -72,15 +73,15 @@ class ImageService {
   
   @app.Route('/base', methods: const [app.POST], allowMultipartRequest: true)
   @OnlyForUserGroup(const ['admin'])
-  addBaseImage(String type, String id, String roomId, 
+  addBaseImage(String type, String id, String roomid, 
                @app.Body(app.FORM) var data) async
   {
     final String intUrl = await saveFile(data);
     final String publicUrl = "${googleBaseUrl}/${intUrl}";
     
     {
-      Map<String, String> params = { 'value' : publicUrl};
-      await _estateSrv.addDataForRoom(type, id, roomId, 'mainImageUrl', params);
+      Map<String, String> params = { 'value' : JSON.encode(publicUrl)};
+      await _estateSrv.addDataForRoom(type, id, roomid, 'mainImageUrl', params);
     }
     
   }
