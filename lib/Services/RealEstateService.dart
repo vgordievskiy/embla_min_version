@@ -55,6 +55,7 @@ class HelperObjectConverter<JsonWrapper> {
 @app.Group("/realestate")
 class RealEstateService {
   DBAdapter _Db;
+  
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.RealEstateService");
   RealEstateService(DBAdapter this._Db) {

@@ -29,7 +29,13 @@ Future<List<REMetaData>> testCustom() async {
 }
 
 class REMetaDataUtils {
-  static List<String> metaNames = ['electroPower', 'targetUsage', 'description', 'pricePerMeter'];
+  static List<String> metaNames = [
+    'electroPower',
+    'targetUsage',
+    'description',
+    'pricePerMeter',
+    'mainImageUrl',
+];
   
   static bool checkMetaName(String name) {
     return metaNames.contains(name);

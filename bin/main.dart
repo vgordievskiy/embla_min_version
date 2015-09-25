@@ -8,6 +8,7 @@ import 'package:SrvCommon/SrvCommon.dart' as Common;
 /*Services*/
 import 'package:BMSrv/BMSrv.dart';
 import 'package:BMSrv/Services/RealEstateService.dart';
+import 'package:BMSrv/Services/BasedOnGoogle/ImageService.dart';
 
 import 'package:logging/logging.dart';
 import 'package:stack_trace/stack_trace.dart';
@@ -38,6 +39,7 @@ main() {
     app.addModule(new Module()..bind(Common.DBAdapter));
     app.addModule(new Module()..bind(Common.EventSys));
     app.addModule(new Module()..bind(RealEstateService));
+    app.addModule(new Module()..bind(ImageService));
     setupConsoleLog();
 
     app.start(port: 8001);
