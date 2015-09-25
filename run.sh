@@ -1,2 +1,2 @@
 #!/bin/bash
-dart bin/main.dart
+dart bin/main.dart bin/config.ini

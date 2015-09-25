@@ -8,6 +8,7 @@ import 'package:googleapis_auth/auth_io.dart' as auth_io;
 import 'package:googleapis/storage/v1.dart' as storage;
 import 'package:googleapis/common/common.dart' show DownloadOptions, Media;
 import 'package:redstone/server.dart' as app;
+import "package:ini/ini.dart";
 import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
@@ -25,15 +26,17 @@ class ImageService {
   Uuid _Generator = new Uuid();
   
   RealEstateService _estateSrv;
+  Config _config;
   
   auth.ServiceAccountCredentials accountCredentials = null;
   auth.AuthClient Client;
   
   storage.StorageApi storageClient;
   
-  ImageService(RealEstateService this._estateSrv)
+  ImageService(RealEstateService this._estateSrv, Config this._config)
   {
-    File file = new File('bin/credentials.json');
+    bool res = _config.hasSection('GoogleCloud');
+    File file = new File(_config.get("GoogleCloud", "credentials"));
     
     file.readAsString().then((String cont){
       accountCredentials = new auth.ServiceAccountCredentials.fromJson(cont);
