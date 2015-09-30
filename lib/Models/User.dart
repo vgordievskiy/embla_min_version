@@ -2,31 +2,19 @@ library BMSrv.Models.User;
 
 import 'dart:async';
 
-import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:logging/logging.dart';
 
 @ORM.DBTable('users')
-class User extends OntoEntity {
+class User extends ORM.Model {
   Logger _log;
   User() {
-    InitOnto("User");
     initLog();
-    loadOntoInfo().then((ind){
-      /*this.changes.listen((List<dynamic> changes){
-        for(var change in changes) {
-          _log.info(change);
-        }
-      });*/
-      OntoIndivid.Get(ind);
-    });
   }
   
-  User.Dummy() {
-    InitOnto("User");
-  }
+  User.Dummy();
   
   initLog() async {
     _log = new Logger("BMSrv.User_$id");

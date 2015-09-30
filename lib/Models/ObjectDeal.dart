@@ -7,11 +7,9 @@ import 'package:BMSrv/Models/User.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
-import 'package:observe/observe.dart';
-
 
 @ORM.DBTable('userObjectDeal')
-class ObjectDeal extends OntoEntity {
+class ObjectDeal extends ORM.Model {
   
   Logger _log;
   @ORM.DBField()
@@ -48,20 +46,10 @@ class ObjectDeal extends OntoEntity {
   DateTime approveTime;
   
   ObjectDeal() {
-    InitOnto("ObjectDeal");
     initLog();
-    loadOntoInfo().then((ind){
-      /*this.changes.listen((List<dynamic> changes){
-        for(var change in changes) {
-          _log.info(change);
-        }
-      });*/
-      OntoIndivid.Get(ind);
-    });
   }
   
   ObjectDeal.DummyRoom(User user, RERoom object, double _part, double price) {
-    InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
     isPending = true;
@@ -97,22 +85,6 @@ class ObjectDeal extends OntoEntity {
   
   initLog() async {
     _log = new Logger("BMSrv.ObjectDeal_$id");
-  }
-  
-  @override
-  Future<bool> save() async {
-    if (this.id == null) {
-      try {
-        bool res = await super.save();
-        if (res == true) {
-          this.ontoId = $.EntityName;
-          return super.save();
-        }
-        return res;
-      } catch(error) { throw error; }
-    } else {
-      return super.save();
-    }
   }
   
   String toString(){

@@ -84,11 +84,6 @@ class UserService {
     if (exception != null) {
       return exception;
     } else {
-      
-      await newUser.$.AddData("hasUserName", newUser.name);
-      await newUser.$.AddData("hasEmail", newUser.email);
-      await newUser.$.AddData("hasUserId", newUser.id);
-      
       User dbUser = await _getUser(newUser.email);
       return { "status" : "created" };
     }
@@ -119,12 +114,9 @@ class UserService {
       ObjectDeal deal = new ObjectDeal.DummyRoom(user, room, part, price);
           
       try {
-        await deal.save();
-        
+        await deal.save();  
         new Future(() => _addUserToObjectGroup(room, user));
         
-        await deal.$.AddRelation('hasTargetRealEstate', room.$);
-        await deal.$.AddRelation('hasUserParticipant', user.$);
         return deal.id;
       } catch (error) {
         return error; 

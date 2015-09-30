@@ -10,7 +10,6 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:postgresql/postgresql.dart' as psql;
 import 'package:logging/logging.dart';
-import 'package:observe/observe.dart';
 
 class REGenericUtils {
   static String type2Onto(ReType type) {
@@ -54,7 +53,7 @@ class REGenericUtils {
 }
 
 @ORM.DBTable('realEstateObjectsGeneric')
-class REGeneric extends OntoEntity with RealEstateBase {
+class REGeneric extends ORM.Model with RealEstateBase {
   static Future<REGeneric> Get(ReType type, int id) {
     ORM.FindOne find = new ORM.FindOne(REGeneric);
     
@@ -94,19 +93,7 @@ class REGeneric extends OntoEntity with RealEstateBase {
   
   _init() {
     if (type != null) {
-      String onto = REGenericUtils.type2Onto(ReUtils.int2Type(type));
-      InitOnto(onto);
       initLog();
-      if (id != null) {
-        loadOntoInfo().then((ind){
-          this.changes.listen((List<dynamic> changes){
-            for(var change in changes) {
-              _log.info(change);
-            }
-          });
-          OntoIndivid.Get(ind);
-        });
-      }
     } 
   }
   
@@ -114,22 +101,6 @@ class REGeneric extends OntoEntity with RealEstateBase {
     _log = new Logger('''
       BMSrv.${REGenericUtils.type2Onto(Type)}
       _$id''');
-  }
-
-  @override
-  Future<bool> save() async {
-    if (this.id == null) {
-      try {
-        bool res = await super.save();
-        if (res == true) {
-          this.ontoId = $.EntityName;
-          return super.save();
-        }
-        return res;
-      } catch(error) { throw error; }
-    } else {
-      return super.save();
-    }
   }
   
   @override

@@ -10,12 +10,7 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
-import 'package:BMSrv/Models/Utils/LikeObject.dart';
-import 'package:BMSrv/Models/ObjectDeal.dart';
-
 import 'package:BMSrv/Models/JsonWrappers/User.dart';
-import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
-import 'package:BMSrv/Models/JsonWrappers/RERoom.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -68,11 +63,6 @@ class AdminService {
     if (exception != null) {
       return exception;
     } else {
-      
-      await newUser.$.AddData("hasUserName", newUser.name);
-      await newUser.$.AddData("hasEmail", newUser.email);
-      await newUser.$.AddData("hasUserId", newUser.id);
-      
       User dbUser = await _getUser(newUser.email);
       return { "status" : "created" };
     }

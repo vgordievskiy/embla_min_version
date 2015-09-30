@@ -42,7 +42,7 @@ Future Init() async {
   var params = new Common.Params(User: "BMSrvApp",
                                  Password: "BMSrvAppbno9mjc",
                                  DBName: "investments",
-                                 OntologyName: "investments");
+                                 OntologyName: null/*"investments"*/);
   await Common.Init(params);
   await _postGisInit();
 }

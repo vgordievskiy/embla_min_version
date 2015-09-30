@@ -55,7 +55,7 @@ class RERoomUtils {
 }
 
 @ORM.DBTable('realEstateObjectsRooms')
-class RERoom  extends OntoEntity with RealEstateBase {  
+class RERoom  extends ORM.Model with RealEstateBase {  
   static Future<RERoom> Get(int id, [int ownerId]) {
     ORM.FindOne find = new ORM.FindOne(RERoom);
     
@@ -90,20 +90,10 @@ class RERoom  extends OntoEntity with RealEstateBase {
    double square;
    
    RERoom() {
-     InitOnto("RealEstateRoom");
      initLog();
-     loadOntoInfo().then((ind){
-       /*this.changes.listen((List<dynamic> changes){
-         for(var change in changes) {
-           _log.info(change);
-         }
-       });
-       OntoIndivid.Get(ind);*/
-     });
    }
    
    RERoom.Dummy(ReType type, RealEstateBase ownerObject) {
-     InitOnto("RealEstateRoom");
      initData(ownerObject.id, type);
    }
    
@@ -114,22 +104,6 @@ class RERoom  extends OntoEntity with RealEstateBase {
    
    initLog() async {
      _log = new Logger("BMSrv.RERoom_$id");
-   }
-   
-   @override
-   Future<bool> save() async {
-     if (this.id == null) {
-       try {
-         bool res = await super.save();
-         if (res == true) {
-           this.ontoId = $.EntityName;
-           return super.save();
-         }
-         return res;
-       } catch(error) { throw error; }
-     } else {
-       return super.save();
-     }
    }
    
    @override

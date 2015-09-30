@@ -8,11 +8,9 @@ export 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
 export 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 export 'package:BMSrv/Models/RealEstate/REMetaData.dart';
 
-import 'package:observe/observe.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:simple_features/simple_features.dart' as Geo;
 import 'package:postgresql/postgresql.dart' as psql_connector;
-import 'package:logging/logging.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 export 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
@@ -89,8 +87,6 @@ class FindObjectsInBounds extends CustomFindObjects {
 }
 
 abstract class RealEstateBase {
-  static OntoClass OwnerClass = GetOntology().GetClass("RealEstate");
-  
   int id;
   
   ORM.Table get Table => ORM.AnnotationsParser.getTableForInstance(this);
