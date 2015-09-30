@@ -65,9 +65,9 @@ class ObjectDeal extends ORM.Model {
   Future<dynamic> GetObject() {
     ReType intType = ReUtils.int2Type(type);
     if (intType != ReType.ROOM) {
-      return REGeneric.Get(intType, id);
+      return REGeneric.Get(intType, objectId);
     } else {
-      return RERoom.Get(id);
+      return RERoom.Get(objectId);
     }
   }
   
