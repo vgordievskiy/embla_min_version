@@ -105,29 +105,33 @@ class UserService {
   addDealForRoom(String id, String type, String estateid, String roomid,
                  @app.Body(app.FORM) Map data) async
   {
-    User user = await User.GetUser(id);
-    RERoom room = await RERoomUtils.getById(int.parse(roomid));
-    if(room.ownerObjectId != int.parse(estateid) ||
-       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
-    
-    double part = double.parse(data["part"]);
-    
-    await _chackObjectParts(room, part);
-    
-    ObjectDeal deal = new ObjectDeal.DummyRoom(user, room, part);
-        
     try {
-      await deal.save();
+      User user = await User.GetUser(id);
+      RERoom room = await RERoomUtils.getById(int.parse(roomid));
+      if(room.ownerObjectId != int.parse(estateid) ||
+         ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
       
-      new Future(() => _addUserToObjectGroup(room, user));
+      double part = double.parse(data["part"]);
+      double price = await room.Price; 
       
-      await deal.$.AddRelation('hasTargetRealEstate', room.$);
-      await deal.$.AddRelation('hasUserParticipant', user.$);
-      return deal.id;
-    } catch (error) {
-      return error; 
+      await _chackObjectParts(room, part);
+      
+      ObjectDeal deal = new ObjectDeal.DummyRoom(user, room, part, price);
+          
+      try {
+        await deal.save();
+        
+        new Future(() => _addUserToObjectGroup(room, user));
+        
+        await deal.$.AddRelation('hasTargetRealEstate', room.$);
+        await deal.$.AddRelation('hasUserParticipant', user.$);
+        return deal.id;
+      } catch (error) {
+        return error; 
+      }
+    } catch(error) {
+      return new app.ErrorResponse(400, {"error": error});
     }
-    
   }
   
   @app.Route("/:id/deals", methods: const[app.GET])

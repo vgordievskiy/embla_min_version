@@ -39,6 +39,9 @@ class ObjectDeal extends OntoEntity {
   double part;
   
   @ORM.DBField()
+  double price;
+  
+  @ORM.DBField()
   DateTime createTime;
   
   @ORM.DBField()
@@ -57,12 +60,13 @@ class ObjectDeal extends OntoEntity {
     });
   }
   
-  ObjectDeal.DummyRoom(User user, RERoom object, double _part) {
+  ObjectDeal.DummyRoom(User user, RERoom object, double _part, double price) {
     InitOnto("ObjectDeal");
     userId = user.id;
     objectId = object.id;
     isPending = true;
     part = _part;
+    this.price = price;
     createTime = new DateTime.now();
     initData(userId, object.id, ReUtils.type2Int(ReType.ROOM));
   }
