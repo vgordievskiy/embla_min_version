@@ -164,7 +164,9 @@ class RealEstateService {
     List<ObjectDeal> deals = await room.GetAllParts();
     if(deals != null) {
       for (ObjectDeal deal in deals) {
-        ret.add(await ObjectDealWrapper.Create(deal));
+        if (deal != null) {
+          ret.add(await ObjectDealWrapper.Create(deal));
+        }
       }
     }
     return ret;
