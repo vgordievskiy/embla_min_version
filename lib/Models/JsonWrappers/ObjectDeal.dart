@@ -17,7 +17,14 @@ class ObjectDealWrapper {
     ObjectDealWrapper ret = new ObjectDealWrapper();
     ret.id = deal.id;
     ret.type = deal.TypeName;
-    ret.object = await RERoomWrapper.Create(await deal.GetObject());
+    {
+      var obj = await deal.GetObject();
+      if(obj != null) {
+        ret.object = await RERoomWrapper.Create(obj);
+      } else {
+        ret.object = new RERoomWrapper();
+      }
+    }
     ret.isPending = deal.isPending;
     ret.part = deal.part;
     return ret;
