@@ -72,7 +72,6 @@ class REGeneric extends ORM.Model with RealEstateBase {
   int id;
   
   @ORM.DBField()
-  @ORM.DBFieldType('UNIQUE')
   String ontoId;
   
   @ORM.DBField()

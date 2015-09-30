@@ -13,7 +13,6 @@ class ObjectDeal extends ORM.Model {
   
   Logger _log;
   @ORM.DBField()
-  @ORM.DBFieldType('UNIQUE')
   String ontoId;
   
   @ORM.DBField()
