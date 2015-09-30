@@ -38,6 +38,12 @@ class ObjectDeal extends OntoEntity {
   @ORM.DBField()
   double part;
   
+  @ORM.DBField()
+  DateTime createTime;
+  
+  @ORM.DBField()
+  DateTime approveTime;
+  
   ObjectDeal() {
     InitOnto("ObjectDeal");
     initLog();
@@ -57,6 +63,7 @@ class ObjectDeal extends OntoEntity {
     objectId = object.id;
     isPending = true;
     part = _part;
+    createTime = new DateTime.now();
     initData(userId, object.id, ReUtils.type2Int(ReType.ROOM));
   }
   
