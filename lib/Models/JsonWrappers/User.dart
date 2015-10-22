@@ -13,6 +13,7 @@ class UserWrapper {
       UserWrapper ret = new UserWrapper();
       ret.name = user.name;
       ret.email = user.email;
+      ret.avatar = user.profileImage;
       return ret;
   }
 
@@ -21,4 +22,7 @@ class UserWrapper {
 
   @Field()
   String email;
+  
+  @Field()
+  String avatar;
 }
