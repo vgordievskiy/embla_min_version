@@ -16,7 +16,7 @@ import 'package:BMSrv/Services/RealEstateService.dart';
 
 final scopes = [storage.StorageApi.DevstorageFullControlScope];
 
-@app.Group("/realestate/:type/:id/rooms/:roomid/images")
+@app.Group("/")
 class ImageService { 
   final log = new Logger("BMSrv.Services.ImageService");
   final String contentType = "image/jpeg";
@@ -75,7 +75,8 @@ class ImageService {
     }
   }
   
-  @app.Route('/base', methods: const [app.POST], allowMultipartRequest: true)
+  @app.Route('/realestate/:type/:id/rooms/:roomid/images/base',
+             methods: const [app.POST], allowMultipartRequest: true)
   @OnlyForUserGroup(const ['admin'])
   addBaseImage(String type, String id, String roomid, 
                @app.Body(app.FORM) var data) async
