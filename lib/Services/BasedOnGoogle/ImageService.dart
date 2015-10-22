@@ -53,7 +53,7 @@ class ImageService {
     }
   }
   
-  Future<String> saveFile(@app.Body(app.FORM) var data) async {
+  Future<String> saveFile(@app.Body(app.FORM) var data, [String bucket = null]) async {
     if (data['file'] is app.HttpBodyFileUpload) {
       app.HttpBodyFileUpload file = data["file"];
       List<int> content = file.content;
@@ -61,6 +61,7 @@ class ImageService {
                                 content.length, contentType: contentType);
       try {
         final String name = '${_Generator.v4()}.jpg';
+        bucket = bucket == null ? this.bucket : bucket;
         var ret = await storageClient.objects.insert(null, bucket,
                                                      name: name,
                                                      uploadMedia: newItem,
