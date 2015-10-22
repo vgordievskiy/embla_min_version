@@ -13,6 +13,7 @@ import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Services/RealEstateService.dart';
+import 'package:BMSrv/Models/User.dart';
 
 final scopes = [storage.StorageApi.DevstorageFullControlScope];
 
@@ -73,6 +74,17 @@ class ImageService {
     } else {
       throw new app.ErrorResponse(403, {"error": "data is not a file"});
     }
+  }
+  
+  @app.Route('/users/:id/profile/avatar', methods: const [app.POST],
+             allowMultipartRequest: true)
+  addUserAvatar(String userId, @app.Body(app.FORM) var data) async
+  {
+    final String intUrl = await saveFile(data, 'semplex-users-info');
+    final String publicUrl = "${googleBaseUrl}/${intUrl}";
+    User user = await User.GetUser(userId);
+    user.profileImage = publicUrl;
+    return user.save();
   }
   
   @app.Route('/realestate/:type/:id/rooms/:roomid/images/base',
