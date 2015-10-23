@@ -78,11 +78,23 @@ class ImageService {
   
   @app.Route('/users/:id/profile/avatar', methods: const [app.POST],
              allowMultipartRequest: true)
-  addUserAvatar(String userId, @app.Body(app.FORM) var data) async
+  addUserAvatar(String id, @app.Body(app.FORM) var data) async
   {
-    final String intUrl = await saveFile(data, 'semplex-users-info');
+    User user = await User.GetUser(id);
+    final String bucketName = 'semplex-users-info';
+    final String intUrl = await saveFile(data, bucketName);
     final String publicUrl = "${googleBaseUrl}/${intUrl}";
-    User user = await User.GetUser(userId);
+    
+    if(user.profileImage != null) {
+      try {
+        Uri url = Uri.parse(user.profileImage);
+        
+        var ret = await storageClient.objects.
+            delete(bucketName, url.pathSegments.last);
+      } catch(error) {
+        var tmp = error;
+      }
+    }
     user.profileImage = publicUrl;
     return user.save();
   }
