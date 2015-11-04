@@ -7,6 +7,13 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:logging/logging.dart';
 
+class UserUtils {
+  static Future<List<User>> GetAll() {
+    ORM.Find find = new ORM.Find(User);
+    return find.execute();
+  }
+}
+
 @ORM.DBTable('users')
 class User extends ORM.Model {
   Logger _log;

@@ -73,4 +73,17 @@ class AdminService {
   Future<UserWrapper> getAdminById(String id) async {
     return UserWrapper.Create(await User.GetUser(id));
   }
+  
+  @app.Route("/users")
+  @OnlyForUserGroup(const ['admin'])
+  @Encode()
+  Future<List<UserWrapper>> getUsers() async {
+    List<UserWrapper> ret = new List();
+    
+    for(User user in await UserUtils.GetAll()) {
+      ret.add(await UserWrapper.Create(user));
+    }
+    
+    return ret;
+  }
 }

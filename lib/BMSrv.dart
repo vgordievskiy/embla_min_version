@@ -3,6 +3,7 @@ library BMSrv;
 import 'dart:async';
 /*----For corrent initialize RedstoneDart--------*/
 import 'package:BMSrv/Services/UserService.dart';
+import 'package:BMSrv/Services/AdminService.dart';
 import 'package:BMSrv/Services/RealEstateService.dart';
 import 'package:BMSrv/Services/ObjectDealService.dart';
 import 'package:BMSrv/Services/SocketBased/Events.dart';
