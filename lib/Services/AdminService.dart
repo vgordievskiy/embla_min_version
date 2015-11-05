@@ -89,7 +89,7 @@ class AdminService {
     return ret;
   }
   
-  @app.Route("/users/:userId")
+  @app.Route("/users/:userId/deals")
   @OnlyForUserGroup(const ['admin'])
   @Encode()
   Future<List<ObjectDealWrapper>> getUserDeals(String userId) async {
