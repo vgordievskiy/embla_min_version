@@ -8,9 +8,11 @@ import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/User.dart';
+import 'package:BMSrv/Models/ObjectDeal.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 import 'package:BMSrv/Models/JsonWrappers/User.dart';
+import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -86,4 +88,17 @@ class AdminService {
     
     return ret;
   }
+  
+  @app.Route("/users/:userId")
+  @OnlyForUserGroup(const ['admin'])
+  @Encode()
+  Future<List<ObjectDealWrapper>> getUserDeals(String userId) async {
+    User user = await User.GetUser(userId);
+    List<ObjectDealWrapper> ret = new List();
+    for(ObjectDeal deal in await user.GetDeals()) {
+      ret.add(await ObjectDealWrapper.Create(deal));
+    }
+    return ret;
+  }
+  
 }
