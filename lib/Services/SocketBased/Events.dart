@@ -35,8 +35,19 @@ class EventService {
       {
         ObjectDeal deal = evt.data;
         log.info("deal part: ${deal.part}");
+        _sendAll('new-data-ready');
       }
       break;
+    }
+  }
+  
+  Future _sendAll(String message) async {
+    for(WebSocketSession session in _sessions.values) {
+      try {
+        session.connection.add(message);
+      } catch(err) {
+        log.warning(err);
+      }
     }
   }
   
