@@ -16,6 +16,7 @@ class EventService {
   final log = new Logger("BMSrv.Services.SocketBased.Events");
   
   Common.LoginService login;
+  Map<int, WebSocketSession> _sessions = new Map();
   
   EventService() {
     login = new Common.LoginService();
@@ -52,6 +53,9 @@ class EventService {
         Common.Principal res = await login.authenticateToken(message);
         session.connection.add("success");
         session.attributes['user'] = res;
+        {
+          _sessions[session.hashCode] = session;
+        }
       } catch(error) {
         session.connection.add("access denied");
         session.connection.close();
@@ -67,5 +71,6 @@ class EventService {
   @OnClose()
   void onClose(WebSocketSession session) {
     log.info("connection closed");
+    _sessions.remove(session.hashCode);
   }
 }

@@ -60,7 +60,7 @@ class MessageService {
   }
 
   @OnMessage()
-  void onMessage(String message, WebSocketSession session) async {
+  onMessage(String message, WebSocketSession session) async {
     log.info("message received: $message");
     if(!_isAuthentificated(session)) {
       bool res = await _authConncetion(session, message);
