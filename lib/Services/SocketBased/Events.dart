@@ -25,7 +25,7 @@ class EventService {
   }
 
   @OnMessage()
-  void onMessage(String message, WebSocketSession session) async {
+  onMessage(String message, WebSocketSession session) async {
     log.info("message received: $message");
     if (!session.attributes.containsKey('user')) {
       try {
