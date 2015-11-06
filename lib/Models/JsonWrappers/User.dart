@@ -12,11 +12,15 @@ class UserWrapper {
   {
       UserWrapper ret = new UserWrapper();
       ret.userUrl = "/users/${user.id}";
+      ret.id = user.id;
       ret.name = user.name;
       ret.email = user.email;
       ret.avatar = user.profileImage;
       return ret;
   }
+  
+  @Field()
+  int id;
   
   @Field()
   String userUrl;
