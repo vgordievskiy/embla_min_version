@@ -4,6 +4,6 @@ import 'package:SrvCommon/SrvCommon.dart';
 
 class SysEvt extends DomainEvent {
   final String type;
-  final Object data;
+  final dynamic data;
   SysEvt(this.type, [this.data]);
 }

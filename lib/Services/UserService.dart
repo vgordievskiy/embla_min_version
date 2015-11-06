@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
+import 'package:BMSrv/Events/SystemEvents.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
@@ -114,7 +115,8 @@ class UserService {
       ObjectDeal deal = new ObjectDeal.DummyRoom(user, room, part, price);
           
       try {
-        await deal.save();  
+        await deal.save();
+        EventSys.asyncMessageBus.publish(new SysEvt('add-deal', deal));
         new Future(() => _addUserToObjectGroup(room, user));
         
         return deal.id;

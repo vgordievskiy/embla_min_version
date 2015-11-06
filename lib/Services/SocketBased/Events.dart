@@ -3,10 +3,13 @@ library BMSrv.SocketBased.Events;
 import 'dart:async';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:redstone/server.dart' as app;
-import 'package:redstone_web_socket/redstone_web_socket.dart';
 import 'package:uuid/uuid.dart';
-import 'package:logging/logging.dart';
+import 'package:redstone_web_socket/redstone_web_socket.dart';
 import 'package:SrvCommon/SrvCommon.dart' as Common;
+import 'package:logging/logging.dart';
+
+import 'package:BMSrv/Events/SystemEvents.dart';
+import 'package:BMSrv/Models/ObjectDeal.dart';
 
 @WebSocketHandler("events")
 class EventService {
@@ -17,6 +20,23 @@ class EventService {
   EventService() {
     login = new Common.LoginService();
     login.addToOpenResource('events');
+    initEvtSystem();
+  }
+  
+  initEvtSystem() {
+    Common.EventSys.asyncMessageBus.subscribe(SysEvt, onSysEvtHandler);
+  }
+  
+  onSysEvtHandler(SysEvt evt) {
+    log.info("${evt.type}");
+    switch(evt.type) {
+      case 'add-deal' : 
+      {
+        ObjectDeal deal = evt.data;
+        log.info("deal part: ${deal.part}");
+      }
+      break;
+    }
   }
   
   @OnOpen()
