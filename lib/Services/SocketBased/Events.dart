@@ -17,6 +17,7 @@ class EventService {
 
   Common.LoginService login;
   Map<int, WebSocketSession> _sessions = new Map();
+  Map<TSysEvt, Function> handlers = new Map();
 
   EventService() {
     login = new Common.LoginService();
@@ -26,17 +27,17 @@ class EventService {
 
   initEvtSystem() {
     Common.EventSys.asyncMessageBus.subscribe(SysEvt, onSysEvtHandler);
+    {
+      handlers[TSysEvt.ADD_DEAL] = (ObjectDeal deal){ 
+        log.info("deal part: ${deal.part}");
+        _sendAll('new-data-ready');
+      };
+    }
   }
 
   onSysEvtHandler(SysEvt evt) {
-    switch (evt.type) {
-      case TSysEvt.ADD_DEAL:
-        {
-          ObjectDeal deal = evt.data;
-          log.info("deal part: ${deal.part}");
-          _sendAll('new-data-ready');
-        }
-        break;
+    if(handlers.containsKey(evt.type)) {
+      handlers[evt.type](evt.data);
     }
   }
 
