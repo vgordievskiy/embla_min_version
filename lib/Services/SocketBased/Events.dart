@@ -1,6 +1,7 @@
 library BMSrv.SocketBased.Events;
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:redstone/server.dart' as app;
 import 'package:uuid/uuid.dart';
@@ -9,7 +10,9 @@ import 'package:SrvCommon/SrvCommon.dart' as Common;
 import 'package:logging/logging.dart';
 
 import 'package:BMSrv/Events/SystemEvents.dart';
+import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/ObjectDeal.dart';
+import 'package:BMSrv/Models/RealEstate/Rooms/Room.dart';
 
 @WebSocketHandler("events")
 class EventService {
@@ -34,9 +37,14 @@ class EventService {
   initEvtSystem() {
     Common.EventSys.asyncMessageBus.subscribe(SysEvt, onSysEvtHandler);
     {
-      handlers[TSysEvt.ADD_DEAL] = (ObjectDeal deal){ 
-        log.info("deal part: ${deal.part}");
-        _sendAll('new-data-ready');
+      handlers[TSysEvt.ADD_DEAL] = (ObjectDeal deal) async { 
+        RERoom room = await deal.GetObject();
+        User user = await deal.GetUser();
+        var seqUpdates = [
+          {'room' : room.id },
+          {'user' : user.id}
+        ];
+        _sendAll(JSON.encode(seqUpdates));
       };
     }
   }
