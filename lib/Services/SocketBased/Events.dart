@@ -41,7 +41,7 @@ class EventService {
         RERoom room = await deal.GetObject();
         User user = await deal.GetUser();
         var seqUpdates = [
-          {'room' : room.id },
+          {'room' : room.id},
           {'user' : user.id}
         ];
         _sendAll(JSON.encode(seqUpdates));
