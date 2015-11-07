@@ -14,42 +14,42 @@ import 'package:BMSrv/Models/ObjectDeal.dart';
 @WebSocketHandler("events")
 class EventService {
   final log = new Logger("BMSrv.Services.SocketBased.Events");
-  
+
   Common.LoginService login;
   Map<int, WebSocketSession> _sessions = new Map();
-  
+
   EventService() {
     login = new Common.LoginService();
     login.addToOpenResource('events');
     initEvtSystem();
   }
-  
+
   initEvtSystem() {
     Common.EventSys.asyncMessageBus.subscribe(SysEvt, onSysEvtHandler);
   }
-  
+
   onSysEvtHandler(SysEvt evt) {
-    switch(evt.type) {
-      case TSysEvt.ADD_DEAL : 
-      {
-        ObjectDeal deal = evt.data;
-        log.info("deal part: ${deal.part}");
-        _sendAll('new-data-ready');
-      }
-      break;
+    switch (evt.type) {
+      case TSysEvt.ADD_DEAL:
+        {
+          ObjectDeal deal = evt.data;
+          log.info("deal part: ${deal.part}");
+          _sendAll('new-data-ready');
+        }
+        break;
     }
   }
-  
+
   Future _sendAll(String message) async {
-    for(WebSocketSession session in _sessions.values) {
+    for (WebSocketSession session in _sessions.values) {
       try {
         session.connection.add(message);
-      } catch(err) {
+      } catch (err) {
         log.warning(err);
       }
     }
   }
-  
+
   @OnOpen()
   void onOpen(WebSocketSession session) {
     log.info("connection established");
@@ -66,7 +66,7 @@ class EventService {
         {
           _sessions[session.hashCode] = session;
         }
-      } catch(error) {
+      } catch (error) {
         session.connection.add("access denied");
         session.connection.close();
       }
