@@ -25,6 +25,12 @@ class EventService {
     initEvtSystem();
   }
 
+  onSysEvtHandler(SysEvt evt) {
+    if(handlers.containsKey(evt.type)) {
+      handlers[evt.type](evt.data);
+    }
+  }
+  
   initEvtSystem() {
     Common.EventSys.asyncMessageBus.subscribe(SysEvt, onSysEvtHandler);
     {
@@ -32,12 +38,6 @@ class EventService {
         log.info("deal part: ${deal.part}");
         _sendAll('new-data-ready');
       };
-    }
-  }
-
-  onSysEvtHandler(SysEvt evt) {
-    if(handlers.containsKey(evt.type)) {
-      handlers[evt.type](evt.data);
     }
   }
 
