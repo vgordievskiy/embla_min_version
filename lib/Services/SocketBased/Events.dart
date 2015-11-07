@@ -29,9 +29,8 @@ class EventService {
   }
   
   onSysEvtHandler(SysEvt evt) {
-    log.info("${evt.type}");
     switch(evt.type) {
-      case 'add-deal' : 
+      case TSysEvt.ADD_DEAL : 
       {
         ObjectDeal deal = evt.data;
         log.info("deal part: ${deal.part}");

@@ -116,7 +116,7 @@ class UserService {
           
       try {
         await deal.save();
-        EventSys.asyncPub(new SysEvt('add-deal', deal));
+        EventSys.asyncPub(new SysEvt(TSysEvt.ADD_DEAL, deal));
         new Future(() => _addUserToObjectGroup(room, user));
         
         return deal.id;
