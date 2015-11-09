@@ -79,7 +79,6 @@ class AdminService {
   }
   
   @app.Route("/users")
-  @OnlyForUserGroup(const ['admin'])
   @Encode()
   Future<List<UserWrapper>> getUsers() async {
     List<UserWrapper> ret = new List();
@@ -92,7 +91,6 @@ class AdminService {
   }
   
   @app.Route("/users/:userId/deals")
-  @OnlyForUserGroup(const ['admin'])
   @Encode()
   Future<List<ObjectDealWrapper>> getUserDeals(String userId) async {
     User user = await User.GetUser(userId);
