@@ -27,6 +27,8 @@ class ObjectDealWrapper {
     }
     ret.isPending = deal.isPending;
     ret.part = deal.part;
+    ret.createTime = deal.createTime;
+    ret.approveTime = deal.approveTime;
     return ret;
   }
 
@@ -44,4 +46,10 @@ class ObjectDealWrapper {
   
   @Field()
   double part;
+  
+  @Field()
+  DateTime createTime;
+  
+  @Field()
+  DateTime approveTime;
 }
