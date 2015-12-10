@@ -87,7 +87,7 @@ class ImageService {
     final String bucketName = 'semplex-users-info';
     final String intUrl = await saveFile(data,
                                          bucket: bucketName,
-                                         prefix: '${user.id}-');
+                                         prefix: 'user-${user.id}-');
     final String publicUrl = "${googleBaseUrl}/${intUrl}";
     
     if(user.profileImage != null) {
