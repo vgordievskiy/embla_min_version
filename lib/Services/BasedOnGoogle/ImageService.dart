@@ -54,14 +54,17 @@ class ImageService {
     }
   }
   
-  Future<String> saveFile(@app.Body(app.FORM) var data, [String bucket = null]) async {
+  Future<String> saveFile(@app.Body(app.FORM) var data,
+                          {String bucket : null, 
+                           String prefix : ''}) async
+  {
     if (data['file'] is app.HttpBodyFileUpload) {
       app.HttpBodyFileUpload file = data["file"];
       List<int> content = file.content;
       Media newItem = new Media(new Stream.fromIterable([content]),
                                 content.length, contentType: contentType);
       try {
-        final String name = '${_Generator.v4()}.jpg';
+        final String name = '$prefix${_Generator.v4()}.jpg';
         bucket = bucket == null ? this.bucket : bucket;
         var ret = await storageClient.objects.insert(null, bucket,
                                                      name: name,
@@ -82,7 +85,9 @@ class ImageService {
   {
     User user = await User.GetUser(id);
     final String bucketName = 'semplex-users-info';
-    final String intUrl = await saveFile(data, bucketName);
+    final String intUrl = await saveFile(data,
+                                         bucket: bucketName,
+                                         prefix: '${user.id}-');
     final String publicUrl = "${googleBaseUrl}/${intUrl}";
     
     if(user.profileImage != null) {
@@ -105,13 +110,13 @@ class ImageService {
   addBaseImage(String type, String id, String roomid, 
                @app.Body(app.FORM) var data) async
   {
-    final String intUrl = await saveFile(data);
+    final String prefix = "main-$type-$id-$roomid-";
+    final String intUrl = await saveFile(data, prefix: prefix);
     final String publicUrl = "${googleBaseUrl}/${intUrl}";
     
     {
       Map<String, String> params = { 'value' : JSON.encode(publicUrl)};
       await _estateSrv.addDataForRoom(type, id, roomid, 'mainImageUrl', params);
     }
-    
   }
 }
