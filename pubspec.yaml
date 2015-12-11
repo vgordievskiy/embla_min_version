@@ -23,6 +23,7 @@ dependencies:
   ini: "^1.1.0"
   googleapis: ">=0.1.0 <0.2.0"
   googleapis_auth: ">=0.1.0 <0.3.0"
+  mailer: any
 dependency_overrides:
   dart_orm:
     git: https://github.com/vgordievskiy/DartORM.git

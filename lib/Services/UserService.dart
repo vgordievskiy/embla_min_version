@@ -181,4 +181,11 @@ class UserService {
     }
     return LikeObjectsUtils.CreateLike(room, user);
   }
+  
+  @app.Route("/activate/:uniqueId", methods: const[app.GET])
+  @FreeAccess()
+  Future validateUser(String uniqueId) async {
+    User user = await UserUtils.GetUserByUniqueId(uniqueId);
+    return {};
+  }
 }

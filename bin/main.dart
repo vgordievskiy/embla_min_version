@@ -37,6 +37,7 @@ startServer(Config config) {
   Init().then((var res){
       app.addPlugin(getMapperPlugin());
       app.addPlugin(Common.UserGroupPlugin);
+      app.addPlugin(Common.FreeAccessPlugin);
       app.addPlugin(getWebSocketPlugin());
       app.addModule(new Module()..bind(Common.DBAdapter));
       app.addModule(new Module()..bind(Common.EventSys));
