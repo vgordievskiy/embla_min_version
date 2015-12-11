@@ -28,7 +28,6 @@ Future<User> _getUser(String email) async {
 }
 
 @app.Group("/users")
-@ProtectedAccess(filtrateByUser: true)
 class UserService {
   DBAdapter _Db;
   Uuid _Generator;
@@ -92,12 +91,14 @@ class UserService {
   }
 
   @app.Route("/:id")
+  @ProtectedAccess(filtrateByUser: true)
   @Encode()
   Future<UserWrapper> getUserById(String id) async {
     return UserWrapper.Create(await User.GetUser(id));
   }
   
   @app.Route("/:id/deals/:type/:estateid/room/:roomid", methods: const[app.PUT])
+  @ProtectedAccess(filtrateByUser: true)
   @Encode()
   addDealForRoom(String id, String type, String estateid, String roomid,
                  @app.Body(app.FORM) Map data) async
@@ -130,6 +131,7 @@ class UserService {
   }
   
   @app.Route("/:id/deals", methods: const[app.GET])
+  @ProtectedAccess(filtrateByUser: true)
   @Encode()
   Future<List<ObjectDealWrapper>> getUserDeals(String id) async {
     User user = await User.GetUser(id);
@@ -144,6 +146,7 @@ class UserService {
   }
   
   @app.Route("/:id/likes", methods: const[app.GET])
+  @ProtectedAccess(filtrateByUser: true)
   @Encode()
   Future<List<RERoomWrapper>> getUserLikes(String id) async {
     User user = await User.GetUser(id);
@@ -159,6 +162,7 @@ class UserService {
   }
   
   @app.Route("/:id/likes/:roomId", methods: const[app.GET])
+  @ProtectedAccess(filtrateByUser: true)
   @Encode()
   Future<bool> haveLake(String id, roomId) async {
     User user = await User.GetUser(id);
@@ -167,6 +171,7 @@ class UserService {
   }
   
   @app.Route("/:id/likes/:roomId", methods: const[app.DELETE])
+  @ProtectedAccess(filtrateByUser: true)
   Future deleteLake(String id, roomId) async {
     User user = await User.GetUser(id);
     RERoom room = await RERoomUtils.getById(int.parse(roomId));
@@ -174,6 +179,7 @@ class UserService {
   }
   
   @app.Route("/:id/likes/:roomId", methods: const[app.PUT])
+  @ProtectedAccess(filtrateByUser: true)
   Future addUserLike(String id, String roomId) async {
     User user = await User.GetUser(id);
     RERoom room = await RERoomUtils.getById(int.parse(roomId));
