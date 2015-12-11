@@ -53,6 +53,7 @@ class HelperObjectConverter<JsonWrapper> {
 }
 
 @app.Group("/realestate")
+@ProtectedAccess(filtrateByUser: true)
 class RealEstateService {
   DBAdapter _Db;
   

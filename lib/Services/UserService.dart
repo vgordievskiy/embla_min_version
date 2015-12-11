@@ -28,6 +28,7 @@ Future<User> _getUser(String email) async {
 }
 
 @app.Group("/users")
+@ProtectedAccess(filtrateByUser: true)
 class UserService {
   DBAdapter _Db;
   Uuid _Generator;

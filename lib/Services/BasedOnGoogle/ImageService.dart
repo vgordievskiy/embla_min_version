@@ -18,6 +18,7 @@ import 'package:BMSrv/Models/User.dart';
 final scopes = [storage.StorageApi.DevstorageFullControlScope];
 
 @app.Group("/")
+@ProtectedAccess(filtrateByUser: true)
 class ImageService { 
   final log = new Logger("BMSrv.Services.ImageService");
   final String contentType = "image/jpeg";
