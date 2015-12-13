@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
+import 'package:BMSrv/Mail/Sender.dart';
 import 'package:BMSrv/Events/SystemEvents.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
@@ -32,6 +33,8 @@ class UserService {
   DBAdapter _Db;
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.UserService");
+  MailSender mail = new MailSender();
+  
   UserService(DBAdapter this._Db)
   {
     _Generator = new Uuid();
@@ -193,6 +196,7 @@ class UserService {
   @FreeAccess()
   Future validateUser(String uniqueId) async {
     User user = await UserUtils.GetUserByUniqueId(uniqueId);
+    mail.createActivateMail();
     return {};
   }
 }
