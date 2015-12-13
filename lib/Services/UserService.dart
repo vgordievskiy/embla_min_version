@@ -4,6 +4,7 @@ import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:redstone/server.dart' as app;
 import 'package:redstone_mapper/plugin.dart';
 import 'package:uuid/uuid.dart';
+import "package:ini/ini.dart";
 import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
@@ -34,8 +35,9 @@ class UserService {
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.UserService");
   MailSender mail = new MailSender('service@semplex.ru', 'bno9mjc');
+  Config _config;
   
-  UserService(DBAdapter this._Db)
+  UserService(DBAdapter this._Db, Config this._config)
   {
     _Generator = new Uuid();
     initEvents();
@@ -66,8 +68,12 @@ class UserService {
       .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER)
       .listen((SysEvt evt) {
         User user = evt.data;
+        final String url = _config.get("DeployConfig", "server-url");
         String subj = "Добро пожаловать в мир умных инвестиций";
-        String html = '<a href="http://localhost:8001/users/activate/${user.uniqueID}"> активировать </a>';
+        String html =
+          '''<a href="$url/users/activate/${user.uniqueID}">
+             активировать мой аккаунт </a>
+          ''';
         mail.createActivateMail(user.email, subj, html);
     });
   }
