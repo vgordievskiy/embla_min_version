@@ -2,6 +2,7 @@ library BMSrv.UserService;
 import 'dart:async';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:redstone/server.dart' as app;
+import 'package:shelf/shelf.dart' as shelf;
 import 'package:redstone_mapper/plugin.dart';
 import 'package:uuid/uuid.dart';
 import "package:ini/ini.dart";
@@ -69,9 +70,10 @@ class UserService {
       .listen((SysEvt evt) {
         User user = evt.data;
         final String url = _config.get("DeployConfig", "server-url");
+        final String port = _config.get("DeployConfig", "server-port");
         String subj = "Добро пожаловать в мир умных инвестиций";
         String html =
-          '''<a href="$url/users/activate/${user.uniqueID}">
+          '''<a href="$url:$port/users/activate/${user.uniqueID}">
              активировать мой аккаунт </a>
           ''';
         mail.createActivateMail(user.email, subj, html);
@@ -218,6 +220,6 @@ class UserService {
   Future validateUser(String uniqueId) async {
     User user = await UserUtils.GetUserByUniqueId(uniqueId);
     await user.Activate();
-    return { 'message' : ' ${user.email} : activated' };
+    return new shelf.Response.movedPermanently(_config.get("DeployConfig", "server-url"));
   }
 }
