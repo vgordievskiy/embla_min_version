@@ -38,6 +38,7 @@ class UserService {
   UserService(DBAdapter this._Db)
   {
     _Generator = new Uuid();
+    initEvents();
   }
   
   Future<double> _getBusyObjectParts(RealEstateBase object) async {
@@ -58,6 +59,17 @@ class UserService {
   
   Future _addUserToObjectGroup(RealEstateBase obj, User user) async {
     ObjGroupUtils.addUserToGroup(obj, user);
+  }
+  
+  initEvents() {
+    EventSys.asyncMessageBus.stream(SysEvt)
+      .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER)
+      .listen((SysEvt evt) {
+        User user = evt.data;
+        String subj = "Добро пожаловать в мир умных инвестиций";
+        String html = '<a href="http://localhost:8001/users/activate/${user.uniqueID}"> активировать </a>';
+        mail.createActivateMail(user.email, subj, html);
+    });
   }
 
   @app.DefaultRoute(methods: const[app.POST])
@@ -84,6 +96,8 @@ class UserService {
     });
     
     await UserPass.CreateUserPass(data['email'], data["password"], newUser.id);
+    
+    EventSys.asyncPub(new SysEvt(TSysEvt.ADD_USER, newUser));
     
     if (exception != null) {
       return exception;
@@ -197,6 +211,6 @@ class UserService {
   @FreeAccess()
   Future validateUser(String uniqueId) async {
     User user = await UserUtils.GetUserByUniqueId(uniqueId);
-    return {};
+    return user.Activate();
   }
 }

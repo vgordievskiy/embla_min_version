@@ -79,6 +79,11 @@ class User extends ORM.Model {
     ORM.Find find = new ORM.Find(ObjectDeal)..whereEquals('userId', id);
     return find.execute(); 
   }
+  
+  Future Activate() {
+    enabled = true;
+    return this.save();
+  }
 
   String toString(){
     return 'User { id: $id, , name: $name, email: $email }';
