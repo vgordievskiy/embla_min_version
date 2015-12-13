@@ -33,7 +33,7 @@ class UserService {
   DBAdapter _Db;
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.UserService");
-  MailSender mail = new MailSender();
+  MailSender mail = new MailSender('service@semplex.ru', 'bno9mjc');
   
   UserService(DBAdapter this._Db)
   {
@@ -110,7 +110,8 @@ class UserService {
       User user = await User.GetUser(id);
       RERoom room = await RERoomUtils.getById(int.parse(roomid));
       if(room.ownerObjectId != int.parse(estateid) ||
-         ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+         ReUtils.str2Type(type) != room.OwnerType)
+          throw new app.ErrorResponse(400, {"error": "wrong data"});
       
       double part = double.parse(data["part"]);
       double price = await room.Price; 
@@ -196,7 +197,6 @@ class UserService {
   @FreeAccess()
   Future validateUser(String uniqueId) async {
     User user = await UserUtils.GetUserByUniqueId(uniqueId);
-    mail.createActivateMail();
     return {};
   }
 }

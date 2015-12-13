@@ -13,10 +13,14 @@ class MailSender
   SmtpOptions options;
   SmtpTransport transport;
   
-  MailSender()
+  final String user;
+  final String passwd;
+  final String baseMail;
+  
+  MailSender(this.user, this.passwd, [this.baseMail = null])
   {
     options = new YandexSmtpOptions();
-    setUserName('service@semplex.ru', 'bno9mjc');
+    setUserName(this.user, passwd);
     transport = new SmtpTransport(options);
   }
   
@@ -26,16 +30,16 @@ class MailSender
       ..password = passwd; 
   }
   
-  createActivateMail() {
-    var envelope = new Envelope()
-    ..from = 'service@semplex.ru'
-    ..recipients.add('v.gordievskiy@gmail.com')
-    ..subject = 'Testing the Dart Mailer library'
-    ..text = 'This is a cool email message. Whats up?'
-    ..html = '<h1>Test</h1><p>Hey!</p>';
+  createActivateMail(String target, String subj, String html) {
+    Envelope envelope = new Envelope();
+    envelope.from = baseMail ?? user;
+    envelope.recipients.add(target);
+    envelope.subject = subj;
+    envelope.html = html;
     
-    transport.send(envelope).then((envelope) => print('Email sent!'))
-    .catchError((e) => print('Error occurred: $e'));
+    transport.send(envelope)
+      .then((envelope) => print('Email sent!'))
+      .catchError((e) => print('Error occurred: $e'));
   }
   
   
