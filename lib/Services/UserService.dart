@@ -211,6 +211,7 @@ class UserService {
   @FreeAccess()
   Future validateUser(String uniqueId) async {
     User user = await UserUtils.GetUserByUniqueId(uniqueId);
-    return user.Activate();
+    await user.Activate();
+    return { 'message' : ' ${user.email} : activated' };
   }
 }
