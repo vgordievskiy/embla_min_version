@@ -69,11 +69,10 @@ class UserService {
       .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER)
       .listen((SysEvt evt) {
         User user = evt.data;
-        final String url = _config.get("DeployConfig", "server-url");
-        final String port = _config.get("DeployConfig", "server-port");
+        final String url = _config.get("ClientUrl", "server-url");
         String subj = "Добро пожаловать в мир умных инвестиций";
         String html =
-          '''<a href="$url:$port/users/activate/${user.uniqueID}">
+          '''<a href="$url#activate?${user.uniqueID}">
              активировать мой аккаунт </a>
           ''';
         mail.createActivateMail(user.email, subj, html);
