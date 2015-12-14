@@ -69,7 +69,7 @@ class UserService {
       .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER)
       .listen((SysEvt evt) {
         User user = evt.data;
-        final String url = _config.get("ClientUrl", "server-url");
+        final String url = _config.get("ClientUrl", "client-url");
         String subj = "Добро пожаловать в мир умных инвестиций";
         String html =
           '''<a href="$url#activate?${user.uniqueID}">
