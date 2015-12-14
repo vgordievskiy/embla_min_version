@@ -218,7 +218,8 @@ class UserService {
   @FreeAccess()
   Future validateUser(String uniqueId) async {
     User user = await UserUtils.GetUserByUniqueId(uniqueId);
+    if (user == null) return new shelf.Response.notFound('');
     await user.Activate();
-    return new shelf.Response.movedPermanently(_config.get("DeployConfig", "server-url"));
+    return new shelf.Response.ok('');
   }
 }
