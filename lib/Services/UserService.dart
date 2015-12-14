@@ -218,8 +218,8 @@ class UserService {
   @FreeAccess()
   Future validateUser(String uniqueId) async {
     User user = await UserUtils.GetUserByUniqueId(uniqueId);
-    if (user == null) return new shelf.Response.notFound('');
+    if (user == null) return new app.ErrorResponse(400, {"error": "not found"});
     await user.Activate();
-    return new shelf.Response.ok('');
+    return { 'status' : 'activated' };
   }
 }
