@@ -45,8 +45,21 @@ startServer(Config config) {
       app.addModule(new Module()..bind(ImageService));
       app.addModule(new Module()..bind(Config, toValue: config));
       setupConsoleLog();
+      
+      String localFile(path) => Platform.script.resolve(path).toFilePath();
+      
+      print(localFile('ssl/private.pem'));
+      
+      SecurityContext serverContext = new SecurityContext()
+        ..useCertificateChain(localFile('ssl/certificate.pem'))
+        ..usePrivateKey(localFile('ssl/private.pem'),
+                        password: 'semplex!2#');
+      
+      var secureOptions = { 
+        #context: serverContext
+      };
 
-      app.start(port: 8001);
+      app.start(port: 8001, secureOptions: secureOptions);
     });
 }
 
