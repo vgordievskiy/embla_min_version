@@ -78,9 +78,9 @@ class AdminService {
     return UserWrapper.Create(await User.GetUser(id));
   }
   
-  @app.Route("/users")
+  @app.Route("/:adminId/users")
   @Encode()
-  Future<List<UserWrapper>> getUsers() async {
+  Future<List<UserWrapper>> getUsers(String adminId) async {
     List<UserWrapper> ret = new List();
     
     for(User user in await UserUtils.GetAll()) {
@@ -90,9 +90,9 @@ class AdminService {
     return ret;
   }
   
-  @app.Route("/users/:userId/deals")
+  @app.Route("/:adminId/users/:userId/deals")
   @Encode()
-  Future<List<ObjectDealWrapper>> getUserDeals(String userId) async {
+  Future<List<ObjectDealWrapper>> getUserDeals(String adminId, String userId) async {
     User user = await User.GetUser(userId);
     List<ObjectDealWrapper> ret = new List();
     for(ObjectDeal deal in await user.GetDeals()) {
