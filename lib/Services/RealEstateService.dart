@@ -186,7 +186,8 @@ class RealEstateService {
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.GET])
   @Encode()
   Future<REMetaDataWrapper> getDataForRoomByName(String type, String id,
-                                           String roomid, String param) async {
+                                                 String roomid, String param) 
+  async {
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});

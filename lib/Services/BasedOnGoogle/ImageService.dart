@@ -14,6 +14,7 @@ import 'package:logging/logging.dart';
 import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Services/RealEstateService.dart';
 import 'package:BMSrv/Models/User.dart';
+import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
 
 final scopes = [storage.StorageApi.DevstorageFullControlScope];
 
@@ -118,6 +119,26 @@ class ImageService {
     {
       Map<String, String> params = { 'value' : JSON.encode(publicUrl)};
       await _estateSrv.addDataForRoom(type, id, roomid, 'mainImageUrl', params);
+    }
+  }
+  
+  @app.Route('/realestate/:type/:id/rooms/:roomid/images/additional',
+             methods: const [app.POST], allowMultipartRequest: true)
+  @OnlyForUserGroup(const ['admin'])
+  addAdditionalImage(String type, String id, String roomid, 
+                     @app.Body(app.FORM) var data) async
+  {
+    final String prefix = "additional-$type-$id-$roomid-";
+    //final String intUrl = await saveFile(data, prefix: prefix);
+    final String publicUrl = "${googleBaseUrl}/${intUrl}";
+    
+    {
+      Map<String, String> params = { 'value' : JSON.encode(publicUrl)};
+      REMetaDataWrapper data = await _estateSrv
+          .getDataForRoomByName(type, id, roomid, 'objectData');
+      
+      
+      //await _estateSrv.addDataForRoom(type, id, roomid, 'objectData', params);
     }
   }
 }
