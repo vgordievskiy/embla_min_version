@@ -19,7 +19,6 @@ import 'package:BMSrv/Models/JsonWrappers/REMetaData.dart';
 final scopes = [storage.StorageApi.DevstorageFullControlScope];
 
 @app.Group("/")
-@ProtectedAccess(filtrateByUser: true)
 class ImageService { 
   final log = new Logger("BMSrv.Services.ImageService");
   final String contentType = "image/jpeg";
@@ -83,6 +82,7 @@ class ImageService {
   
   @app.Route('/users/:id/profile/avatar', methods: const [app.POST],
              allowMultipartRequest: true)
+  @ProtectedAccess(filtrateByUser: true)
   addUserAvatar(String id, @app.Body(app.FORM) var data) async
   {
     User user = await User.GetUser(id);
@@ -108,7 +108,7 @@ class ImageService {
   
   @app.Route('/realestate/:type/:id/rooms/:roomid/images/base',
              methods: const [app.POST], allowMultipartRequest: true)
-  @OnlyForUserGroup(const ['admin'])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   addBaseImage(String type, String id, String roomid, 
                @app.Body(app.FORM) var data) async
   {
@@ -122,23 +122,45 @@ class ImageService {
     }
   }
   
-  @app.Route('/realestate/:type/:id/rooms/:roomid/images/additional',
+  @app.Route('/realestate/:type/:id/rooms/:roomid/images',
              methods: const [app.POST], allowMultipartRequest: true)
-  @OnlyForUserGroup(const ['admin'])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['user'])
   addAdditionalImage(String type, String id, String roomid, 
                      @app.Body(app.FORM) var data) async
   {
-    final String prefix = "additional-$type-$id-$roomid-";
-    //final String intUrl = await saveFile(data, prefix: prefix);
-    final String publicUrl = "${googleBaseUrl}/${intUrl}";
+    REMetaDataWrapper images = await _estateSrv
+                      .getDataForRoomByName(type, id, roomid, 'objectImages');
     
-    {
-      Map<String, String> params = { 'value' : JSON.encode(publicUrl)};
-      REMetaDataWrapper data = await _estateSrv
-          .getDataForRoomByName(type, id, roomid, 'objectData');
-      
-      
-      //await _estateSrv.addDataForRoom(type, id, roomid, 'objectData', params);
+    final String prefix = "additional-$type-$id-$roomid-";
+    final String intUrl = '1';//await saveFile(data, prefix: prefix);
+    final String publicUrl = "${googleBaseUrl}/${intUrl}";
+    Map<String, String> params = null;
+    
+    if(!images.data.containsKey('objectImages')) {
+      params = { 'value' : JSON.encode([publicUrl])};
+      await _estateSrv.
+        addDataForRoom(type, id, roomid, 'objectImages', params);
+    } else {
+      (images.data['objectImages'][0] as List).add(publicUrl);
+      params = { 'value' : JSON.encode(images.data['objectImages'][0])};
+      await _estateSrv.
+        changeDataForRoom(type, id, roomid, 'objectImages', '0', params);
+    }
+    
+    return publicUrl;
+  }
+  
+  @app.Route('/realestate/:type/:id/rooms/:roomid/images',
+             methods: const[app.GET])
+  getImages(String type, String id, String roomid) async 
+  {
+    REMetaDataWrapper data = await _estateSrv
+                  .getDataForRoomByName(type, id, roomid, 'objectImages');
+    
+    if(data.data.containsKey('objectImages')) {
+      return data.data['objectImages'][0];  
+    } else {
+      return [];
     }
   }
 }

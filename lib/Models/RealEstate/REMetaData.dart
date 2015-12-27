@@ -35,6 +35,7 @@ class REMetaDataUtils {
     'description',
     'pricePerMeter',
     'mainImageUrl',
+    'objectImages',
     'objectData'
 ];
   

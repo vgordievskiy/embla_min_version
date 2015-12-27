@@ -53,7 +53,6 @@ class HelperObjectConverter<JsonWrapper> {
 }
 
 @app.Group("/realestate")
-@ProtectedAccess(filtrateByUser: true)
 class RealEstateService {
   DBAdapter _Db;
   
@@ -98,7 +97,7 @@ class RealEstateService {
   }
   
   @app.Route("/:type/:id/rooms", methods: const [app.POST])
-  @OnlyForUserGroup(const ['admin'])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   create_room(String type, String id, @app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']) /*&& _isEmpty(data['objectGeom'])*/
         && _isEmpty(data['square'])) {
@@ -126,6 +125,7 @@ class RealEstateService {
   
   @app.Route("/rooms", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<RERoomWrapper>> getAllRooms(@app.QueryParam("count") int count,
                                           @app.QueryParam("page") int page) async
   {
@@ -134,6 +134,7 @@ class RealEstateService {
   
   @app.Route("/rooms/popular", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<RERoomWrapper>> getAllPopularRooms(@app.QueryParam("count") int count,
                                                  @app.QueryParam("page") int page) async
   {
@@ -142,6 +143,7 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id,
                                                  @app.QueryParam("count") int count,
                                                  @app.QueryParam("page") int page) async
@@ -153,6 +155,7 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<ObjectDealWrapper>> getRoomState(String type, String id, String roomid) async
   {
     ReType reType = ReUtils.str2Type(type);
@@ -173,6 +176,7 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms/:roomid/data", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<Map<String, dynamic>> getDataForRoom(String type, String id, String roomid) async {
     ReType reType = ReUtils.str2Type(type);
     RERoom room = await _getObject(ReType.ROOM, roomid);
@@ -185,6 +189,7 @@ class RealEstateService {
   
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<REMetaDataWrapper> getDataForRoomByName(String type, String id,
                                                  String roomid, String param) 
   async {
@@ -197,8 +202,8 @@ class RealEstateService {
   }
   
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.POST])
-  @OnlyForUserGroup(const ['admin'])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   Future<REMetaDataWrapper> addDataForRoom(String type, String id,
                                            String roomid, String param,
                                            @app.Body(app.FORM) Map data) async {
@@ -220,8 +225,8 @@ class RealEstateService {
   }
   
   @app.Route("/:type/:id/rooms/:roomid/data/:param/:indx", methods: const [app.PUT])
-  @OnlyForUserGroup(const ['admin'])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   Future<REMetaDataWrapper> changeDataForRoom(String type, String id,
                                               String roomid, String param, String indx,
                                               @app.Body(app.FORM) Map data) async
@@ -247,37 +252,41 @@ class RealEstateService {
   }
 
   @app.Route("/commercial", methods: const [app.POST])
-  @OnlyForUserGroup(const ['admin'])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   create_commercial(@app.Body(app.FORM) Map data) => _create_object_by_type("commercial", data);
 
   @app.Route("/land", methods: const [app.POST])
-  @OnlyForUserGroup(const ['admin'])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   create_land(@app.Body(app.FORM) Map data) => _create_object_by_type("land", data);
 
   @app.Route("/private", methods: const [app.POST])
-  @OnlyForUserGroup(const ['admin'])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   create_private(@app.Body(app.FORM) Map data) => _create_object_by_type("private", data);
   
   @app.Route("/commercial", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllCommercial() async
     => new HelperObjectConverter<REstateWrapper>()
        .getFrom(await REGenericUtils.GetAllByType(ReType.COMMERCIAL));
 
   @app.Route("/land", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllLand() async
     => new HelperObjectConverter<REstateWrapper>()
            .getFrom(await REGenericUtils.GetAllByType(ReType.LAND));
   
   @app.Route("/private", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllPrivate() async 
     => new HelperObjectConverter<REstateWrapper>()
          .getFrom(await REGenericUtils.GetAllByType(ReType.PRIVATE));
   
   @app.DefaultRoute()
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<dynamic>> getAllObjects() async {
     List<dynamic> ret = new List();
     ret.addAll(await getAllPrivate());
@@ -289,6 +298,7 @@ class RealEstateService {
   @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
              methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllCommercialInBounds(
       String SWLng, String SWLat, String NELng, String NELat) async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
@@ -301,6 +311,7 @@ class RealEstateService {
   @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllLandsInBounds(
       String SWLng, String SWLat, String NELng, String NELat) async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
@@ -313,6 +324,7 @@ class RealEstateService {
   @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllPrivatesInBounds(
       String SWLng, String SWLat, String NELng, String NELat) async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
@@ -324,6 +336,7 @@ class RealEstateService {
   
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat, String NELng, String NELat) async {
     List<dynamic> ret = new List();
     ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
@@ -334,6 +347,7 @@ class RealEstateService {
   
   @app.Route("/commercial/:id", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<REstateWrapper> getCommercialById(String id) async {
     REGeneric ret = await REGeneric.Get(ReType.COMMERCIAL, int.parse(id));
     if (ret == null) {
@@ -344,6 +358,7 @@ class RealEstateService {
 
   @app.Route("/land/:id", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<REstateWrapper> getLandById(String id) async {
     REGeneric ret = await REGeneric.Get(ReType.LAND, int.parse(id));
     if (ret == null) {
@@ -354,6 +369,7 @@ class RealEstateService {
 
   @app.Route("/private/:id", methods: const [app.GET])
   @Encode()
+  @ProtectedAccess(filtrateByUser: false)
   Future<REstateWrapper> getPrivateById(String id) async {
     REGeneric ret = await REGeneric.Get(ReType.PRIVATE, int.parse(id));
     if (ret == null) {

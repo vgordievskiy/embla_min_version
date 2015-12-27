@@ -36,7 +36,6 @@ void setupConsoleLog([Level level = Level.INFO]) {
 startServer(Config config) {
   Init().then((var res){
       app.addPlugin(getMapperPlugin());
-      app.addPlugin(Common.UserGroupPlugin);
       app.addPlugin(Common.AccessPlugin);
       app.addPlugin(getWebSocketPlugin());
       app.addModule(new Module()..bind(Common.DBAdapter));
