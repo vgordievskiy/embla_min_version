@@ -132,7 +132,7 @@ class ImageService {
                       .getDataForRoomByName(type, id, roomid, 'objectImages');
     
     final String prefix = "additional-$type-$id-$roomid-";
-    final String intUrl = '1';//await saveFile(data, prefix: prefix);
+    final String intUrl = await saveFile(data, prefix: prefix);
     final String publicUrl = "${googleBaseUrl}/${intUrl}";
     Map<String, String> params = null;
     
