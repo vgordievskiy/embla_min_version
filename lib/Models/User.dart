@@ -75,6 +75,9 @@ class User extends ORM.Model {
   @ORM.DBField()
   bool enabled;
   
+  @ORM.DBField()
+  String phone;
+  
   Future<List<ObjectDeal>> GetDeals() async {
     ORM.Find find = new ORM.Find(ObjectDeal)..whereEquals('userId', id);
     return find.execute(); 
