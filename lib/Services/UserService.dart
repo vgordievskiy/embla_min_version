@@ -130,7 +130,7 @@ class UserService {
     return UserWrapper.Create(await User.GetUser(id));
   }
   
-  @app.Route("/:id/deals/:type/:estateid/room/:roomid", methods: const[app.PUT])
+  @app.Route("/:id/deals/:type/:estateid/rooms/:roomid", methods: const[app.PUT])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
   addDealForRoom(String id, String type, String estateid, String roomid,
@@ -179,7 +179,7 @@ class UserService {
     return ret;
   }
   
-  @app.Route("/:id/deals/:type/:estateid/room/:roomid", methods: const[app.GET])
+  @app.Route("/:id/deals/:type/:estateid/rooms/:roomid", methods: const[app.GET])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
   getDealsForRoom(String id, String type, String estateid, String roomid,
