@@ -44,6 +44,15 @@ class UserService {
     initEvents();
   }
   
+  Future<dynamic> _getObject(ReType type, String idStr) {
+     int id = int.parse(idStr);
+     if (type != ReType.ROOM) {
+       return REGeneric.Get(type, id);
+     } else {
+       return RERoom.Get(id);
+     }
+   }
+  
   Future<double> _getBusyObjectParts(RealEstateBase object) async {
     List<ObjectDeal> parts = await object.GetAllParts();
     double busyParts = 0.0;
@@ -166,6 +175,31 @@ class UserService {
     for(ObjectDeal deal in await user.GetDeals()) {
       var wrap = await ObjectDealWrapper.Create(deal);
       ret.add(wrap);
+    }
+    return ret;
+  }
+  
+  @app.Route("/:id/deals/:type/:estateid/room/:roomid", methods: const[app.GET])
+  @ProtectedAccess(filtrateByUser: true)
+  @Encode()
+  getDealsForRoom(String id, String type, String estateid, String roomid,
+                  @app.Body(app.FORM) Map data) async
+  {
+    ReType reType = ReUtils.str2Type(type);
+    RERoom room = await _getObject(ReType.ROOM, roomid);
+    if(room.ownerObjectId != int.parse(estateid) ||
+       ReUtils.str2Type(type) != room.OwnerType) 
+        throw new app.ErrorResponse(400, {"error": "wrong data"});
+    
+    List<ObjectDealWrapper> ret = new List();
+
+    List<ObjectDeal> deals = await room.GetAllParts();
+    deals ??= [];
+    
+    for (ObjectDeal deal in deals.where((ObjectDeal el) => 
+                              el.userId == int.parse(id)))
+    {
+      ret.add(await ObjectDealWrapper.Create(deal));
     }
     return ret;
   }
