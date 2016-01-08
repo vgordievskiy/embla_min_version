@@ -122,6 +122,19 @@ class UserService {
       return { "status" : "created" };
     }
   }
+  
+  @app.Route("/:id", methods: const[app.PUT])
+  @ProtectedAccess(filtrateByUser: true)
+  @Encode()
+  Future updateUserById(String id, @app.Body(app.FORM) Map data) async {
+    Map userData = data;
+    User user = await User.GetUser(id);
+    user.name = data['name'];
+    user.email = data['email'];
+    user.phone = data['phone'];
+    await user.save();
+    return { "status" : "created" };
+  }
 
   @app.Route("/:id")
   @ProtectedAccess(filtrateByUser: true)
