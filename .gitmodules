@@ -1,6 +1,6 @@
 [submodule "externals/SrvCommon"]
 	path = externals/SrvCommon
-	url = https://lf.semplex.ru:4322/git/SrvCommon.git
+	url = https://dal.semplex.ru:4322/git/SrvCommon.git
 [submodule "externals/OntoORM"]
 	path = externals/OntoORM
-	url = https://lf.semplex.ru:4322/git/OntoORM.git
+	url = https://dal.semplex.ru:4322/git/OntoORM.git
