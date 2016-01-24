@@ -38,11 +38,11 @@ class REMetaDataUtils {
     'objectImages',
     'objectData'
 ];
-  
+
   static bool checkMetaName(String name) {
     return metaNames.contains(name);
   }
-  
+
   static Future<List<REMetaData>> getForObject(RealEstateBase obj, {String fieldName: null}) async {
     ORM.Find find = new ORM.Find(REMetaData);
     ORM.Condition condition = new ORM.Equals('ownerType', ReUtils.type2Int(obj.Type));
@@ -50,11 +50,11 @@ class REMetaDataUtils {
     if (fieldName != null) {
       condition.and(new ORM.Equals('name', fieldName));
     }
-    
+
     find.where(condition);
     return await find.execute();
   }
-  
+
   static Future<bool> addForObject(RealEstateBase obj, String name, String metaName, dynamic data) async {
     REMetaData newItem = new REMetaData();
     newItem.name = name;
@@ -64,37 +64,41 @@ class REMetaDataUtils {
     newItem.Data = data;
     return newItem.save();
   }
+
+  static Future deleteForObject(RealEstateBase obj) async {
+    
+  }
 }
 
 @ORM.DBTable('realEstateObjectsMetaData')
 class REMetaData extends ORM.Model with Observable {
- 
+
   static Map _converter(Map<String, dynamic> value) {
     assert(value.containsKey('value'));
-    return value['value']; 
+    return value['value'];
   }
-  
+
   @ORM.DBField()
   @ORM.DBFieldPrimaryKey()
   @ORM.DBFieldType('SERIAL')
   int id;
-  
+
   @ORM.DBField()
   String name;
-  
+
   @ORM.DBField()
   String metaName;
-  
+
   @ORM.DBField()
   int ownerType;
-  
+
   @ORM.DBField()
   int ownerId;
-  
+
   @ORM.DBField()
   @ORM.DBFieldConverter(_converter)
   dynamic _data;
-  
+
   dynamic get Data => _data;
   set Data(var obj) => _data = { "value" : obj };
 }
