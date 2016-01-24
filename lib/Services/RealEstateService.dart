@@ -31,7 +31,7 @@ bool _isEmpty(String value) => value == null;
 
 class HelperObjectConverter<JsonWrapper> {
   ClassMirror _Class = reflectClass(JsonWrapper);
-  
+
   Future<List<JsonWrapper>> get(Type type) async {
     ORM.Find find = new ORM.Find(type);
     List<JsonWrapper> ret = new List();
@@ -41,7 +41,7 @@ class HelperObjectConverter<JsonWrapper> {
     }
     return ret;
   }
-  
+
   Future<List<JsonWrapper>> getFrom(List<dynamic> objects) async {
     List<JsonWrapper> ret = new List();
     for (var obj in objects) {
@@ -55,16 +55,16 @@ class HelperObjectConverter<JsonWrapper> {
 @app.Group("/realestate")
 class RealEstateService {
   DBAdapter _Db;
-  
+
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.RealEstateService");
   RealEstateService(DBAdapter this._Db) {
     _Generator = new Uuid();
-    
+
     REGenericUtils.createPartition();
     RERoomUtils.createPartition();
   }
-  
+
   Future<dynamic> _getObject(ReType type, String idStr) {
     int id = int.parse(idStr);
     if (type != ReType.ROOM) {
@@ -73,14 +73,14 @@ class RealEstateService {
       return RERoom.Get(id);
     }
   }
-  
+
   _create_object_by_type(String type, @app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']) /*&& _isEmpty(data['objectGeom'])*/) {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
     final ReType reType = ReUtils.str2Type(type);
     var newObj = new REGeneric.Dummy(reType);
-    
+
     newObj.objectName = data['objectName'];
 
     var exception = null;
@@ -95,7 +95,7 @@ class RealEstateService {
       return new app.ErrorResponse(400, {"error": error});
     }
   }
-  
+
   @app.Route("/:type/:id/rooms", methods: const [app.POST])
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   create_room(String type, String id, @app.Body(app.FORM) Map data) async {
@@ -104,14 +104,14 @@ class RealEstateService {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
     var reObj = await _getObject(ReUtils.str2Type(type), id);
-     
+
     RERoom newRoom = new RERoom.Dummy(ReUtils.str2Type(type), reObj);
-  
+
     newRoom.objectName = data['objectName'];
     newRoom.square = JSON.decode(data['square']);
-     
+
     var exception = null;
-    
+
     try {
       var saveResult = await newRoom.save();
       if (data.containsKey('objectGeom')) {
@@ -122,7 +122,19 @@ class RealEstateService {
       return new app.ErrorResponse(400, {"error": error});
     }
   }
-  
+
+  /* Need delete liked_objects
+   * user deals
+   * objects meta data
+   * user social groups by objects
+   * */
+  @app.Route("/:type/:id/rooms", methods: const [app.DELETE])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
+  delete_room(String type, String id) async {
+    RERoom room = await _getObject(ReType.ROOM, id);
+
+  }
+
   @app.Route("/rooms", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -131,7 +143,7 @@ class RealEstateService {
   {
     return new HelperObjectConverter<RERoomWrapper>().getFrom(await RERoomUtils.getRooms(count: count, page: page));
   }
-  
+
   @app.Route("/rooms/popular", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -140,7 +152,7 @@ class RealEstateService {
   {
     return getAllRooms(count, page);
   }
-  
+
   @app.Route("/:type/:id/rooms", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -152,7 +164,7 @@ class RealEstateService {
     RealEstateBase obj = await _getObject(reType, id);
     return new HelperObjectConverter<RERoomWrapper>().getFrom(await obj.getRooms(count: count, page: page));
   }
-  
+
   @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -162,7 +174,7 @@ class RealEstateService {
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
        ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
-    
+
     List<ObjectDealWrapper> ret = new List();
 
     List<ObjectDeal> deals = await room.GetAllParts();
@@ -173,7 +185,7 @@ class RealEstateService {
     }
     return ret;
   }
-  
+
   @app.Route("/:type/:id/rooms/:roomid/data", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -182,25 +194,25 @@ class RealEstateService {
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
-    
+
     List<REMetaData> ret = await room.GetMetaData();
     return REMetaDataWrapper.Create(ret);
   }
-  
+
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
   Future<REMetaDataWrapper> getDataForRoomByName(String type, String id,
-                                                 String roomid, String param) 
+                                                 String roomid, String param)
   async {
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
-    
+
     List<REMetaData> ret = await room.GetMetaData(fieldName: param);
     return REMetaDataWrapper.Create(ret);
   }
-  
+
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.POST])
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
@@ -211,19 +223,19 @@ class RealEstateService {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
     }
     if (_isEmpty(data['value'])) {
-      throw new app.ErrorResponse(400, {"error": "data empty"}); 
+      throw new app.ErrorResponse(400, {"error": "data empty"});
     }
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
-    
+
     var value = JSON.decode(data['value']);
-    
+
     if(value == null) throw new app.ErrorResponse(400, {"error": "data empty"});
-    
+
     return room.addMetaData(param, param, value);
   }
-  
+
   @app.Route("/:type/:id/rooms/:roomid/data/:param/:indx", methods: const [app.PUT])
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
@@ -235,18 +247,18 @@ class RealEstateService {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
     }
     if (_isEmpty(data['value'])) {
-      throw new app.ErrorResponse(400, {"error": "data empty"}); 
+      throw new app.ErrorResponse(400, {"error": "data empty"});
     }
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
-    
+
     List<REMetaData> oldValue = await room.GetMetaData(fieldName: param);
-    
+
     int pos = int.parse(indx);
-    
+
     var value = JSON.decode(data['value']);
-    
+
     oldValue[pos].Data = value;
     return oldValue[pos].save();
   }
@@ -262,7 +274,7 @@ class RealEstateService {
   @app.Route("/private", methods: const [app.POST])
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   create_private(@app.Body(app.FORM) Map data) => _create_object_by_type("private", data);
-  
+
   @app.Route("/commercial", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -276,14 +288,14 @@ class RealEstateService {
   Future<List<REstateWrapper>> getAllLand() async
     => new HelperObjectConverter<REstateWrapper>()
            .getFrom(await REGenericUtils.GetAllByType(ReType.LAND));
-  
+
   @app.Route("/private", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
-  Future<List<REstateWrapper>> getAllPrivate() async 
+  Future<List<REstateWrapper>> getAllPrivate() async
     => new HelperObjectConverter<REstateWrapper>()
          .getFrom(await REGenericUtils.GetAllByType(ReType.PRIVATE));
-  
+
   @app.DefaultRoute()
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -294,7 +306,7 @@ class RealEstateService {
     ret.addAll(await getAllLand());
     return ret;
   }
-  
+
   @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
              methods: const [app.GET])
   @Encode()
@@ -307,7 +319,7 @@ class RealEstateService {
 
     return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
   }
-  
+
   @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat",
       methods: const [app.GET])
   @Encode()
@@ -333,7 +345,7 @@ class RealEstateService {
 
     return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
   }
-  
+
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
@@ -344,7 +356,7 @@ class RealEstateService {
     ret.addAll(await getAllLandsInBounds(SWLng, SWLat, NELng, NELat));
     return ret;
   }
-  
+
   @app.Route("/commercial/:id", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
