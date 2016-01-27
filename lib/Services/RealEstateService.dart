@@ -180,6 +180,23 @@ class RealEstateService {
       .getFrom(await obj.getRooms(count: count, page: page));
   }
 
+  @app.Route("/:type/:id/rooms/:roomid/disabled", methods: const [app.GET])
+  @Encode()
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
+  getDisableState(String type,
+                  String id, String roomid)
+  {
+
+  }
+
+  @app.Route("/:type/:id/rooms/:roomid/disabled", methods: const [app.PUT])
+  @Encode()
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
+  setDisableState(String type, String id, String roomid)  async
+  {
+
+  }
+
   @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)

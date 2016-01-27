@@ -20,20 +20,29 @@ class RERoomUtils {
     }
   }
 
-  static Future<List<RERoom>> getForOwner(RealEstateBase obj, {int count: null, int page: null}) async {
+  static Future<List<RERoom>> getForOwner(RealEstateBase obj,
+                                          {int count: null,
+                                           int page: null})
+  async {
     ORM.Find find = new ORM.Find(RERoom)..whereEquals('ownerObjectId', obj.id);
     _setFindParams(find, count, page);
     return find.execute();
   }
 
-  static Future<RERoom> getById(int id, [bool isDisable = false]) async {
-    ORM.FindOne find = new ORM.FindOne(RERoom)..whereEquals('id', id)
-      .whereEquals('isDisabled', isDisable);
+  static Future<RERoom> getById(int id, [bool inclDisabled = false]) async {
+    ORM.FindOne find = new ORM.FindOne(RERoom)..whereEquals('id', id);
+
+    !inclDisabled ? find.whereEquals('isDisabled', false) : null;
+
     return find.execute();
   }
 
-  static Future<RERoom> getRooms({int count: null, int page: null}) async {
-    ORM.Find find = new ORM.Find(RERoom).whereEquals('isDisabled', false);
+  static Future<RERoom> getRooms({int count: null,
+                                  int page: null,
+                                  bool inclDisabled: false})
+  async {
+    ORM.Find find = new ORM.Find(RERoom);
+    !inclDisabled ? find.whereEquals('isDisabled', false) : null;
     _setFindParams(find, count, page);
     return find.execute();
   }
@@ -58,8 +67,9 @@ class RERoomUtils {
 @ORM.DBTable('realEstateObjectsRooms')
 class RERoom  extends ORM.Model with RealEstateBase {
   static Future<RERoom> Get(int id, [int ownerId]) {
-    ORM.FindOne find = new ORM.FindOne(RERoom)
-      .whereEquals('isDisabled', false);
+    ORM.FindOne find = new ORM.FindOne(RERoom);
+
+    //!inclDisabled ? find.whereEquals('isDisabled', false) : null;
 
     ORM.Condition cond = new ORM.Equals('id', id);
     if (ownerId != null) cond.and(new ORM.Equals('ownerObjectId', ownerId));
@@ -121,7 +131,8 @@ class RERoom  extends ORM.Model with RealEstateBase {
    ReType get OwnerType => ReUtils.int2Type(ownerObjectType);
 
    Future<double> get Price async {
-     List<REMetaData> data = await REMetaDataUtils.getForObject(this, fieldName: 'pricePerMeter');
+     List<REMetaData> data = await REMetaDataUtils
+       .getForObject(this, fieldName: 'pricePerMeter');
      if(data.isEmpty) return 0.0;
      assert(data.length == 1);
      return data[0].Data;
