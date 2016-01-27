@@ -139,16 +139,18 @@ class RealEstateService {
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
   Future<List<RERoomWrapper>> getAllRooms(@app.QueryParam("count") int count,
-                                          @app.QueryParam("page") int page) async
-  {
-    return new HelperObjectConverter<RERoomWrapper>().getFrom(await RERoomUtils.getRooms(count: count, page: page));
+                                          @app.QueryParam("page") int page)
+  async {
+    return new HelperObjectConverter<RERoomWrapper>()
+      .getFrom(await RERoomUtils.getRooms(count: count, page: page));
   }
 
   @app.Route("/rooms/popular", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
-  Future<List<RERoomWrapper>> getAllPopularRooms(@app.QueryParam("count") int count,
-                                                 @app.QueryParam("page") int page) async
+  Future<List<RERoomWrapper>> getAllPopularRooms(
+    @app.QueryParam("count") int count,
+    @app.QueryParam("page") int page) async
   {
     return getAllRooms(count, page);
   }
@@ -156,24 +158,28 @@ class RealEstateService {
   @app.Route("/:type/:id/rooms", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
-  Future<List<RERoomWrapper>> getAllRoomForObject(String type, String id,
-                                                 @app.QueryParam("count") int count,
-                                                 @app.QueryParam("page") int page) async
+  Future<List<RERoomWrapper>> getAllRoomForObject(
+    String type, String id,
+    @app.QueryParam("count") int count,
+    @app.QueryParam("page") int page) async
   {
     ReType reType = ReUtils.str2Type(type);
     RealEstateBase obj = await _getObject(reType, id);
-    return new HelperObjectConverter<RERoomWrapper>().getFrom(await obj.getRooms(count: count, page: page));
+    return new HelperObjectConverter<RERoomWrapper>()
+      .getFrom(await obj.getRooms(count: count, page: page));
   }
 
   @app.Route("/:type/:id/rooms/:roomid/state", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
-  Future<List<ObjectDealWrapper>> getRoomState(String type, String id, String roomid) async
+  Future<List<ObjectDealWrapper>> getRoomState(String type,
+                                               String id, String roomid) async
   {
     ReType reType = ReUtils.str2Type(type);
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
-       ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+       ReUtils.str2Type(type) != room.OwnerType)
+        throw new app.ErrorResponse(400, {"error": "wrong data"});
 
     List<ObjectDealWrapper> ret = new List();
 
@@ -189,11 +195,13 @@ class RealEstateService {
   @app.Route("/:type/:id/rooms/:roomid/data", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
-  Future<Map<String, dynamic>> getDataForRoom(String type, String id, String roomid) async {
+  Future<Map<String, dynamic>> getDataForRoom(String type,
+                                              String id, String roomid) async {
     ReType reType = ReUtils.str2Type(type);
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
-      ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+      ReUtils.str2Type(type) != room.OwnerType)
+        throw new app.ErrorResponse(400, {"error": "wrong data"});
 
     List<REMetaData> ret = await room.GetMetaData();
     return REMetaDataWrapper.Create(ret);
@@ -207,7 +215,8 @@ class RealEstateService {
   async {
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
-      ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+      ReUtils.str2Type(type) != room.OwnerType)
+        throw new app.ErrorResponse(400, {"error": "wrong data"});
 
     List<REMetaData> ret = await room.GetMetaData(fieldName: param);
     return REMetaDataWrapper.Create(ret);
@@ -218,7 +227,8 @@ class RealEstateService {
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   Future<REMetaDataWrapper> addDataForRoom(String type, String id,
                                            String roomid, String param,
-                                           @app.Body(app.FORM) Map data) async {
+                                           @app.Body(app.FORM) Map data) async
+  {
     if (!REMetaDataUtils.checkMetaName(param)) {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
     }
@@ -227,7 +237,8 @@ class RealEstateService {
     }
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
-      ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+      ReUtils.str2Type(type) != room.OwnerType)
+        throw new app.ErrorResponse(400, {"error": "wrong data"});
 
     var value = JSON.decode(data['value']);
 
@@ -240,9 +251,10 @@ class RealEstateService {
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   Future<REMetaDataWrapper> changeDataForRoom(String type, String id,
-                                              String roomid, String param, String indx,
-                                              @app.Body(app.FORM) Map data) async
-  {
+                                              String roomid, String param,
+                                              String indx,
+                                              @app.Body(app.FORM) Map data)
+  async {
     if (!REMetaDataUtils.checkMetaName(param)) {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
     }
@@ -251,7 +263,8 @@ class RealEstateService {
     }
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(id) ||
-      ReUtils.str2Type(type) != room.OwnerType) throw new app.ErrorResponse(400, {"error": "wrong data"});
+      ReUtils.str2Type(type) != room.OwnerType)
+        throw new app.ErrorResponse(400, {"error": "wrong data"});
 
     List<REMetaData> oldValue = await room.GetMetaData(fieldName: param);
 
@@ -265,15 +278,18 @@ class RealEstateService {
 
   @app.Route("/commercial", methods: const [app.POST])
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
-  create_commercial(@app.Body(app.FORM) Map data) => _create_object_by_type("commercial", data);
+  create_commercial(@app.Body(app.FORM) Map data)
+    => _create_object_by_type("commercial", data);
 
   @app.Route("/land", methods: const [app.POST])
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
-  create_land(@app.Body(app.FORM) Map data) => _create_object_by_type("land", data);
+  create_land(@app.Body(app.FORM) Map data)
+    => _create_object_by_type("land", data);
 
   @app.Route("/private", methods: const [app.POST])
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
-  create_private(@app.Body(app.FORM) Map data) => _create_object_by_type("private", data);
+  create_private(@app.Body(app.FORM) Map data)
+    => _create_object_by_type("private", data);
 
   @app.Route("/commercial", methods: const [app.GET])
   @Encode()
@@ -315,9 +331,11 @@ class RealEstateService {
       String SWLng, String SWLat, String NELng, String NELat) async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(REGeneric, sw, ne, ReType.COMMERCIAL);
+    var find = await new FindObjectsInBounds(REGeneric, sw, ne,
+                                             ReType.COMMERCIAL);
 
-    return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
+    return new HelperObjectConverter<REstateWrapper>()
+      .getFrom(await find.execute());
   }
 
   @app.Route("/land/bounds/:SWLng/:SWLat/:NELng/:NELat",
@@ -330,7 +348,8 @@ class RealEstateService {
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
     var find = await new FindObjectsInBounds(REGeneric, sw, ne, ReType.LAND);
 
-    return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
+    return new HelperObjectConverter<REstateWrapper>()
+      .getFrom(await find.execute());
   }
 
   @app.Route("/private/bounds/:SWLng/:SWLat/:NELng/:NELat",
@@ -349,7 +368,8 @@ class RealEstateService {
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
-  Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat, String NELng, String NELat) async {
+  Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
+                                       String NELng, String NELat) async {
     List<dynamic> ret = new List();
     ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
     ret.addAll(await getAllCommercialInBounds(SWLng, SWLat, NELng, NELat));
