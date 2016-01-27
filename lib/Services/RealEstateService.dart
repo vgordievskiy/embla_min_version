@@ -83,6 +83,12 @@ class RealEstateService {
 
     newObj.objectName = data['objectName'];
 
+    if(data.containsKey('isDisable')) {
+       newObj.isDisable = data['isDisable'];
+    } else {
+       newObj.isDisable = false;
+    }
+
     var exception = null;
 
     try {
@@ -109,6 +115,11 @@ class RealEstateService {
 
     newRoom.objectName = data['objectName'];
     newRoom.square = JSON.decode(data['square']);
+    if(data.containsKey('isDisable')) {
+       newRoom.isDisable = data['isDisable'];
+    } else {
+       newRoom.isDisable = false;
+    }
 
     var exception = null;
 
