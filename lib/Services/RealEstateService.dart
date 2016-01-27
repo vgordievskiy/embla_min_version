@@ -345,7 +345,8 @@ class RealEstateService {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
     var find = await new FindObjectsInBounds(REGeneric, sw, ne,
-                                             type: ReType.COMMERCIAL);
+                                             type: ReType.COMMERCIAL,
+                                             inclDisable: true);
 
     return new HelperObjectConverter<REstateWrapper>()
       .getFrom(await find.execute());
@@ -362,7 +363,8 @@ class RealEstateService {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
     var find = await new FindObjectsInBounds(REGeneric, sw, ne,
-                                             type: ReType.LAND);
+                                             type: ReType.LAND,
+                                             inclDisable: true);
 
     return new HelperObjectConverter<REstateWrapper>()
       .getFrom(await find.execute());
@@ -379,7 +381,8 @@ class RealEstateService {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
     var find = await new FindObjectsInBounds(REGeneric, sw, ne,
-                                             type: ReType.PRIVATE);
+                                             type: ReType.PRIVATE,
+                                             inclDisable: true);
 
     return new HelperObjectConverter<REstateWrapper>()
       .getFrom(await find.execute());
