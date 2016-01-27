@@ -41,9 +41,11 @@ class REGenericUtils {
       return f.propertyName == 'type';
     });
     String filedName = ORM.SQL.camelCaseToUnderscore(field.propertyName);
-    final String sql = "select _2gis_partition_magic('${find.table.tableName}', '${filedName}');";
+    final String sql =
+      "select _2gis_partition_magic('${find.table.tableName}', '${filedName}');";
     try {
-      int res = await (ORM.Model.ormAdapter.connection as psql.Connection).execute(sql);
+      int res = await (ORM.Model.ormAdapter.connection as psql.Connection)
+        .execute(sql);
       return res;
     } catch (error) {
 

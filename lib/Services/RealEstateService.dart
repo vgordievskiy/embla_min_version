@@ -339,11 +339,13 @@ class RealEstateService {
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllCommercialInBounds(
-      String SWLng, String SWLat, String NELng, String NELat) async {
+      String SWLng, String SWLat,
+      String NELng, String NELat)
+  async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
     var find = await new FindObjectsInBounds(REGeneric, sw, ne,
-                                             ReType.COMMERCIAL);
+                                             type: ReType.COMMERCIAL);
 
     return new HelperObjectConverter<REstateWrapper>()
       .getFrom(await find.execute());
@@ -354,10 +356,13 @@ class RealEstateService {
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllLandsInBounds(
-      String SWLng, String SWLat, String NELng, String NELat) async {
+      String SWLng, String SWLat,
+      String NELng, String NELat)
+  async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(REGeneric, sw, ne, ReType.LAND);
+    var find = await new FindObjectsInBounds(REGeneric, sw, ne,
+                                             type: ReType.LAND);
 
     return new HelperObjectConverter<REstateWrapper>()
       .getFrom(await find.execute());
@@ -368,19 +373,24 @@ class RealEstateService {
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
   Future<List<REstateWrapper>> getAllPrivatesInBounds(
-      String SWLng, String SWLat, String NELng, String NELat) async {
+      String SWLng, String SWLat,
+      String NELng, String NELat)
+  async {
     Geo.Point sw = new Geo.Point(double.parse(SWLng), double.parse(SWLat));
     Geo.Point ne = new Geo.Point(double.parse(NELng), double.parse(NELat));
-    var find = await new FindObjectsInBounds(REGeneric, sw, ne, ReType.PRIVATE);
+    var find = await new FindObjectsInBounds(REGeneric, sw, ne,
+                                             type: ReType.PRIVATE);
 
-    return new HelperObjectConverter<REstateWrapper>().getFrom(await find.execute());
+    return new HelperObjectConverter<REstateWrapper>()
+      .getFrom(await find.execute());
   }
 
   @app.Route("/bounds/:SWLng/:SWLat/:NELng/:NELat", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false)
   Future<List<dynamic>> getAllInBounds(String SWLng, String SWLat,
-                                       String NELng, String NELat) async {
+                                       String NELng, String NELat)
+  async {
     List<dynamic> ret = new List();
     ret.addAll(await getAllPrivatesInBounds(SWLng, SWLat, NELng, NELat));
     ret.addAll(await getAllCommercialInBounds(SWLng, SWLat, NELng, NELat));
