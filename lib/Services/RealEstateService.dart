@@ -89,8 +89,6 @@ class RealEstateService {
        newObj.isDisable = false;
     }
 
-    var exception = null;
-
     try {
       var saveResult = await newObj.save();
       if (data.containsKey('objectGeom')) {
@@ -178,7 +176,7 @@ class RealEstateService {
       .getFrom(await obj.getRooms(count: count, page: page));
   }
 
-  @app.Route("/:type/:id/rooms/:roomid/disabled", methods: const [app.GET])
+  @app.Route("/:type/:id/rooms/:roomid/disable", methods: const [app.GET])
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   getDisableState(String type,
@@ -187,7 +185,7 @@ class RealEstateService {
 
   }
 
-  @app.Route("/:type/:id/rooms/:roomid/disabled", methods: const [app.PUT])
+  @app.Route("/:type/:id/rooms/:roomid/disable", methods: const [app.PUT])
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   setDisableState(String type, String id, String roomid)  async
