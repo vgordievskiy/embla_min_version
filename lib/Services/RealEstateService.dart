@@ -77,6 +77,13 @@ class RealEstateService {
     }
   }
 
+  Future<RERoom> _getRoomForObject(String objId, String roomId) async {
+    RERoom room = await _getObject(ReType.ROOM, roomId);
+    if(room.ownerObjectId != int.parse(objId))
+        throw new app.ErrorResponse(400, {"error": "wrong data"});
+    return room;
+  }
+
   /* generic method:
    * create geo object - (aka point, area) by type
    */
@@ -176,6 +183,26 @@ class RealEstateService {
     RealEstateBase obj = await _getObject(reType, id);
     return new HelperObjectConverter<RERoomWrapper>()
       .getFrom(await obj.getRooms(count: count, page: page));
+  }
+
+  /* api method:
+   * get room by id
+   * */
+  @app.Route("/:type/:id/rooms/:roomid", methods: const [app.GET])
+  @ProtectedAccess(filtrateByUser: false)
+  @Encode()
+  Future<RERoomWrapper> get_room(String type, String id, String roomid) async
+    => RERoomWrapper.Create(await _getRoomForObject(id, roomid));
+
+  @app.Route("/:type/:id/rooms/:roomid", methods: const [app.PUT])
+  @ProtectedAccess(filtrateByUser: false)
+  @Encode()
+  Future<RERoomWrapper> change_room(String type,
+                                     String id, String roomid) async
+  {
+    RERoom room = await await _getRoomForObject(id, roomid);
+
+    return RERoomWrapper.Create(room);
   }
 
   @app.Route("/:type/:id/rooms/:roomid/disable", methods: const [app.GET])
