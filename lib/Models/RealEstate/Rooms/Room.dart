@@ -21,19 +21,19 @@ class RERoomUtils {
   }
 
   static Future<List<RERoom>> getForOwner(RealEstateBase obj,
-                                          {int count: null,
-                                           int page: null})
+                                         {int count: null,
+                                          int page: null,
+                                          bool inclDisabled: false})
   async {
     ORM.Find find = new ORM.Find(RERoom)..whereEquals('ownerObjectId', obj.id);
+    !inclDisabled ? find.whereEquals('isDisabled', false) : null;
     _setFindParams(find, count, page);
     return find.execute();
   }
 
-  static Future<RERoom> getById(int id, [bool inclDisabled = false]) async {
+  static Future<RERoom> getById(int id, [bool inclDisabled = true]) async {
     ORM.FindOne find = new ORM.FindOne(RERoom)..whereEquals('id', id);
-
     !inclDisabled ? find.whereEquals('isDisabled', false) : null;
-
     return find.execute();
   }
 
@@ -53,9 +53,12 @@ class RERoomUtils {
       return f.propertyName == 'ownerObjectId';
     });
     String filedName = ORM.SQL.camelCaseToUnderscore(field.propertyName);
-    final String sql = "select _2gis_partition_magic('${find.table.tableName}', '${filedName}');";
+    final String sql =
+      '''select _2gis_partition_magic('${find.table.tableName}',
+                '${filedName}');''';
     try {
-      int res = await (ORM.Model.ormAdapter.connection as psql.Connection).execute(sql);
+      int res = await (ORM.Model.ormAdapter.connection as psql.Connection)
+        .execute(sql);
       return res;
     } catch (error) {
 
