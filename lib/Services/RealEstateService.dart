@@ -198,9 +198,9 @@ class RealEstateService {
   @ProtectedAccess(filtrateByUser: false)
   @Encode()
   Future<RERoomWrapper> change_room(String type,
-                                     String id, String roomid) async
+                                    String id, String roomid) async
   {
-    RERoom room = await await _getRoomForObject(id, roomid);
+    RERoom room = await _getRoomForObject(id, roomid);
 
     return RERoomWrapper.Create(room);
   }
