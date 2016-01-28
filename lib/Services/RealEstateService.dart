@@ -65,6 +65,9 @@ class RealEstateService {
     RERoomUtils.createPartition();
   }
 
+  /* utils method:
+   * get object by type and id
+   */
   Future<dynamic> _getObject(ReType type, String idStr) {
     int id = int.parse(idStr);
     if (type != ReType.ROOM) {
@@ -74,6 +77,9 @@ class RealEstateService {
     }
   }
 
+  /* generic method:
+   * create geo object - (aka point, area) by type
+   */
   _create_object_by_type(String type, @app.Body(app.FORM) Map data) async {
     if (_isEmpty(data['objectName']) /*&& _isEmpty(data['objectGeom'])*/) {
       throw new app.ErrorResponse(403, {"error": "data empty"});
@@ -82,12 +88,7 @@ class RealEstateService {
     var newObj = new REGeneric.Dummy(reType);
 
     newObj.objectName = data['objectName'];
-
-    if(data.containsKey('isDisable')) {
-       newObj.isDisable = data['isDisable'];
-    } else {
-       newObj.isDisable = false;
-    }
+    newObj.isDisable = data['isDisable'] ?? false;
 
     try {
       var saveResult = await newObj.save();
@@ -100,6 +101,9 @@ class RealEstateService {
     }
   }
 
+  /* api method:
+   * create room into object
+   */
   @app.Route("/:type/:id/rooms", methods: const [app.POST])
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   create_room(String type, String id, @app.Body(app.FORM) Map data) async {
@@ -113,11 +117,7 @@ class RealEstateService {
 
     newRoom.objectName = data['objectName'];
     newRoom.square = JSON.decode(data['square']);
-    if(data.containsKey('isDisable')) {
-       newRoom.isDisable = data['isDisable'];
-    } else {
-       newRoom.isDisable = false;
-    }
+    newRoom.isDisable = data['isDisable'] ?? false;
 
     try {
       var saveResult = await newRoom.save();
@@ -130,7 +130,9 @@ class RealEstateService {
     }
   }
 
-  /* Need delete liked_objects
+  /* api method:
+   * delete room from object and full data associated with him
+   * Need delete liked_objects
    * user deals
    * objects meta data
    * user social groups by objects
