@@ -273,7 +273,8 @@ class RealEstateService {
     return room.addMetaData(param, param, value);
   }
 
-  @app.Route("/:type/:id/rooms/:roomid/data/:param/:indx", methods: const [app.PUT])
+  @app.Route("/:type/:id/rooms/:roomid/data/:param/:indx",
+             methods: const [app.PUT])
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   Future<REMetaDataWrapper> changeDataForRoom(String type, String id,
