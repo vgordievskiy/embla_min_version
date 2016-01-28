@@ -194,13 +194,23 @@ class RealEstateService {
   Future<RERoomWrapper> get_room(String type, String id, String roomid) async
     => RERoomWrapper.Create(await _getRoomForObject(id, roomid));
 
+  /* api method:
+   * update room
+   * Format is JSON obj { 'fieldName' : value }
+   * */
   @app.Route("/:type/:id/rooms/:roomid", methods: const [app.PUT])
   @ProtectedAccess(filtrateByUser: false)
   @Encode()
   Future<RERoomWrapper> change_room(String type,
-                                    String id, String roomid) async
-  {
+                                    String id,
+                                    String roomid,
+                                    @app.Body(app.FORM) Map data) async
+ {
     RERoom room = await _getRoomForObject(id, roomid);
+
+    data.forEach((String field, var value){
+      RERoomUtils.setField(room, field, value);
+    });
 
     return RERoomWrapper.Create(room);
   }

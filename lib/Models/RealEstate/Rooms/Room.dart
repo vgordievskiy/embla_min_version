@@ -1,5 +1,6 @@
 library BMSrv.Models.RealEstate.Rooms.Room;
 import 'dart:async';
+import 'dart:mirrors';
 
 export 'package:BMSrv/Models/RealEstate/RealEstateGeneric.dart';
 
@@ -64,6 +65,20 @@ class RERoomUtils {
 
     }
     return 0;
+  }
+
+  static bool setField(RERoom room, String field, var value) {
+    bool filterField(String field, var value) {
+      final List fields =
+        ['objectName', 'square', 'price'];
+      return fields.contains(field);
+    };
+
+    InstanceMirror roomRefl = reflect(room);
+    if(filterField(field, value)) {
+      roomRefl.setField(new Symbol(field), value);
+      return true;
+    } else return false;
   }
 }
 
