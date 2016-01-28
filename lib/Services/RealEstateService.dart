@@ -121,8 +121,6 @@ class RealEstateService {
        newRoom.isDisable = false;
     }
 
-    var exception = null;
-
     try {
       var saveResult = await newRoom.save();
       if (data.containsKey('objectGeom')) {
