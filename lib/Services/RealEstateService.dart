@@ -212,6 +212,8 @@ class RealEstateService {
       RERoomUtils.setField(room, field, value);
     });
 
+    await room.update();
+
     return RERoomWrapper.Create(room);
   }
 
