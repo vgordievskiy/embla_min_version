@@ -61,9 +61,9 @@ class AdminService {
     var saveResult = await newUser.save().catchError((var error){
       exception = error;
     });
-    
+
     await UserPass.CreateAdminPass(data['email'], data["password"], newUser.id);
-    
+
     if (exception != null) {
       return exception;
     } else {
@@ -77,19 +77,19 @@ class AdminService {
   Future<UserWrapper> getAdminById(String id) async {
     return UserWrapper.Create(await User.GetUser(id));
   }
-  
+
   @app.Route("/:adminId/users")
   @Encode()
   Future<List<UserWrapper>> getUsers(String adminId) async {
     List<UserWrapper> ret = new List();
-    
+
     for(User user in await UserUtils.GetAll()) {
       ret.add(await UserWrapper.Create(user));
     }
-    
+
     return ret;
   }
-  
+
   @app.Route("/:adminId/users/:userId/deals")
   @Encode()
   Future<List<ObjectDealWrapper>> getUserDeals(String adminId, String userId) async {
@@ -100,5 +100,5 @@ class AdminService {
     }
     return ret;
   }
-  
+
 }

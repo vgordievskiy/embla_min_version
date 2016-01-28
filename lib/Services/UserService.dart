@@ -37,13 +37,13 @@ class UserService {
   final log = new Logger("BMSrv.Services.UserService");
   MailSender mail = new MailSender('service@semplex.ru', 'bno9mjc');
   Config _config;
-  
+
   UserService(DBAdapter this._Db, Config this._config)
   {
     _Generator = new Uuid();
     initEvents();
   }
-  
+
   Future<dynamic> _getObject(ReType type, String idStr) {
      int id = int.parse(idStr);
      if (type != ReType.ROOM) {
@@ -52,27 +52,28 @@ class UserService {
        return RERoom.Get(id);
      }
    }
-  
+
   Future<double> _getBusyObjectParts(RealEstateBase object) async {
     List<ObjectDeal> parts = await object.GetAllParts();
     double busyParts = 0.0;
     for(ObjectDeal deal in parts) {
       busyParts += deal.part;
     }
-    
+
     return busyParts;
   }
-  
+
   Future _chackObjectParts(RERoom object, double reqPart) async {
     double busyPart = await _getBusyObjectParts(object);
-    final double avaliablePart = object.square - busyPart; 
-    if(avaliablePart < reqPart) throw new app.ErrorResponse(400, {'error': "part are not available"});
+    final double avaliablePart = object.square - busyPart;
+    if(avaliablePart < reqPart)
+      throw new app.ErrorResponse(400, {'error': "part are not available"});
   }
-  
+
   Future _addUserToObjectGroup(RealEstateBase obj, User user) async {
     ObjGroupUtils.addUserToGroup(obj, user);
   }
-  
+
   initEvents() {
     EventSys.asyncMessageBus.stream(SysEvt)
       .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER)
@@ -96,9 +97,9 @@ class UserService {
     {
       throw new app.ErrorResponse(403, {"error": "data empty"});
     }
-    
+
     bool existUser = await UserPass.checkExistUser(data['email']);
-    
+
     if (existUser) throw new app.ErrorResponse(400, {"error": "already exist"});
 
     User newUser = new User.Dummy();
@@ -110,11 +111,11 @@ class UserService {
     var saveResult = await newUser.save().catchError((var error){
       exception = error;
     });
-    
+
     await UserPass.CreateUserPass(data['email'], data["password"], newUser.id);
-    
+
     EventSys.asyncPub(new SysEvt(TSysEvt.ADD_USER, newUser));
-    
+
     if (exception != null) {
       return exception;
     } else {
@@ -122,7 +123,7 @@ class UserService {
       return { "status" : "created" };
     }
   }
-  
+
   @app.Route("/:id", methods: const[app.PUT])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
@@ -142,7 +143,7 @@ class UserService {
   Future<UserWrapper> getUserById(String id) async {
     return UserWrapper.Create(await User.GetUser(id));
   }
-  
+
   @app.Route("/:id/deals/:type/:estateid/rooms/:roomid", methods: const[app.PUT])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
@@ -155,28 +156,28 @@ class UserService {
       if(room.ownerObjectId != int.parse(estateid) ||
          ReUtils.str2Type(type) != room.OwnerType)
           throw new app.ErrorResponse(400, {"error": "wrong data"});
-      
+
       double part = double.parse(data["part"]);
-      double price = await room.Price; 
-      
+      double price = await room.Price;
+
       await _chackObjectParts(room, part);
-      
+
       ObjectDeal deal = new ObjectDeal.DummyRoom(user, room, part, price);
-          
+
       try {
         await deal.save();
         EventSys.asyncPub(new SysEvt(TSysEvt.ADD_DEAL, deal));
         new Future(() => _addUserToObjectGroup(room, user));
-        
+
         return deal.id;
       } catch (error) {
-        return error; 
+        return error;
       }
     } catch(error) {
       return new app.ErrorResponse(400, {"error": error});
     }
   }
-  
+
   @app.Route("/:id/deals", methods: const[app.GET])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
@@ -184,14 +185,14 @@ class UserService {
     User user = await User.GetUser(id);
 
     List<ObjectDealWrapper> ret = new List();
-    
+
     for(ObjectDeal deal in await user.GetDeals()) {
       var wrap = await ObjectDealWrapper.Create(deal);
       ret.add(wrap);
     }
     return ret;
   }
-  
+
   @app.Route("/:id/deals/:type/:estateid/rooms/:roomid", methods: const[app.GET])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
@@ -201,22 +202,22 @@ class UserService {
     ReType reType = ReUtils.str2Type(type);
     RERoom room = await _getObject(ReType.ROOM, roomid);
     if(room.ownerObjectId != int.parse(estateid) ||
-       ReUtils.str2Type(type) != room.OwnerType) 
+       ReUtils.str2Type(type) != room.OwnerType)
         throw new app.ErrorResponse(400, {"error": "wrong data"});
-    
+
     List<ObjectDealWrapper> ret = new List();
 
     List<ObjectDeal> deals = await room.GetAllParts();
     deals ??= [];
-    
-    for (ObjectDeal deal in deals.where((ObjectDeal el) => 
+
+    for (ObjectDeal deal in deals.where((ObjectDeal el) =>
                               el.userId == int.parse(id)))
     {
       ret.add(await ObjectDealWrapper.Create(deal));
     }
     return ret;
   }
-  
+
   @app.Route("/:id/likes", methods: const[app.GET])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
@@ -224,7 +225,7 @@ class UserService {
     User user = await User.GetUser(id);
 
     List<RERoomWrapper> ret = new List();
-    
+
     for(LikeObject obj in await LikeObjectsUtils.GetForUser(user)) {
       RERoom room = await obj.room;
       var wrap = await RERoomWrapper.Create(room);
@@ -232,7 +233,7 @@ class UserService {
     }
     return ret;
   }
-  
+
   @app.Route("/:id/likes/:roomId", methods: const[app.GET])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
@@ -241,7 +242,7 @@ class UserService {
     RERoom room = await RERoomUtils.getById(int.parse(roomId));
     return LikeObjectsUtils.HaveLike(room, user);
   }
-  
+
   @app.Route("/:id/likes/:roomId", methods: const[app.DELETE])
   @ProtectedAccess(filtrateByUser: true)
   Future deleteLake(String id, roomId) async {
@@ -249,7 +250,7 @@ class UserService {
     RERoom room = await RERoomUtils.getById(int.parse(roomId));
     return LikeObjectsUtils.DeleteLike(room, user);
   }
-  
+
   @app.Route("/:id/likes/:roomId", methods: const[app.PUT])
   @ProtectedAccess(filtrateByUser: true)
   Future addUserLike(String id, String roomId) async {
@@ -260,7 +261,7 @@ class UserService {
     }
     return LikeObjectsUtils.CreateLike(room, user);
   }
-  
+
   @app.Route("/activate/:uniqueId", methods: const[app.GET])
   @FreeAccess()
   Future validateUser(String uniqueId) async {
