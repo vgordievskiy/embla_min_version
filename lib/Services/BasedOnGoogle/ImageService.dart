@@ -126,7 +126,7 @@ class ImageService {
 
   @app.Route('/realestate/:type/:id/rooms/:roomid/images',
              methods: const [app.POST], allowMultipartRequest: true)
-  @ProtectedAccess(filtrateByUser: false, groups: const ['user'])
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
   addAdditionalImage(String type, String id, String roomid,
                      @app.Body(app.FORM) var data) async
   {
