@@ -131,7 +131,7 @@ class RealEstateService {
       if (data.containsKey('objectGeom')) {
         int res = await newRoom.SaveGeometryFromGeoJson(data['objectGeom']);
       }
-      return "/realestate/${type}/${id}/${newRoom.id}";
+      return "/realestate/${type}/${id}/rooms/${newRoom.id}";
     } catch (error) {
       return new app.ErrorResponse(400, {"error": error});
     }
