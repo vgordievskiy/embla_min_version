@@ -102,7 +102,7 @@ class RealEstateService {
       if (data.containsKey('objectGeom')) {
         int res = await newObj.SaveGeometryFromGeoJson(data['objectGeom']);
       }
-      return "realestate/${type}/${newObj.id}";
+      return "/realestate/${type}/${newObj.id}";
     } catch (error) {
       return new app.ErrorResponse(400, {"error": error});
     }
@@ -131,7 +131,7 @@ class RealEstateService {
       if (data.containsKey('objectGeom')) {
         int res = await newRoom.SaveGeometryFromGeoJson(data['objectGeom']);
       }
-      return "realestate/${type}/${id}/${newRoom.id}";
+      return "/realestate/${type}/${id}/${newRoom.id}";
     } catch (error) {
       return new app.ErrorResponse(400, {"error": error});
     }
