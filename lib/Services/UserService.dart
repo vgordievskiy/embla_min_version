@@ -160,6 +160,9 @@ class UserService {
       double part = double.parse(data["part"]);
       double price = await room.Price;
 
+      if(price <= 0)
+        throw new app.ErrorResponse(500, {"error": "wrong server data"});
+
       await _chackObjectParts(room, part);
 
       ObjectDeal deal = new ObjectDeal.DummyRoom(user, room, part, price);
