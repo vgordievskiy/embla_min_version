@@ -70,7 +70,7 @@ class RERoomUtils {
   static bool setField(RERoom room, String field, var value) {
     bool filterField(String field, var value) {
       final List fields =
-        ['objectName', 'square', 'price'];
+        ['objectName', 'square'];
       return fields.contains(field);
     };
 

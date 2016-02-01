@@ -208,7 +208,12 @@ class RealEstateService {
  {
     RERoom room = await _getRoomForObject(id, roomid);
 
-    data.forEach((String field, var value){
+    if(!data.containsKey('data')) {
+      throw new app.ErrorResponse(400, {"error": "wrong data"});
+    }
+
+    Map objRepr = JSON.decode(data['data']);
+    objRepr.forEach((String field, var value){
       RERoomUtils.setField(room, field, value);
     });
 
