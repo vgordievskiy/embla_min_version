@@ -12,7 +12,8 @@ export 'package:BMSrv/Models/ObjectDeal.dart';
 @Decode()
 class ObjectDealWrapper {
 
-  static Future<ObjectDealWrapper> Create(ObjectDeal deal) async 
+  static Future<ObjectDealWrapper> Create(ObjectDeal deal,
+                                          {bool withPrice: false}) async
   {
     ObjectDealWrapper ret = new ObjectDealWrapper();
     ret.id = deal.id;
@@ -29,27 +30,31 @@ class ObjectDealWrapper {
     ret.part = deal.part;
     ret.createTime = deal.createTime;
     ret.approveTime = deal.approveTime;
+    if(withPrice) ret.price = deal.price;
     return ret;
   }
 
   @Field()
   int id;
-  
+
   @Field()
   String type;
-  
+
   @Field()
   RERoomWrapper object;
-  
+
   @Field()
   bool isPending;
-  
+
   @Field()
   double part;
-  
+
+  @Field()
+  double price;
+
   @Field()
   DateTime createTime;
-  
+
   @Field()
   DateTime approveTime;
 }

@@ -96,7 +96,7 @@ class AdminService {
     User user = await User.GetUser(userId);
     List<ObjectDealWrapper> ret = new List();
     for(ObjectDeal deal in await user.GetDeals()) {
-      ret.add(await ObjectDealWrapper.Create(deal));
+      ret.add(await ObjectDealWrapper.Create(deal, withPrice: true));
     }
     return ret;
   }

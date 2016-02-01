@@ -187,7 +187,7 @@ class UserService {
     List<ObjectDealWrapper> ret = new List();
 
     for(ObjectDeal deal in await user.GetDeals()) {
-      var wrap = await ObjectDealWrapper.Create(deal);
+      var wrap = await ObjectDealWrapper.Create(deal, withPrice: true);
       ret.add(wrap);
     }
     return ret;
@@ -213,7 +213,7 @@ class UserService {
     for (ObjectDeal deal in deals.where((ObjectDeal el) =>
                               el.userId == int.parse(id)))
     {
-      ret.add(await ObjectDealWrapper.Create(deal));
+      ret.add(await ObjectDealWrapper.Create(deal, withPrice: true));
     }
     return ret;
   }
