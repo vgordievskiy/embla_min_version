@@ -51,8 +51,7 @@ startServer(Config config) {
       
       SecurityContext serverContext = new SecurityContext()
         ..useCertificateChain(localFile('ssl/certificate.pem'))
-        ..usePrivateKey(localFile('ssl/private.pem'),
-                        password: 'semplex!2#');
+        ..usePrivateKey(localFile('ssl/private.pem'));
       
       var secureOptions = { 
         #context: serverContext
