@@ -13,7 +13,6 @@ import 'package:unittest/unittest.dart';
 import 'package:logging/logging.dart';
 import 'package:stack_trace/stack_trace.dart';
 import "package:threading/threading.dart";
-import 'package:sync_socket/sync_socket.dart';
 
 import 'package:redstone/server.dart' as app;
 import 'package:redstone/mocks.dart';
@@ -21,14 +20,14 @@ import 'package:redstone/mocks.dart';
 import 'package:BMSrv/BMSrv.dart';
 
 
-List<String> filter = ["LoginService"]; 
+List<String> filter = ["LoginService"];
 
 void setupConsoleLog([Level level = Level.INFO]) {
   Logger.root.level = level;
   Logger.root.onRecord.listen((LogRecord rec) {
-    
+
     if (filter.contains(rec.loggerName)) return;
-    
+
     if (rec.level >= Level.SEVERE) {
       var stack = rec.stackTrace != null ? "\n${Trace.format(rec.stackTrace)}" : "";
       print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message} - ${rec.error}${stack}');
@@ -86,7 +85,7 @@ Future<dynamic> loginUser() {
   data["username"] = userName;
   data["password"] = userpass;
   data["submit"] = "fromDartTest";
-  
+
   var req = new MockRequest("/login",
                             method: app.POST,
                             bodyType: app.FORM,
@@ -173,22 +172,22 @@ Future<dynamic> assignRealEstateObject(String type, String id) {
 Future defineTests() async {
   await Init();
   initServices();
-  
+
   skip_test("create user", createUser);
   test("login user", loginUser);
   test("Get user", getUserInfo);
-  
+
   skip_test("create realEstate object", () => createRealEstateObject("private"));
   skip_test("create realEstate object", () => createRealEstateObject("land"));
   skip_test("create realEstate object", () => createRealEstateObject("commercial"));
-  
+
   skip_test("realestate_assign_private", () async {
     return assignRealEstateObject("commercial", "1");
   });
-  
+
   skip_test("test create room", () => createRealEstateRoom("commercial", "1"));
   skip_test("test get all rooms", () => getAllRoomsForObject("commercial", "1"));
-  
+
   skip_test("get user deals", () async {
     assert(userUrl!=null);
     var req = new MockRequest("$userUrl/deals",
@@ -200,7 +199,7 @@ Future defineTests() async {
       _log.info("${resp.mockContent}");
     });
   });
-  
+
   test("get all objects", () async {
     assert(userUrl!=null);
     var req = new MockRequest("/realestate",
@@ -212,14 +211,14 @@ Future defineTests() async {
       _log.info("${resp.mockContent}");
     });
   });
-  
+
   skip_test("thread", () async {
     var thread = new Thread(() async {
       for(int i=0; i<10; ++i )
       print("Threaded $i");
     });
-   
+
     await thread.start();
   });
-  
+
 }
