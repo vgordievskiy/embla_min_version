@@ -18,7 +18,6 @@ dependencies:
   event_bus: '>=0.4.0 <0.5.0'
   observe: any
   simple_features: any
-  sync_socket: ^1.0.2+1
   threading: ^0.0.7
   ini: "^1.1.0"
   googleapis: ">=0.1.0 <0.2.0"
