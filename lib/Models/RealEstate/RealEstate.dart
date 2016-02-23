@@ -67,6 +67,14 @@ class ReUtils {
     }
     throw "unknown type value";
   }
+
+  static List<String> metaNames = [
+    'priceOfFullSquare'
+  ];
+
+  static bool checkMetaName(String name) {
+    return metaNames.contains(name);
+  }
 }
 
 class FindObjectsInBounds extends CustomFindObjects {

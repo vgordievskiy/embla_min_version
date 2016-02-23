@@ -295,7 +295,7 @@ class RealEstateService {
   @app.Route("/:type/:id/rooms/:roomid/data/:param", methods: const [app.POST])
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
-  Future<REMetaDataWrapper> addDataForRoom(String type, String id,
+  Future addDataForRoom(String type, String id,
                                            String roomid, String param,
                                            @app.Body(app.FORM) Map data) async
   {
@@ -314,17 +314,17 @@ class RealEstateService {
 
     if(value == null) throw new app.ErrorResponse(400, {"error": "data empty"});
 
-    return room.addMetaData(param, param, value);
+    await room.addMetaData(param, param, value);
   }
 
   @app.Route("/:type/:id/rooms/:roomid/data/:param/:indx",
              methods: const [app.PUT])
   @Encode()
   @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
-  Future<REMetaDataWrapper> changeDataForRoom(String type, String id,
-                                              String roomid, String param,
-                                              String indx,
-                                              @app.Body(app.FORM) Map data)
+  Future changeDataForRoom(String type, String id,
+                           String roomid, String param,
+                           String indx,
+                           @app.Body(app.FORM) Map data)
   async {
     if (!REMetaDataUtils.checkMetaName(param)) {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
@@ -404,6 +404,57 @@ class RealEstateService {
 
     List<REMetaData> ret = await obj.GetMetaData();
     return REMetaDataWrapper.Create(ret);
+  }
+
+  @app.Route("/:type/:id/data/:param", methods: const [app.POST])
+  @Encode()
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
+  Future addDataForObject(String type, String id,
+                                             String param,
+                                             @app.Body(app.FORM) Map data) async
+  {
+    if (!ReUtils.checkMetaName(param)) {
+      throw new app.ErrorResponse(400, {"error": "wrong field name"});
+    }
+    if (_isEmpty(data['value'])) {
+      throw new app.ErrorResponse(400, {"error": "data empty"});
+    }
+    ReType reType = ReUtils.str2Type(type);
+    REGeneric obj = await _getObject(reType, id);
+
+    var value = JSON.decode(data['value']);
+
+    if(value == null) throw new app.ErrorResponse(400, {"error": "data empty"});
+
+    await obj.addMetaData(param, param, value);
+  }
+
+  @app.Route("/:type/:id/data/:param/:indx",
+             methods: const [app.PUT])
+  @Encode()
+  @ProtectedAccess(filtrateByUser: false, groups: const ['admin'])
+  Future changeDataForObject(String type, String id,
+                                                String param, String indx,
+                                                @app.Body(app.FORM) Map data)
+  async {
+    if (!REMetaDataUtils.checkMetaName(param)) {
+      throw new app.ErrorResponse(400, {"error": "wrong field name"});
+    }
+    if (_isEmpty(data['value'])) {
+      throw new app.ErrorResponse(400, {"error": "data empty"});
+    }
+
+    ReType reType = ReUtils.str2Type(type);
+    REGeneric obj = await _getObject(reType, id);
+
+    List<REMetaData> oldValue = await obj.GetMetaData(fieldName: param);
+
+    int pos = int.parse(indx);
+
+    var value = JSON.decode(data['value']);
+
+    oldValue[pos].Data = value;
+    await oldValue[pos].save();
   }
 
   @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
