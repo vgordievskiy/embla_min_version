@@ -394,6 +394,18 @@ class RealEstateService {
     return ret;
   }
 
+  @app.Route("/:type/:id/data", methods: const [app.GET])
+  @Encode()
+  @ProtectedAccess(filtrateByUser: false)
+  Future<Map<String, dynamic>> getDataForObject(String type, String id) async
+  {
+    ReType reType = ReUtils.str2Type(type);
+    REGeneric obj = await _getObject(reType, id);
+
+    List<REMetaData> ret = await obj.GetMetaData();
+    return REMetaDataWrapper.Create(ret);
+  }
+
   @app.Route("/commercial/bounds/:SWLng/:SWLat/:NELng/:NELat",
              methods: const [app.GET])
   @Encode()
