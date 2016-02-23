@@ -69,7 +69,9 @@ class ReUtils {
   }
 
   static List<String> metaNames = [
-    'priceOfFullSquare'
+    'priceOfFullSquare',
+    'fullSquare',
+    'ratePerYearByMetr'
   ];
 
   static bool checkMetaName(String name) {
