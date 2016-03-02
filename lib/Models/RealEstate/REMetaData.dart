@@ -29,20 +29,6 @@ Future<List<REMetaData>> testCustom() async {
 }
 
 class REMetaDataUtils {
-  static List<String> metaNames = [
-    'electroPower',
-    'targetUsage',
-    'description',
-    'pricePerMeter',
-    'mainImageUrl',
-    'objectImages',
-    'objectData'
-];
-
-  static bool checkMetaName(String name) {
-    return metaNames.contains(name);
-  }
-
   static Future<List<REMetaData>> getForObject(RealEstateBase obj, {String fieldName: null}) async {
     ORM.Find find = new ORM.Find(REMetaData);
     ORM.Condition condition = new ORM.Equals('ownerType', ReUtils.type2Int(obj.Type));
@@ -66,7 +52,7 @@ class REMetaDataUtils {
   }
 
   static Future deleteForObject(RealEstateBase obj) async {
-    
+
   }
 }
 

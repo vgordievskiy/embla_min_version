@@ -12,6 +12,29 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
 
 class RERoomUtils {
+
+  static List<String> metaNames = [
+    'electroPower',
+    'targetUsage',
+    'description',
+    'pricePerMeter',
+    'mainImageUrl',
+    'objectImages',
+    'objectData',
+    'priceOfFullSquare',
+    'fullSquare',
+    'ratePerYearByMetr',
+    'operatingCosts',
+    'repairsCosts',
+    'insuranceCosts',
+    'leaseOrTaxForLandCosts',
+    'administerTransferOfRentCosts'
+  ];
+
+  static bool checkMetaName(String name) {
+    return metaNames.contains(name);
+  }
+
   static _setFindParams(ORM.Find find, int count, int page) {
     if(count != null) find.setLimit(count);
     if(count != null && page != null && page > 0) {

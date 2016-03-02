@@ -299,7 +299,7 @@ class RealEstateService {
                                            String roomid, String param,
                                            @app.Body(app.FORM) Map data) async
   {
-    if (!REMetaDataUtils.checkMetaName(param)) {
+    if (!RERoomUtils.checkMetaName(param)) {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
     }
     if (_isEmpty(data['value'])) {
@@ -326,7 +326,7 @@ class RealEstateService {
                            String indx,
                            @app.Body(app.FORM) Map data)
   async {
-    if (!REMetaDataUtils.checkMetaName(param)) {
+    if (!RERoomUtils.checkMetaName(param)) {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
     }
     if (_isEmpty(data['value'])) {
@@ -437,7 +437,7 @@ class RealEstateService {
                                                 String param, String indx,
                                                 @app.Body(app.FORM) Map data)
   async {
-    if (!REMetaDataUtils.checkMetaName(param)) {
+    if (!ReUtils.checkMetaName(param)) {
       throw new app.ErrorResponse(400, {"error": "wrong field name"});
     }
     if (_isEmpty(data['value'])) {
