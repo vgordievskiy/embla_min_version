@@ -75,6 +75,8 @@ class ReUtils {
     'operatingCosts',
     'repairsCosts',
     'insuranceCosts',
+    'landCosts',
+    'discountRate_pct',
     'leaseOrTaxForLandCosts',
     'administerTransferOfRentCosts'
   ];

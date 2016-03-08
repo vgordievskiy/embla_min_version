@@ -27,6 +27,8 @@ class RERoomUtils {
     'operatingCosts',
     'repairsCosts',
     'insuranceCosts',
+    'landCosts',
+    'discountRate_pct',
     'leaseOrTaxForLandCosts',
     'administerTransferOfRentCosts'
   ];
