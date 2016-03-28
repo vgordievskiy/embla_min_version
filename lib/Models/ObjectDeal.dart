@@ -8,46 +8,66 @@ import 'package:SrvCommon/SrvCommon.dart';
 import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:logging/logging.dart';
 
+class ObjectDealUtils {
+  static Future<ObjectDeal> Get(int id) {
+    ORM.FindOne find = new ORM.FindOne(ObjectDeal)..whereEquals('id', id);
+    return find.execute();
+  }
+
+  static Future<List<ObjectDeal>> GetForUser(User user, { isPending : null }) {
+    ORM.Find find = new ORM.Find(ObjectDeal);
+    ORM.Condition cond = new ORM.Equals('userId', user.id);
+
+    if(isPending != null) {
+      cond.and(new ORM.Equals('isPending', isPending));
+    }
+
+    find.where(cond);
+    return find.execute();
+  }
+
+}
+
 @ORM.DBTable('userObjectDeal')
 class ObjectDeal extends ORM.Model {
-  
+
   Logger _log;
   @ORM.DBField()
   String ontoId;
-  
+
   @ORM.DBField()
   @ORM.DBFieldPrimaryKey()
   @ORM.DBFieldType('SERIAL')
   int id;
-  
+
   @ORM.DBField()
   int objectId;
-  
+
   @ORM.DBField()
   int userId;
-  
+
   @ORM.DBField()
   int type;
-  
+
   @ORM.DBField()
   bool isPending;
-  
+
   @ORM.DBField()
   double part;
-  
+
   @ORM.DBField()
   double price;
-  
+
   @ORM.DBField()
   DateTime createTime;
-  
+
   @ORM.DBField()
   DateTime approveTime;
-  
+
   ObjectDeal() {
     initLog();
   }
-  
+
   ObjectDeal.DummyRoom(User user, RERoom object, double _part, double price) {
     userId = user.id;
     objectId = object.id;
@@ -57,11 +77,11 @@ class ObjectDeal extends ORM.Model {
     createTime = new DateTime.now();
     initData(userId, object.id, ReUtils.type2Int(ReType.ROOM));
   }
-  
+
   String get TypeName {
     return ReUtils.type2Str(ReUtils.int2Type(type));
   }
-  
+
   Future<dynamic> GetObject() {
     ReType intType = ReUtils.int2Type(type);
     if (intType != ReType.ROOM) {
@@ -70,22 +90,22 @@ class ObjectDeal extends ORM.Model {
       return RERoom.Get(objectId);
     }
   }
-  
+
   Future<User> GetUser() {
     ORM.FindOne find = new ORM.FindOne(User)..whereEquals('id', userId);
     return (find.execute() as Future<User>);
   }
-  
+
   initData(int UserId, int REId, int typeId) {
     userId = UserId;
     objectId = REId;
     type = typeId;
   }
-  
+
   initLog() async {
     _log = new Logger("BMSrv.ObjectDeal_$id");
   }
-  
+
   String toString(){
     return 'ObjectDeal { id: $id, objectId: $objectId userId: $userId, type: $type}';
   }

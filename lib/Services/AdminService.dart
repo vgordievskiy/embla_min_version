@@ -72,6 +72,17 @@ class AdminService {
     }
   }
 
+  Future<bool> _setDealStatus(String userId, String dealId, bool isPending) async {
+    User user = await User.GetUser(userId);
+    ObjectDeal deal = await ObjectDealUtils.Get(int.parse(dealId));
+    if (deal.userId == user.id) {
+      deal.isPending = isPending;
+      return deal.save();
+    } else {
+      throw new app.ErrorResponse(400, { 'status' : 'user not have this deal' });
+    }
+  }
+
   @app.Route("/:id")
   @Encode()
   Future<UserWrapper> getAdminById(String id) async {
@@ -99,6 +110,56 @@ class AdminService {
       ret.add(await ObjectDealWrapper.Create(deal, withPrice: true));
     }
     return ret;
+  }
+
+  @app.Route("/:adminId/users/:userId/deals/approved")
+  @Encode()
+  Future<List<ObjectDealWrapper>>
+    getApprovedUserDeals(String adminId, String userId) async
+  {
+    User user = await User.GetUser(userId);
+    List<ObjectDealWrapper> ret = new List();
+    for(ObjectDeal deal in await
+          ObjectDealUtils.GetForUser(user, isPending: false))
+    {
+        ret.add(await ObjectDealWrapper.Create(deal, withPrice: true));
+    }
+    return ret;
+  }
+
+  @app.Route("/:adminId/users/:userId/deals/pending")
+  @Encode()
+  Future<List<ObjectDealWrapper>>
+    getPendingUserDeals(String adminId, String userId) async
+  {
+    User user = await User.GetUser(userId);
+    List<ObjectDealWrapper> ret = new List();
+    for(ObjectDeal deal in await
+          ObjectDealUtils.GetForUser(user, isPending: true))
+    {
+        ret.add(await ObjectDealWrapper.Create(deal, withPrice: true));
+    }
+    return ret;
+  }
+
+  @app.Route("/:adminId/users/:userId/deals/approved/:dealId",
+             methods: const [app.PUT])
+  @Encode()
+  Future<Map>
+    approveUserDeals(String adminId, String userId, String dealId) async
+  {
+      bool res = await _setDealStatus(userId, dealId, false);
+      return { 'status' : 'approved' };
+  }
+
+  @app.Route("/:adminId/users/:userId/deals/pending/:dealId",
+             methods: const [app.PUT])
+  @Encode()
+  Future<Map>
+    setPendingUserDeals(String adminId, String userId, String dealId) async
+  {
+      bool res = await _setDealStatus(userId, dealId, true);
+      return { 'status' : 'set as pending' };
   }
 
 }
