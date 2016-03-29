@@ -23,6 +23,7 @@ class RERoomUtils {
     'objectData',
     'priceOfFullSquare',
     'fullSquare',
+    'minInvestStep',
     'ratePerYearByMetr',
     'operatingCosts',
     'repairsCosts',
