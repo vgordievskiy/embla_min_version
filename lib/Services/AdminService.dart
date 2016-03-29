@@ -77,6 +77,7 @@ class AdminService {
     ObjectDeal deal = await ObjectDealUtils.Get(int.parse(dealId));
     if (deal.userId == user.id) {
       deal.isPending = isPending;
+      if(isPending == false) deal.approveTime = new DateTime.now();
       return deal.save();
     } else {
       throw new app.ErrorResponse(400, { 'status' : 'user not have this deal' });
