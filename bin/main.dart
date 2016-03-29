@@ -15,14 +15,14 @@ import 'package:BMSrv/Services/BasedOnGoogle/ImageService.dart';
 import 'package:logging/logging.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-List<String> filter = ["LoginService"]; 
+List<String> filter = ["LoginService"];
 
 void setupConsoleLog([Level level = Level.INFO]) {
   Logger.root.level = level;
   Logger.root.onRecord.listen((LogRecord rec) {
-    
+
     if (filter.contains(rec.loggerName)) return;
-    
+
     if (rec.level >= Level.SEVERE) {
       var stack = rec.stackTrace != null ? "\n${Trace.format(rec.stackTrace)}" : "";
       print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message} - ${rec.error}${stack}');
@@ -34,7 +34,14 @@ void setupConsoleLog([Level level = Level.INFO]) {
 
 
 startServer(Config config) {
-  Init().then((var res){
+  Common.Params params =
+    new Common.Params(User: "BMSrvApp",
+                      Password: "BMSrvAppbno9mjc",
+                      DBName: "investments",
+                      DbUrl: config.get("DbConfig", "db-url"),
+                      OntologyName: null/*"investments"*/);
+
+  Init(params).then((var res){
       app.addPlugin(getMapperPlugin());
       app.addPlugin(Common.AccessPlugin);
       app.addPlugin(getWebSocketPlugin());
@@ -44,16 +51,16 @@ startServer(Config config) {
       app.addModule(new Module()..bind(ImageService));
       app.addModule(new Module()..bind(Config, toValue: config));
       setupConsoleLog();
-      
+
       String localFile(path) => Platform.script.resolve(path).toFilePath();
-      
+
       print(localFile('ssl/private.pem'));
-      
+
       SecurityContext serverContext = new SecurityContext()
         ..useCertificateChain(localFile('ssl/certificate.pem'))
         ..usePrivateKey(localFile('ssl/private.pem'));
-      
-      var secureOptions = { 
+
+      var secureOptions = {
         #context: serverContext
       };
 
@@ -68,6 +75,4 @@ main(List<String> args) {
   .then((Config config){
     startServer(config);
   });
-  
-  
 }
