@@ -13,17 +13,16 @@ import 'package:BMSrv/Services/BasedOnGoogle/ImageService.dart';
 import 'package:BMSrv/Services/public/REstPublicService.dart';
 /*------end Public------------------------------*/
 
+export 'package:SrvCommon/SrvCommon.dart' show Params;
 import 'package:SrvCommon/SrvCommon.dart' as Common;
 
 import 'package:postgresql/postgresql.dart' as PG;
 import 'package:dart_orm/dart_orm.dart' as ORM;
 
-var uri = 'postgres://BMSrvApp:BMSrvAppbno9mjc@localhost:5432/investments';
-
 _postGisInit() async {
-  PG.Connection conn = await PG.connect(uri);
+  PG.Connection conn = await PG.connect(Common.DBAdapter.GetDbPath());
   List<String> tables = ['real_estate_objects_generic', 'real_estate_objects_rooms'];
-  
+
   for(String table in tables) {
     try {
       await conn.execute("SELECT AddGeometryColumn( '$table', 'obj_geom', -1, 'GEOMETRY', 2)");
@@ -38,13 +37,7 @@ _postGisInit() async {
   }
 }
 
-Future Init() async {
-  
-  var params = new Common.Params(User: "BMSrvApp",
-                                 Password: "BMSrvAppbno9mjc",
-                                 DBName: "investments",
-                                 OntologyName: null/*"investments"*/);
+Future Init(Common.Params params) async {
   await Common.Init(params);
   await _postGisInit();
 }
-
