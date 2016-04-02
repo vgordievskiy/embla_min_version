@@ -4,6 +4,7 @@ import 'package:dart_orm/dart_orm.dart' as ORM;
 import 'package:redstone/server.dart' as app;
 import 'package:redstone_mapper/plugin.dart';
 import 'package:uuid/uuid.dart';
+import "package:ini/ini.dart";
 import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
@@ -15,6 +16,7 @@ import 'package:BMSrv/Models/JsonWrappers/User.dart';
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 import 'package:BMSrv/Events/SystemEvents.dart';
+import 'package:BMSrv/Mail/Sender.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -38,7 +40,9 @@ class AdminService {
   DBAdapter _Db;
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.AdminService");
-  AdminService(DBAdapter this._Db)
+  MailSender mail = new MailSender('service@semplex.ru', 'bno9mjc');
+  Config _config;
+  AdminService(DBAdapter this._Db, Config this._config)
   {
     _Generator = new Uuid();
   }
@@ -161,6 +165,19 @@ class AdminService {
   {
       bool res = await _setDealStatus(userId, dealId, true);
       return { 'status' : 'set as pending' };
+  }
+
+  @app.Route("/:adminId/users/:userId/welcome_email",
+             methods: const [app.PUT])
+  resendWelcomeEmail(String adminId, String userId) async {
+    User user = await User.GetUser(userId);
+    final String url = _config.get("ClientUrl", "client-url");
+    String subj = "Добро пожаловать в мир умных инвестиций";
+    String html =
+      '''<a href="$url#activate?${user.uniqueID}">
+         активировать мой аккаунт </a>
+      ''';
+    mail.createActivateMail(user.email, subj, html);
   }
 
 }
