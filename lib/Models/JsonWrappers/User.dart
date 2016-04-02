@@ -8,7 +8,7 @@ import 'package:BMSrv/Models/User.dart';
 @Decode()
 class UserWrapper {
 
-  static Future<UserWrapper> Create(User user) async 
+  static Future<UserWrapper> Create(User user) async
   {
       UserWrapper ret = new UserWrapper();
       ret.userUrl = "/users/${user.id}";
@@ -17,12 +17,13 @@ class UserWrapper {
       ret.email = user.email;
       ret.avatar = user.profileImage;
       ret.phone = user.phone;
+      ret.enabled = user.enabled;
       return ret;
   }
-  
+
   @Field()
   int id;
-  
+
   @Field()
   String userUrl;
 
@@ -31,10 +32,13 @@ class UserWrapper {
 
   @Field()
   String email;
-  
+
   @Field()
   String avatar;
-  
+
   @Field()
   String phone;
+
+  @Field()
+  bool enabled;
 }
