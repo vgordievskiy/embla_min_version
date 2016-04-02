@@ -84,6 +84,10 @@ class UserService {
         String html =
           '''<a href="$url#activate?${user.uniqueID}">
              активировать мой аккаунт </a>
+             <h4>
+              Или введите ссылку в браузере: <br>
+                $url#activate?${user.uniqueID}
+             </h4>
           ''';
         mail.createActivateMail(user.email, subj, html);
     });
