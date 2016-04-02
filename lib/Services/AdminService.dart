@@ -172,10 +172,14 @@ class AdminService {
   resendWelcomeEmail(String adminId, String userId) async {
     User user = await User.GetUser(userId);
     final String url = _config.get("ClientUrl", "client-url");
-    String subj = "Добро пожаловать в мир умных инвестиций";
+    String subj = r"Добро пожаловать в мир умных инвестиций";
     String html =
       '''<a href="$url#activate?${user.uniqueID}">
          активировать мой аккаунт </a>
+         <h4>
+          Или введите ссылку в браузере: <br>
+            $url#activate?${user.uniqueID}
+         </h4>
       ''';
     mail.createActivateMail(user.email, subj, html);
   }
