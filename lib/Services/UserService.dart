@@ -6,6 +6,7 @@ import 'package:shelf/shelf.dart' as shelf;
 import 'package:redstone_mapper/plugin.dart';
 import 'package:uuid/uuid.dart';
 import "package:ini/ini.dart";
+import "package:otp/otp.dart";
 import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
@@ -293,10 +294,12 @@ class UserService {
   }
 
   String _getneratePass(User user) {
-    return "";
+    DateTime time = new DateTime.now();
+    int pass = OTP.generateTOTPCode(user.email, time.millisecondsSinceEpoch);
+    return pass.toString();
   }
 
-  @app.Route("/reset", methods: const[app.GET])
+  @app.Route("/reset", methods: const[app.PUT])
   @FreeAccess()
   Future resetUser(@app.Body(app.FORM) Map data) async {
     if(!data.containsKey('email'))
@@ -308,8 +311,23 @@ class UserService {
     UserPass userInt = await UserPass.getUser(user.id);
     String newPass = _getneratePass(user);
     userInt.password = UserPass.encryptPass(newPass);
-
     await userInt.save();
+
+    {
+      String subj = "Semplex. Ваш новый пароль";
+      String html =
+        '''<h4>
+            Вы инициировали смену пароля. <br>
+            Новые данные для входа:
+           </h4>
+           <h4>
+            email: ${user.email} <br>
+            пароль: ${newPass}
+           </h4>
+           <h2>После входа в систему поменяйте пароль!</h2>
+        ''';
+      mail.createActivateMail(user.email, subj, html);
+    }
 
     return { 'status' : 'reseted' };
   }
