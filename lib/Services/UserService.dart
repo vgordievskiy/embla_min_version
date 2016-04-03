@@ -148,6 +148,20 @@ class UserService {
     return UserWrapper.Create(await User.GetUser(id));
   }
 
+  @app.Route("/:id/passwd",  methods: const[app.PUT])
+  @ProtectedAccess(filtrateByUser: true)
+  @Encode()
+  Future<bool>
+    updatePassUserById(String id, @app.Body(app.FORM) Map data) async
+  {
+    if(!data.containsKey('value'))
+      throw new app.ErrorResponse(400, 'wrong data');
+    String pass = data['value'];
+    UserPass user = await UserPass.getUser(int.parse(id));
+    user.password = UserPass.encryptPass(pass);
+    return user.save();
+  }
+
   @app.Route("/:id/deals/:type/:estateid/rooms/:roomid", methods: const[app.PUT])
   @ProtectedAccess(filtrateByUser: true)
   @Encode()
