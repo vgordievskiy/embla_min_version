@@ -291,4 +291,26 @@ class UserService {
     await user.Activate();
     return { 'status' : 'activated' };
   }
+
+  String _getneratePass(User user) {
+    return "";
+  }
+
+  @app.Route("/reset", methods: const[app.GET])
+  @FreeAccess()
+  Future resetUser(@app.Body(app.FORM) Map data) async {
+    if(!data.containsKey('email'))
+      throw new app.ErrorResponse(400, {"error": "wrong data"});
+    User user = await UserUtils.GetUserByEmail(data['email']);
+    if (user == null)
+      throw new app.ErrorResponse(400, {"error": "not found"});
+
+    UserPass userInt = await UserPass.getUser(user.id);
+    String newPass = _getneratePass(user);
+    userInt.password = UserPass.encryptPass(newPass);
+
+    await userInt.save();
+
+    return { 'status' : 'reseted' };
+  }
 }
