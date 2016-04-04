@@ -184,4 +184,16 @@ class AdminService {
     mail.createActivateMail(user.email, subj, html);
   }
 
+  @app.Route("/:adminId/users/:userId/message", methods: const [app.POST])
+  sendMessageToUser(String adminId, String userId,
+                    @app.Body(app.FORM) Map data) async
+  {
+    if(!data.containsKey('subj') || !data.containsKey('html'))
+      throw new app.ErrorResponse(400, {"error": "wrong data"});
+    User user = await User.GetUser(userId);
+    String subj = data['subj'];
+    String html = data['html'];
+    mail.createActivateMail(user.email, subj, html);
+  }
+
 }
