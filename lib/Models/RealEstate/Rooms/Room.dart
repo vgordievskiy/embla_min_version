@@ -23,6 +23,7 @@ class RERoomUtils {
     'objectData',
     'priceOfFullSquare',
     'fullSquare',
+    'leaser',
     'minInvestStep',
     'ratePerYearByMetr',
     'operatingCosts',
@@ -31,8 +32,7 @@ class RERoomUtils {
     'landCosts',
     'discountRate_pct',
     'leaseOrTaxForLandCosts',
-    'administerTransferOfRentCosts',
-    'leaser'
+    'administerTransferOfRentCosts'
   ];
 
   static bool checkMetaName(String name) {
