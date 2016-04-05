@@ -31,7 +31,8 @@ class RERoomUtils {
     'landCosts',
     'discountRate_pct',
     'leaseOrTaxForLandCosts',
-    'administerTransferOfRentCosts'
+    'administerTransferOfRentCosts',
+    'leaser'
   ];
 
   static bool checkMetaName(String name) {
