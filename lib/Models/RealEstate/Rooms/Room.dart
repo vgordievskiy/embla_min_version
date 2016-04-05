@@ -24,6 +24,7 @@ class RERoomUtils {
     'priceOfFullSquare',
     'fullSquare',
     'leaser',
+    'leaseRentPerMonth',
     'minInvestStep',
     'ratePerYearByMetr',
     'operatingCosts',
