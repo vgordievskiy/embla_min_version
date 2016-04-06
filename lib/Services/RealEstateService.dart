@@ -79,6 +79,9 @@ class RealEstateService {
 
   Future<RERoom> _getRoomForObject(String objId, String roomId) async {
     RERoom room = await _getObject(ReType.ROOM, roomId);
+    if(room == null) {
+      throw new app.ErrorResponse(400, {"error": "wrong data"});
+    }
     if(room.ownerObjectId != int.parse(objId))
         throw new app.ErrorResponse(400, {"error": "wrong data"});
     return room;
