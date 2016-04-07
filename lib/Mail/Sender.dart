@@ -1,6 +1,7 @@
 library BMSrv.Mail.Sender;
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:mailer/mailer.dart';
 import 'package:logging/logging.dart';
@@ -34,6 +35,7 @@ class MailSender
 
   createActivateMail(String target, String subj, String html) {
     Envelope envelope = new Envelope();
+    envelope.encoding = UTF8;
     envelope.from = baseMail ?? user;
     envelope.recipients.add(target);
     envelope.subject = subj;
