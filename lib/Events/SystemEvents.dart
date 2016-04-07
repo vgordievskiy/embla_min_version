@@ -8,6 +8,7 @@ enum TSysEvt {
   ADD_OBJ,
   ADD_ROOM,
   ADD_USER_TO_GROUP,
+  USER_RESET_PASS,
   SEND_EMAIL
 }
 

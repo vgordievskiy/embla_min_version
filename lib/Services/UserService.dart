@@ -10,7 +10,6 @@ import "package:otp/otp.dart";
 import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
-import 'package:BMSrv/Mail/Sender.dart';
 import 'package:BMSrv/Events/SystemEvents.dart';
 import 'package:BMSrv/Models/User.dart';
 import 'package:BMSrv/Models/RealEstate/RealEstate.dart';
@@ -36,7 +35,6 @@ class UserService {
   DBAdapter _Db;
   Uuid _Generator;
   final log = new Logger("BMSrv.Services.UserService");
-  MailSender mail = new MailSender('service@semplex.ru', 'bno9mjc');
   Config _config;
 
   UserService(DBAdapter this._Db, Config this._config)
@@ -75,24 +73,7 @@ class UserService {
     ObjGroupUtils.addUserToGroup(obj, user);
   }
 
-  initEvents() {
-    EventSys.asyncMessageBus.stream(SysEvt)
-      .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER)
-      .listen((SysEvt evt) {
-        User user = evt.data;
-        final String url = _config.get("ClientUrl", "client-url");
-        String subj = "Добро пожаловать в мир умных инвестиций";
-        String html =
-          '''<a href="$url#activate?${user.uniqueID}">
-             активировать мой аккаунт </a>
-             <h4>
-              Или введите ссылку в браузере: <br>
-                $url#activate?${user.uniqueID}
-             </h4>
-          ''';
-        mail.createActivateMail(user.email, subj, html);
-    });
-  }
+  initEvents() {}
 
   @app.DefaultRoute(methods: const[app.POST])
   create(@app.Body(app.FORM) Map data) async {
@@ -313,21 +294,9 @@ class UserService {
     userInt.password = UserPass.encryptPass(newPass);
     await userInt.save();
 
-    {
-      String subj = "Semplex. Ваш новый пароль";
-      String html =
-        '''<h4>
-            Вы инициировали смену пароля. <br>
-            Новые данные для входа:
-           </h4>
-           <h4>
-            email: ${user.email} <br>
-            пароль: ${newPass}
-           </h4>
-           <h2>После входа в систему поменяйте пароль!</h2>
-        ''';
-      mail.createActivateMail(user.email, subj, html);
-    }
+    EventSys
+      .asyncPub(new SysEvt(TSysEvt.USER_RESET_PASS,
+                           { 'user' : user, 'pass' : newPass } ));
 
     return { 'status' : 'reseted' };
   }
