@@ -47,6 +47,7 @@ class MailService {
          </h4>
       ''';
     mail.sendMail(new TMessage(subj, html, [user.email]));
+    log.info("send welcome email");
   }
 
   resetUserPass(SysEvt evt) {
@@ -66,6 +67,7 @@ class MailService {
            <h2>После входа в систему поменяйте пароль в личном кабинете!</h2>
         ''';
       mail.sendMail(new TMessage(subj, html, [user.email]));
+      log.info("reset user pass - send new pass");
   }
 
   sendEmail(SysEvt evt) {
@@ -73,6 +75,7 @@ class MailService {
       String subj = evt.data['subj'];
       String html = evt.data['html'];
       mail.sendMail(new TMessage(subj, html, [user.email]));
+      log.info("send email");
   }
 
 }
