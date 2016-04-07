@@ -16,7 +16,6 @@ import 'package:BMSrv/Models/JsonWrappers/User.dart';
 import 'package:BMSrv/Models/JsonWrappers/ObjectDeal.dart';
 
 import 'package:BMSrv/Events/SystemEvents.dart';
-import 'package:BMSrv/Mail/Sender.dart';
 
 bool _isEmpty(String value) => value == "";
 
@@ -37,15 +36,8 @@ Future<dynamic> _getObject(ReType type, String idStr) {
 
 @app.Group("/admin")
 class AdminService {
-  DBAdapter _Db;
-  Uuid _Generator;
   final log = new Logger("BMSrv.Services.AdminService");
-  MailSender mail = new MailSender('service@semplex.ru', 'bno9mjc');
-  Config _config;
-  AdminService(DBAdapter this._Db, Config this._config)
-  {
-    _Generator = new Uuid();
-  }
+  AdminService();
 
   @app.DefaultRoute(methods: const[app.POST])
   create(@app.Body(app.FORM) Map data) async {
@@ -171,17 +163,7 @@ class AdminService {
              methods: const [app.PUT])
   resendWelcomeEmail(String adminId, String userId) async {
     User user = await User.GetUser(userId);
-    final String url = _config.get("ClientUrl", "client-url");
-    String subj = r"Добро пожаловать в мир умных инвестиций";
-    String html =
-      '''<a href="$url#activate?${user.uniqueID}">
-         активировать мой аккаунт </a>
-         <h4>
-          Или введите ссылку в браузере: <br>
-            $url#activate?${user.uniqueID}
-         </h4>
-      ''';
-    mail.createActivateMail(user.email, subj, html);
+    EventSys.asyncPub(new SysEvt(TSysEvt.WELCOME_MSG, user));
   }
 
   @app.Route("/:adminId/users/:userId/message", methods: const [app.POST])
@@ -191,9 +173,8 @@ class AdminService {
     if(!data.containsKey('subj') || !data.containsKey('html'))
       throw new app.ErrorResponse(400, {"error": "wrong data"});
     User user = await User.GetUser(userId);
-    String subj = data['subj'];
-    String html = data['html'];
-    mail.createActivateMail(user.email, subj, html);
+    data['user'] = user;
+    EventSys.asyncPub(new SysEvt(TSysEvt.SEND_EMAIL, data));
   }
 
 }

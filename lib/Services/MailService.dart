@@ -24,11 +24,14 @@ class MailService {
 
   initEvents() {
     EventSys.asyncMessageBus.stream(SysEvt)
-      .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER)
-      .listen(newUser);
+      .where((SysEvt evt) => evt.type == TSysEvt.ADD_USER ||
+         evt.type == TSysEvt.WELCOME_MSG).listen(newUser);
     EventSys.asyncMessageBus.stream(SysEvt)
       .where((SysEvt evt) => evt.type == TSysEvt.USER_RESET_PASS)
-      .listen(resetUserPass);
+        .listen(resetUserPass);
+    EventSys.asyncMessageBus.stream(SysEvt)
+      .where((SysEvt evt) => evt.type == TSysEvt.SEND_EMAIL)
+        .listen(sendEmail);
   }
 
   newUser(SysEvt evt) {
@@ -62,6 +65,13 @@ class MailService {
            </h4>
            <h2>После входа в систему поменяйте пароль в личном кабинете!</h2>
         ''';
+      mail.sendMail(new TMessage(subj, html, [user.email]));
+  }
+
+  sendEmail(SysEvt evt) {
+      User user = evt.data['user'];
+      String subj = evt.data['subj'];
+      String html = evt.data['html'];
       mail.sendMail(new TMessage(subj, html, [user.email]));
   }
 
