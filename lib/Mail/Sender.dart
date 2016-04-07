@@ -8,6 +8,13 @@ import 'package:logging/logging.dart';
 
 import 'package:SrvCommon/SrvCommon.dart';
 
+class TMessage {
+  String subj;
+  String html;
+  List<String> targets;
+
+  TMessage(this.subj, this.html, this.targets);
+}
 
 class MailSender
 {
@@ -33,17 +40,22 @@ class MailSender
       ..password = passwd;
   }
 
-  createActivateMail(String target, String subj, String html) {
+  sendMail(TMessage msg) {
     Envelope envelope = new Envelope();
     envelope.encoding = UTF8;
     envelope.from = baseMail ?? user;
-    envelope.recipients.add(target);
-    envelope.subject = subj;
-    envelope.html = html;
+    envelope.recipients.addAll(msg.targets);
+    envelope.subject = msg.subj;
+    envelope.html = msg.html;
 
     transport.send(envelope)
       .then((envelope) => log.info('Email sent!'))
       .catchError((e) => log.log(Level.SEVERE, 'Error occurred: $e'));
+  }
+
+  createActivateMail(String target, String subj, String html) {
+    TMessage msg = new TMessage(subj, html, [target]);
+    sendMail(msg);
   }
 
 }

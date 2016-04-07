@@ -7,7 +7,8 @@ enum TSysEvt {
   ADD_USER,
   ADD_OBJ,
   ADD_ROOM,
-  ADD_USER_TO_GROUP
+  ADD_USER_TO_GROUP,
+  SEND_EMAIL
 }
 
 class SysEvt extends DomainEvent {
