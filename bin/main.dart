@@ -64,7 +64,7 @@ startServer(Config config) {
         #context: serverContext
       };
 
-      app.start(port: 8001, secureOptions: secureOptions);
+      app.start(port: 443, secureOptions: secureOptions);
     });
 }
 
