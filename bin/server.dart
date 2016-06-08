@@ -11,9 +11,9 @@ export 'package:embla/bootstrap.dart';
 get embla => [
   new HttpBootstrapper(
     port: 9090,
-    pipeline: pipe(() => Srv.Msg())
+    pipeline: pipe(() => "!!!")
   ),
-  new Srv.GeoAnalytics()
+  new Srv.TrademSrv()
 ];
 
 List<Bootstrapper> debugfindConfig() {
