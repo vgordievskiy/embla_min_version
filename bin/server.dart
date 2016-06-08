@@ -8,13 +8,7 @@ import 'package:embla/application.dart';
 export 'package:embla/application.dart';
 export 'package:embla/bootstrap.dart';
 
-get embla => [
-  new HttpBootstrapper(
-    port: 9090,
-    pipeline: pipe(() => "!!!")
-  ),
-  new Srv.TrademSrv()
-];
+//main(List arguments) async => await Application.boot(debugfindConfig());
 
 List<Bootstrapper> debugfindConfig() {
   final library = currentMirrorSystem().libraries[Platform.script];
@@ -32,4 +26,12 @@ List<Bootstrapper> debugfindConfig() {
       .reflectee as List<Bootstrapper>;
 }
 
-//main(List<String> arguments) async => await Application.boot(debugfindConfig());
+get embla => [
+  new HttpBootstrapper(
+    port: 9090,
+    pipeline: pipe(
+      Route.all('users/*', Srv.UserService)
+    )
+  ),
+  new Srv.TrademSrv()
+];
