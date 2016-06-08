@@ -1,4 +1,3 @@
 # BMSrv
-!!!
-A minimal command-line application.
-111
+
+A web server built using [Shelf](https://pub.dartlang.org/packages/shelf).

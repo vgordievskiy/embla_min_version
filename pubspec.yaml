@@ -1,37 +1,29 @@
-name: BMSrv
+name: 'BMSrv'
 version: 0.0.1
-description: LifeContorol backend.
+description: A web server built using the shelf package.
+#author: Your Name <email@example.com>
+#homepage: https://www.example.com
+
 environment:
-  sdk: '>=1.9.1 <2.0.0'
+  sdk: '>=1.0.0 <2.0.0'
+
 dependencies:
-  OntoORM:
-    path: externals/OntoORM
-  SrvCommon:
-    path: externals/SrvCommon
-  redstone_web_socket:
-    git:
-      url: https://github.com/vgordievskiy/redstone_web_socket.git
-      ref: eddfd1f755a65d6a1e95ecd2bea0edae52f62c36
-  dart_orm: ^0.0.14
-  dart_orm_adapter_postgresql: '>=0.0.6 <0.1.0'
-  di: '>=3.3.4 <4.0.0'
-  event_bus: '>=0.4.0 <0.5.0'
+  args: '>=0.10.0 <0.14.0'
+  shelf: '>=0.6.0 <0.7.0'
+  meta: any
+  embla: "^0.2.2"
+  embla_trestle: "^0.2.0"
+  trestle: "^0.7.0"
+  di: ">=3.3.4 <4.0.0"
   observe: any
-  simple_features: any
-  threading: ^0.0.7
   ini: "^1.1.0"
-  googleapis: ">=0.1.0 <0.2.0"
-  googleapis_auth: ">=0.1.0 <0.3.0"
-  mailer: any
-  otp: any
-dependency_overrides:
-  dart_orm:
-    git: https://github.com/vgordievskiy/DartORM.git
-  dart_orm_adapter_postgresql:
-    git: https://github.com/vgordievskiy/DartORM-PostgreSQL.git
-  redstone:
+  state_machine: any
+  simple_features: any
+  harvest:
+    git: https://github.com/vgordievskiy/harvest.git
+  SemplexClientCmn:
+    git: https://dal.semplex.ru:4322/git/ClientCommon.git
+  params:
     git:
-      url: https://github.com/vgordievskiy/redstone.git
-      ref: new_shelf
-dev_dependencies:
-  unittest: '>=0.11.5+4 <0.12.0'
+      url: https://github.com/DisDis/params.git
+      ref: v0.2.0
