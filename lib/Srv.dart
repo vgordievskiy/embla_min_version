@@ -10,6 +10,7 @@ import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'Utils/Utils.dart';
 
 export 'Services/UserService.dart';
+export 'Middleware/Auth.dart';
 
 class AppMan implements Injector {
   static AppMan _man;
