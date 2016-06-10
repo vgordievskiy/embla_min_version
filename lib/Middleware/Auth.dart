@@ -3,26 +3,37 @@ library tradem_srv.middleware.auth;
 import 'dart:async';
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf_auth/shelf_auth.dart';
-import 'package:option/option.dart';
 import 'package:embla/http.dart';
-import 'package:uuid/uuid.dart';
+import 'package:option/option.dart';
 import 'package:shelf_auth/src/session/jwt/jwt_session_auth.dart';
 
-String secret = "bno9mjc";
+import '../Utils/Utils.dart';
 
-String _getIssuer() => "Semplex";
-String _getSecret() => "bno9mjc";
+typedef Future<Option<Principal>> TLookupByUsername(String username);
+typedef Future<Option<Principal>>
+  TValidateUserPass(String username, String password);
+
+class AuthConfig {
+  String issuer;
+  String secret;
+  Duration idleTimeout = const Duration(days: 7);
+  Duration totalSessionTimeout = const Duration(days: 7);
+  TLookupByUsername lookupByUserName;
+  TValidateUserPass  validateUserPass;
+}
 
 class JwtAuthMiddleware extends Middleware {
 
-  shelf.Middleware _JwtAuthMiddleware =
-    authenticate([new JwtSessionAuthenticator(lookupByUsername, _getSecret())],
-                 allowHttp: true);
+  shelf.Middleware _JwtAuthMiddleware;
 
   JwtAuthMiddleware() {
+    AuthConfig config = Utils.$(AuthConfig);
     _JwtAuthMiddleware =
-      authenticate([new JwtSessionAuthenticator(lookupByUsername, _getSecret())],
-                   allowHttp: true);
+      authenticate(
+        [new JwtSessionAuthenticator(
+          config.lookupByUserName,
+          config.secret)],
+        allowHttp: true);
   }
 
   Future<Response> handle(Request request) {
@@ -45,14 +56,16 @@ class JwtLoginMiddleware extends Middleware {
   shelf.Middleware _JwtLoginMiddleware;
 
   JwtLoginMiddleware() {
+    AuthConfig config = Utils.$(AuthConfig);
+
     _JwtSessionHandler =
-      new JwtSessionHandler(_getIssuer(),
-                            _getSecret(),
-                            lookupByUsername,
-                            idleTimeout: const Duration(days: 7),
-                            totalSessionTimeout: const Duration(days: 7));
+      new JwtSessionHandler(config.issuer,
+                            config.secret,
+                            config.lookupByUserName,
+                            idleTimeout: config.idleTimeout,
+                            totalSessionTimeout: config.totalSessionTimeout);
     _JwtLoginMiddleware =
-      authenticate([new UsernamePasswordAuthenticator(validateUserPass)],
+      authenticate([new UsernamePasswordAuthenticator(config.validateUserPass)],
                    sessionHandler: _JwtSessionHandler,
                    allowHttp: true);
   }
@@ -69,16 +82,4 @@ class JwtLoginMiddleware extends Middleware {
     }
     return ok('anything');
   }
-}
-
-
-Future<Option<Principal>>
-  validateUserPass(String username, String password) async
-{
-  return new Some(new Principal(username));
-}
-
-Future<Option<Principal>> lookupByUsername(String username) async
-{
-  return new Some(new Principal(username));
 }
