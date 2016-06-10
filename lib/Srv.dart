@@ -42,7 +42,7 @@ class AppMan implements Injector {
   }
 
   initConfigs() {
-    authConfig = new AuthConfig()
+    authConfig = new AuthConfig();
   }
 
   RestAdapter get Net => _rest;
