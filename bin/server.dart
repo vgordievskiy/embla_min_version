@@ -30,6 +30,7 @@ get embla => [
   new HttpBootstrapper(
     port: 9090,
     pipeline: pipe(
+      Route.all('login/', Srv.JwtLoginMiddleware),
       Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserService)
     )
   ),
