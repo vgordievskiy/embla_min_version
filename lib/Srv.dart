@@ -4,9 +4,6 @@ import 'dart:async';
 import 'package:di/di.dart';
 import 'package:embla/application.dart';
 
-import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart';
-import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
-
 import 'Utils/Utils.dart';
 import 'Middleware/Auth.dart';
 import 'package:option/option.dart';
@@ -18,60 +15,18 @@ export 'Services/UserService.dart';
 export 'Middleware/Auth.dart';
 export 'Middleware/CORS.dart';
 
-class AppMan implements Injector {
-  static AppMan _man;
-  static Init() {
-    assert(_man == null);
-    _man = new AppMan._internal();
-  }
-
-  factory AppMan() {
-    assert(_man != null);
-    return _man;
-  }
-
-  IoHttpCommunicator _cmn = new IoHttpCommunicator();
-  RestAdapter _rest;
+class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
+  AuthConfig authConfig = new AuthConfig();
 
-  AuthConfig authConfig;
-
-  AppMan._internal() {
-    initConfigs();
-    _rest = new RestAdapter(_cmn);
+  @Hook.init
+  init() {
     _injector = new ModuleInjector([ new Module()
       ..bind(AuthConfig, toFactory: () => authConfig)
     ]);
-  }
+    Utils.setInjector(_injector);
 
-  initConfigs() {
-    authConfig = new AuthConfig();
-  }
-
-  RestAdapter get Net => _rest;
-
-  @override
-  get(Type type, [Type annotation]) => _injector.get(type, annotation);
-
-  @override
-  getByKey(Key key) => _injector.getByKey(key);
-
-  @override
-  Injector get parent => _injector.parent;
-
-  @override
-  Injector createChild(List<Module> modules) => _injector.createChild(modules);
-}
-
-class TrademSrv extends Bootstrapper {
-  AppMan man;
-  @Hook.init
-  init() {
-    AppMan.Init();
-    man = new AppMan();
-    Utils.setInjector(man);
-
-    man.authConfig
+    authConfig
     ..issuer = 'Semplex'
     ..secret = 'bno9mjc'
     ..lookupByUserName = this.lookupByUsername

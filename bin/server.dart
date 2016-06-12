@@ -12,9 +12,9 @@ get embla => [
   new Srv.HttpsBootstrapper(
     port: 9090,
     pipeline: pipe(
-      Srv.CORSMiddleware,
+      LoggerMiddleware, Srv.CORSMiddleware,
       Route.post('login/', Srv.JwtLoginMiddleware),
-      basicMiddleware,
+      RemoveTrailingSlashMiddleware, InputParserMiddleware,
       Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserService)
     )
   ),
