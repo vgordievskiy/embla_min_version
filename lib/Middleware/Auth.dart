@@ -36,8 +36,12 @@ class JwtAuthMiddleware extends Middleware {
         allowHttp: true);
   }
 
-  Future<Response> handle(Request request) {
-    return _JwtAuthMiddleware(auth)(request);
+  Future<Response> handle(Request request) async {
+    try {
+      return await _JwtAuthMiddleware(auth)(request);
+    } catch (e) {
+      return this.abortForbidden('access denied');
+    }
   }
 
   auth(Request request) {
@@ -70,8 +74,12 @@ class JwtLoginMiddleware extends Middleware {
                    allowHttp: true);
   }
 
-  Future<Response> handle(Request request) {
-    return _JwtLoginMiddleware(auth)(request);
+  Future<Response> handle(Request request) async {
+    try {
+      return await _JwtLoginMiddleware(auth)(request);
+    } catch(e) {
+      return this.abortForbidden('access denied');
+    }
   }
 
   auth(Request request) {

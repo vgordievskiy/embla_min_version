@@ -11,6 +11,7 @@ import 'Utils/Utils.dart';
 import 'Middleware/Auth.dart';
 import 'package:option/option.dart';
 import 'package:shelf_auth/shelf_auth.dart';
+import 'package:http_exception/http_exception.dart';
 
 export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
@@ -76,14 +77,24 @@ class TrademSrv extends Bootstrapper {
     ..validateUserPass = this.validateUserPass;
   }
 
+  Map<String, String> users = {
+    'gardi' : '1'
+  };
+
   Future<Option<Principal>>
     validateUserPass(String username, String password) async
   {
-    return new Some(new Principal(username));
+    if(users.containsKey(username) && users[username] == password) {
+        return new Some(new Principal(username));
+    }
+    throw new UnauthorizedException();
   }
 
   Future<Option<Principal>> lookupByUsername(String username) async
   {
-    return new Some(new Principal(username));
+    if(users.containsKey(username)) {
+      return new Some(new Principal(username));
+    }
+    return const None();
   }
 }
