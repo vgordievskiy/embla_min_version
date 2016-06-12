@@ -90,16 +90,25 @@ class TrademSrv extends Bootstrapper {
 }
 
 class HttpsBootstrapper extends HttpBootstrapper {
-  factory HttpsBootstrapper({
-    String host: 'localhost',
-    int port: 1337,
-    PipelineFactory pipeline
-  }) {
-    return new HttpBootstrapper.internal(
-        HttpServer.bind,
-        host,
-        port,
-        pipeline
-    );
+  static Future<HttpServer> empty(dynamic host, int port) {
+    return new Future.error('');
+  }
+
+  factory HttpsBootstrapper({String host: 'localhost', int port: 1337,
+    PipelineFactory pipeline})
+      => new HttpsBootstrapper.init(host, port, pipeline);
+
+  HttpsBootstrapper.init(String host, int port, PipelineFactory pipeline)
+    : super.internal(empty, host, port, pipeline);
+
+
+  @Hook.bindings
+  bindings() async {
+    return container
+      .bind(HttpServer, to: await initSecureSrv(this.host, this.port));
+  }
+
+  Future<HttpServer> initSecureSrv(dynamic host, int port) {
+    return HttpServer.bind(host, port);
   }
 }
