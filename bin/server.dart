@@ -25,5 +25,5 @@ get embla => [
     )
   ),
   new Srv.TrademSrv(),
-  new test.InitTestData(new  Gateway(driver))
+  new test.InitTestData(new Gateway(driver))
 ];
