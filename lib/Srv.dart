@@ -9,6 +9,9 @@ import 'Middleware/Auth.dart';
 import 'package:option/option.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 import 'package:http_exception/http_exception.dart';
+import 'package:trestle/gateway.dart';
+import 'Models/Users.dart';
+import 'package:trestle/trestle.dart';
 
 export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
@@ -18,6 +21,8 @@ export 'Middleware/CORS.dart';
 class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
+  Gateway gateway;
+  Repository<User> users;
 
   @Hook.init
   init() {
@@ -34,14 +39,22 @@ class TrademSrv extends Bootstrapper {
     ..welcomeHandler = this.welcomeHandler;
   }
 
-  Map<String, String> users = {
-    'gardi' : '1'
-  };
+  @Hook.interaction
+  initGateway(Gateway gateway) {
+    this.gateway = gateway;
+    users = new Repository<User>(this.gateway);
+  }
 
   Future<Option<Principal>>
     validateUserPass(String username, String password) async
   {
-    if(users.containsKey(username) && users[username] == password) {
+    try {
+      User user = await
+        users.where((User user) => user.email == username).first();
+    } catch (e) {
+      var ee = e;
+    }
+    if(user.password == password) {
         return new Some(new Principal(username));
     }
     throw new UnauthorizedException();
