@@ -11,9 +11,8 @@ import 'Utils/Utils.dart';
 import 'Middleware/Auth.dart';
 import 'package:option/option.dart';
 import 'package:shelf_auth/shelf_auth.dart';
-import 'package:embla/http.dart';
-import 'dart:io';
 
+export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
 export 'Middleware/Auth.dart';
 
@@ -86,29 +85,5 @@ class TrademSrv extends Bootstrapper {
   Future<Option<Principal>> lookupByUsername(String username) async
   {
     return new Some(new Principal(username));
-  }
-}
-
-class HttpsBootstrapper extends HttpBootstrapper {
-  static Future<HttpServer> empty(dynamic host, int port) {
-    return new Future.error('');
-  }
-
-  factory HttpsBootstrapper({String host: 'localhost', int port: 1337,
-    PipelineFactory pipeline})
-      => new HttpsBootstrapper.init(host, port, pipeline);
-
-  HttpsBootstrapper.init(String host, int port, PipelineFactory pipeline)
-    : super.internal(empty, host, port, pipeline);
-
-
-  @Hook.bindings
-  bindings() async {
-    return container
-      .bind(HttpServer, to: await initSecureSrv(this.host, this.port));
-  }
-
-  Future<HttpServer> initSecureSrv(dynamic host, int port) {
-    return HttpServer.bind(host, port);
   }
 }

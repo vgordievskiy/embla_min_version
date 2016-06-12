@@ -1,11 +1,10 @@
-library tradem_srv.utils;
+library tradem_srv.utils.utils;
 
 export 'package:di/di.dart';
 import 'package:di/di.dart';
 
 class Utils {
   static Injector _injector;
-
   static setInjector(Injector injector) {
     _injector = injector;
   }
