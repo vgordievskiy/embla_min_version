@@ -8,24 +8,6 @@ import 'package:embla/application.dart';
 export 'package:embla/application.dart';
 export 'package:embla/bootstrap.dart';
 
-//main(List arguments) async => await Application.boot(debugfindConfig());
-
-List<Bootstrapper> debugfindConfig() {
-  final library = currentMirrorSystem().libraries[Platform.script];
-  if (library == null) {
-    throw new Exception('The script entry point is not a library');
-  }
-
-  final emblaMethod = library.declarations[#embla];
-  if (emblaMethod == null) {
-    throw new Exception('Found no [embla] getter in ${Platform.script}');
-  }
-
-  return library
-      .getField(#embla)
-      .reflectee as List<Bootstrapper>;
-}
-
 get embla => [
   new Srv.HttpsBootstrapper(
     port: 9090,
