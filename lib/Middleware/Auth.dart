@@ -12,6 +12,7 @@ import '../Utils/Utils.dart';
 typedef Future<Option<Principal>> TLookupByUsername(String username);
 typedef Future<Option<Principal>>
   TValidateUserPass(String username, String password);
+typedef Future<String> TWelcomeHandler(Principal cred);
 
 class AuthConfig {
   String issuer;
@@ -20,6 +21,7 @@ class AuthConfig {
   Duration totalSessionTimeout = const Duration(days: 7);
   TLookupByUsername lookupByUserName;
   TValidateUserPass  validateUserPass;
+  TWelcomeHandler welcomeHandler;
 }
 
 class JwtAuthMiddleware extends Middleware {
@@ -82,12 +84,18 @@ class JwtLoginMiddleware extends Middleware {
     }
   }
 
-  auth(Request request) {
+  auth(Request request) async {
+    AuthConfig config = Utils.$(AuthConfig);
     final String authContext = 'shelf.auth.context';
-    dynamic context = request.context[authContext];
+    AuthenticatedContext context = request.context[authContext];
     if(context == null) {
       return this.abortForbidden('access denied');
     }
-    return ok('anything');
+
+    String response = '';
+    if(config.welcomeHandler != null) {
+      response = await config.welcomeHandler(context.principal);
+    }
+    return ok(response);
   }
 }

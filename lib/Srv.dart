@@ -74,7 +74,8 @@ class TrademSrv extends Bootstrapper {
     ..issuer = 'Semplex'
     ..secret = 'bno9mjc'
     ..lookupByUserName = this.lookupByUsername
-    ..validateUserPass = this.validateUserPass;
+    ..validateUserPass = this.validateUserPass
+    ..welcomeHandler = this.welcomeHandler;
   }
 
   Map<String, String> users = {
@@ -96,5 +97,9 @@ class TrademSrv extends Bootstrapper {
       return new Some(new Principal(username));
     }
     return const None();
+  }
+
+  Future<String> welcomeHandler(Principal cred) async {
+      return "Hello ${cred.name}";
   }
 }
