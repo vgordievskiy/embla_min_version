@@ -100,6 +100,6 @@ class TrademSrv extends Bootstrapper {
   }
 
   Future<String> welcomeHandler(Principal cred) async {
-      return "Hello ${cred.name}";
+      return "users/1";
   }
 }
