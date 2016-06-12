@@ -16,6 +16,7 @@ import 'package:http_exception/http_exception.dart';
 export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
 export 'Middleware/Auth.dart';
+export 'Middleware/CORS.dart';
 
 class AppMan implements Injector {
   static AppMan _man;
