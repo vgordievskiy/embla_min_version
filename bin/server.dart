@@ -7,6 +7,8 @@ import 'package:embla_trestle/embla_trestle.dart';
 export 'package:embla/application.dart';
 export 'package:embla/bootstrap.dart';
 
+import '../test_data/init_data.dart' as test;
+
 var driver = new InMemoryDriver();
 
 get embla => [
@@ -22,5 +24,6 @@ get embla => [
       Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserService)
     )
   ),
-  new Srv.TrademSrv()
+  new Srv.TrademSrv(),
+  new test.InitTestData(new  Gateway(driver))
 ];
