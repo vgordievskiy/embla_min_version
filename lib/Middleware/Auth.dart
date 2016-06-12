@@ -52,7 +52,7 @@ class JwtAuthMiddleware extends Middleware {
     if(context == null) {
       return this.abortForbidden('access denied');
     }
-    return ok('anything');
+    return super.handle(request);
   }
 }
 
