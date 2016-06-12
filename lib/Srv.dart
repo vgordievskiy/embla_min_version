@@ -48,12 +48,9 @@ class TrademSrv extends Bootstrapper {
   Future<Option<Principal>>
     validateUserPass(String username, String password) async
   {
-    try {
-      User user = await
-        users.where((User user) => user.email == username).first();
-    } catch (e) {
-      var ee = e;
-    }
+    User user = await
+      users.where((user) => user.email == username).first();
+
     if(user.password == password) {
         return new Some(new Principal(username));
     }
