@@ -36,8 +36,7 @@ class TrademSrv extends Bootstrapper {
     ..secret = 'bno9mjc'
     ..lookupByUserName = this.lookupByUsername
     ..validateUserPass = this.validateUserPass
-    ..welcomeHandler = this.welcomeHandler
-    ..urlFilter = this.isApprove;
+    ..welcomeHandler = this.welcomeHandler;
   }
 
   @Hook.interaction
@@ -48,16 +47,6 @@ class TrademSrv extends Bootstrapper {
 
   Future<User> _getUserByName(String username) async
     => users.where((user) => user.email == username).first();
-
-  Future<bool> isApprove(Principal cred, Uri uri) async {
-    try {
-      User user = await _getUserByName(cred.name);
-      int userId = int.parse(uri.pathSegments[0]);
-      return userId == user.id;
-    } catch(e) {
-      return false;
-    }
-  }
 
   Future<Option<Principal>>
     validateUserPass(String username, String password) async

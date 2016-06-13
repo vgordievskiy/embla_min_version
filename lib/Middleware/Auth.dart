@@ -22,7 +22,6 @@ class AuthConfig {
   TLookupByUsername lookupByUserName;
   TValidateUserPass  validateUserPass;
   TWelcomeHandler welcomeHandler;
-  TUrlFilterHandler urlFilter;
 }
 
 class JwtAuthMiddleware extends Middleware {
@@ -102,8 +101,8 @@ class JwtLoginMiddleware extends Middleware {
 }
 
 typedef Future<bool> TUrlFilterHandler(Principal cred, Uri uri);
-class UriFilterBase extends Middleware implements Authoriser {
-  TUrlFilterHandler filter = (_1, _2) => new Future.error('empty filter');
+abstract class UriFilterBase extends Middleware implements Authoriser {
+  TUrlFilterHandler get filter;
 
   Future<Response> handle(Request request) async {
     bool isApproved = await isAuthorised(request);
