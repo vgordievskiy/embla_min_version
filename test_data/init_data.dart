@@ -25,10 +25,18 @@ class InitTestData extends Bootstrapper {
   }
 
   initSomeUsers() async {
-    User user = new User();
-    user.email = 'gardi';
-    user.password = '1';
-    await users.save(user);
+    {
+      User user = new User()
+        ..email = 'gardi'
+        ..password = '1';
+      await users.save(user);
+    }
+    {
+      User user = new User()
+        ..email = 'gardi2'
+        ..password = '2';
+      await users.save(user);
+    }
   }
 
 }
