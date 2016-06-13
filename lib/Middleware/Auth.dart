@@ -22,6 +22,7 @@ class AuthConfig {
   TLookupByUsername lookupByUserName;
   TValidateUserPass  validateUserPass;
   TWelcomeHandler welcomeHandler;
+  TUrlFilterHandler urlFilter;
 }
 
 class JwtAuthMiddleware extends Middleware {
@@ -97,5 +98,38 @@ class JwtLoginMiddleware extends Middleware {
       response = await config.welcomeHandler(context.principal);
     }
     return ok(response);
+  }
+}
+
+typedef Future<bool> TUrlFilterHandler(Principal cred, Uri uri);
+
+class UrlFilter extends Middleware implements Authoriser {
+  TUrlFilterHandler filter = (_1, _2) => new Future.error('empty filter');
+
+  UrlFilter() {
+    AuthConfig config = Utils.$(AuthConfig);
+    filter = config.urlFilter;
+  }
+
+  Future<Response> handle(Request request) async {
+    bool isApproved = await isAuthorised(request);
+    if(isApproved) {
+      return super.handle(request);
+    } else {
+      return this.abortForbidden('access denied');
+    }
+  }
+
+  Future<bool> isAuthorised(Request request) async {
+    final authContextOpt = getAuthenticatedContext(request);
+    if (authContextOpt is None) {
+      return false;
+    } else {
+      final isReadyToAccess =
+          authContextOpt.map((context)
+            => filter(context.principal, request.url));
+
+      return await isReadyToAccess.getOrElse(() => false);
+    }
   }
 }

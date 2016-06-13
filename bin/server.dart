@@ -21,7 +21,7 @@ get embla => [
       LoggerMiddleware, Srv.CORSMiddleware,
       Route.post('login/', Srv.JwtLoginMiddleware),
       RemoveTrailingSlashMiddleware, InputParserMiddleware,
-      Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserService)
+      Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UrlFilter, Srv.UserService)
     )
   ),
   new Srv.TrademSrv(),
