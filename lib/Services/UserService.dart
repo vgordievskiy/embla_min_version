@@ -1,6 +1,7 @@
 library tradem_srv.services.user_service;
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:embla/http.dart';
 import 'package:embla/http_annotations.dart';
 import 'package:embla_trestle/embla_trestle.dart';
@@ -35,12 +36,15 @@ class UserService extends Controller {
   Future<User> getUserByName(String username) async
     => users.where((user) => user.email == username).first();
 
+  Future<User> getUserById(int id) async
+    => users.find(id);
+
   @Get('/') action() {
     return 'Response';
   }
 
-  @Get('/:id') action2({String id}) {
-    return 'Response $id';
+  @Get('/:id') getUser({String id}) async {
+    return getUserById(int.parse(id));
   }
 
 }
