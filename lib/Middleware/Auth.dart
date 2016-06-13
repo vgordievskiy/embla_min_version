@@ -119,17 +119,13 @@ class UrlFilter extends Middleware implements Authoriser {
       return this.abortForbidden('access denied');
     }
   }
-
+  
   Future<bool> isAuthorised(Request request) async {
-    final authContextOpt = getAuthenticatedContext(request);
-    if (authContextOpt is None) {
-      return false;
-    } else {
-      final isReadyToAccess =
-          authContextOpt.map((context)
-            => filter(context.principal, request.url));
-
-      return await isReadyToAccess.getOrElse(() => false);
-    }
+    final Option<AuthenticatedContext>
+      authContextOpt = getAuthenticatedContext(request);
+    if (authContextOpt is None) { return false; }
+    final resultRight = authContextOpt.map((context)
+      => filter(context.principal, request.url));
+    return await resultRight.getOrElse(() => false);
   }
 }
