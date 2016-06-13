@@ -45,11 +45,13 @@ class TrademSrv extends Bootstrapper {
     users = new Repository<User>(this.gateway);
   }
 
+  Future<User> _getUserByName(String username) async
+    => users.where((user) => user.email == username).first();
+
   Future<Option<Principal>>
     validateUserPass(String username, String password) async
   {
-    User user = await
-      users.where((user) => user.email == username).first();
+    User user = await _getUserByName(username);
 
     if(user.password == password) {
         return new Some(new Principal(username));
@@ -59,7 +61,8 @@ class TrademSrv extends Bootstrapper {
 
   Future<Option<Principal>> lookupByUsername(String username) async
   {
-    if(users.containsKey(username)) {
+    User user = await _getUserByName(username);
+    if(user != null) {
       return new Some(new Principal(username));
     }
     return const None();
