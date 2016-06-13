@@ -50,7 +50,13 @@ class TrademSrv extends Bootstrapper {
     => users.where((user) => user.email == username).first();
 
   Future<bool> isApprove(Principal cred, Uri uri) async {
-    return true;
+    try {
+      User user = await _getUserByName(cred.name);
+      int userId = int.parse(uri.pathSegments[0]);
+      return userId == user.id;
+    } catch(e) {
+      return false;
+    }
   }
 
   Future<Option<Principal>>
