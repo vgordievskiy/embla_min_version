@@ -18,11 +18,12 @@ export 'Services/UserService.dart';
 export 'Middleware/Auth.dart';
 export 'Middleware/CORS.dart';
 
+import 'Services/UserService.dart';
+
 class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
-  Gateway gateway;
-  Repository<User> users;
+  UserService userService;
 
   @Hook.init
   init() {
@@ -40,13 +41,12 @@ class TrademSrv extends Bootstrapper {
   }
 
   @Hook.interaction
-  initGateway(Gateway gateway) {
-    this.gateway = gateway;
-    users = new Repository<User>(this.gateway);
+  initUserSrv(UserService srv) {
+    this.userService = srv;
   }
 
-  Future<User> _getUserByName(String username) async
-    => users.where((user) => user.email == username).first();
+  Future<User> _getUserByName(String username)
+    => userService.getUserByName(username);
 
   Future<Option<Principal>>
     validateUserPass(String username, String password) async
