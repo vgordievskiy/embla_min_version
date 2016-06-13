@@ -69,6 +69,7 @@ class TrademSrv extends Bootstrapper {
   }
 
   Future<String> welcomeHandler(Principal cred) async {
-      return "users/1";
+    User user = await _getUserByName(cred.name);
+    return "users/${user.id}";
   }
 }
