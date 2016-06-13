@@ -102,14 +102,8 @@ class JwtLoginMiddleware extends Middleware {
 }
 
 typedef Future<bool> TUrlFilterHandler(Principal cred, Uri uri);
-
-class UrlFilter extends Middleware implements Authoriser {
+class UriFilterBase extends Middleware implements Authoriser {
   TUrlFilterHandler filter = (_1, _2) => new Future.error('empty filter');
-
-  UrlFilter() {
-    AuthConfig config = Utils.$(AuthConfig);
-    filter = config.urlFilter;
-  }
 
   Future<Response> handle(Request request) async {
     bool isApproved = await isAuthorised(request);
@@ -119,7 +113,7 @@ class UrlFilter extends Middleware implements Authoriser {
       return this.abortForbidden('access denied');
     }
   }
-  
+
   Future<bool> isAuthorised(Request request) async {
     final Option<AuthenticatedContext>
       authContextOpt = getAuthenticatedContext(request);
