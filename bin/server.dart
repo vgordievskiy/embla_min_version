@@ -7,7 +7,7 @@ import 'package:embla_trestle/embla_trestle.dart';
 export 'package:embla/application.dart';
 export 'package:embla/bootstrap.dart';
 
-import '../test_data/init_data.dart' as test;
+import '../test/test_data/init_data.dart' as test;
 
 var driver = new InMemoryDriver();
 
