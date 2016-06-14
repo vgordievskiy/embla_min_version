@@ -48,28 +48,27 @@ class TrademSrv extends Bootstrapper {
   Future<User> _getUserByName(String username)
     => userService.getUserByName(username);
 
-  Future<Option<Principal>>
+  Future<Option<UserPrincipal>>
     validateUserPass(String username, String password) async
   {
     User user = await _getUserByName(username);
 
     if(user.password == password) {
-        return new Some(new Principal(username));
+        return new Some(new UserPrincipal(username, user.id));
     }
     throw new UnauthorizedException();
   }
 
-  Future<Option<Principal>> lookupByUsername(String username) async
+  Future<Option<UserPrincipal>> lookupByUsername(String username) async
   {
     User user = await _getUserByName(username);
     if(user != null) {
-      return new Some(new Principal(username));
+      return new Some(new UserPrincipal(username, user.id));
     }
     return const None();
   }
 
-  Future<String> welcomeHandler(Principal cred) async {
-    User user = await _getUserByName(cred.name);
-    return "users/${user.id}";
+  Future<String> welcomeHandler(UserPrincipal cred) async {
+    return "users/${cred.id}";
   }
 }

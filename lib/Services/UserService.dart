@@ -10,6 +10,11 @@ import 'package:shelf_auth/shelf_auth.dart';
 import '../Models/Users.dart';
 import '../Middleware/Auth.dart';
 
+class UserPrincipal extends Principal {
+  int id;
+  UserPrincipal(String name, this.id) : super(name);
+}
+
 class UserFilter extends UriFilterBase {
   final UserService userSrv;
   UserFilter(this.userSrv);
