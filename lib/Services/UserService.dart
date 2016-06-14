@@ -22,11 +22,10 @@ class UserFilter extends UriFilterBase {
   @override
   TUrlFilterHandler get filter => _filter;
 
-  Future<bool> _filter(Principal cred, Uri uri) async {
+  Future<bool> _filter(UserPrincipal cred, Uri uri) async {
     try {
-      User user = await userSrv.getUserByName(cred.name);
       int userId = int.parse(uri.pathSegments[0]);
-      return userId == user.id;
+      return userId == cred.id;
     } catch(e) {
       return false;
     }
