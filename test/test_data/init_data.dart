@@ -2,7 +2,7 @@ import 'package:embla/application.dart';
 import 'package:trestle/gateway.dart';
 import 'package:trestle/trestle.dart';
 
-import '../tools/migrations.dart' as data;
+import '../../tools/migrations.dart' as data;
 
 import 'package:tradem_srv/Models/Users.dart';
 
