@@ -12,7 +12,6 @@ class CreateUsersTableMigration extends Migration {
   @override
   Future run(Gateway gateway) async {
     await gateway.create(table_name, (schema) {
-      schema.id();
       schema.string('email').unique();
       schema.string('password');
     });
