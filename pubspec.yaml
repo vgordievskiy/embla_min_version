@@ -27,5 +27,9 @@ dependencies:
       url: https://github.com/DisDis/params.git
       ref: v0.2.0
 
+dependency_overrides:
+  trestle:
+    git: https://github.com/vgordievskiy/trestle.git
+
 dev_dependencies:
   grinder: any

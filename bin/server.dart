@@ -11,6 +11,11 @@ import '../test/test_data/init_data.dart' as test;
 
 var driver = new InMemoryDriver();
 
+/*var driver = new PostgresqlDriver(username: 'postgres',
+                                  password: 'bno9mjc',
+                                  database: 'tradem');
+*/
+
 get embla => [
   new DatabaseBootstrapper(
     driver: driver

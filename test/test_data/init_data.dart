@@ -2,18 +2,21 @@ import 'package:embla/application.dart';
 import 'package:trestle/gateway.dart';
 import 'package:trestle/trestle.dart';
 
-import '../../tools/migrations.dart' as data;
+import '../../tool/migrations.dart' as data;
 
 import 'package:tradem_srv/Models/Users.dart';
+import 'package:tradem_srv/Models/Objects.dart';
 
 class InitTestData extends Bootstrapper {
 
   final Gateway gateway;
   Repository<User> users;
+  Repository<Entity> entities;
 
   InitTestData(this.gateway)
   {
     users = new Repository<User>(this.gateway);
+    entities = new Repository<Entity>(this.gateway);
   }
 
   @Hook.init
@@ -36,6 +39,15 @@ class InitTestData extends Bootstrapper {
         ..email = 'gardi2'
         ..password = '2';
       await users.save(user);
+    }
+  }
+
+  initSomeObjects() async {
+    {
+      Entity obj = new Entity();
+      obj.type = 1;
+      obj.data = {'hello':'world'};
+      await entities.save(obj);
     }
   }
 

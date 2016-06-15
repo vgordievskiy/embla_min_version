@@ -4,6 +4,8 @@ import 'package:embla_trestle/gateway.dart';
 import '../bin/server.dart';
 import 'migrations.dart';
 
+import '../test/test_data/init_data.dart';
+
 main(args) => grind(args);
 
 final gateway = new Gateway(driver);
@@ -19,5 +21,16 @@ migrate() async {
 rollback() async {
   await gateway.connect();
   await gateway.rollback(migrations);
+  await gateway.disconnect();
+}
+
+@Task()
+initdata() async {
+  await gateway.connect();
+  {
+    InitTestData data = new InitTestData(gateway);
+    await data.initSomeUsers();
+    await data.initSomeObjects();
+  }
   await gateway.disconnect();
 }
