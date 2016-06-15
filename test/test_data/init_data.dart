@@ -24,6 +24,7 @@ class InitTestData extends Bootstrapper {
     await gateway.connect();
     await gateway.migrate(data.migrations);
     await initSomeUsers();
+    await initSomeObjects();
     await gateway.disconnect();
   }
 
