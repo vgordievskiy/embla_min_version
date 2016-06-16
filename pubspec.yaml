@@ -27,5 +27,8 @@ dependencies:
       url: https://github.com/DisDis/params.git
       ref: v0.2.0
 
+dependency_overrides:
+  trestle: ^0.8.0
+
 dev_dependencies:
   grinder: any
