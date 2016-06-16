@@ -12,7 +12,7 @@ dependencies:
   meta: any
   embla: "^0.2.2"
   embla_trestle: "^0.2.0"
-  trestle: "^0.7.0"
+  trestle: "^0.8.0"
   di: ">=3.3.4 <4.0.0"
   observe: any
   ini: "^1.1.0"
@@ -26,10 +26,6 @@ dependencies:
     git:
       url: https://github.com/DisDis/params.git
       ref: v0.2.0
-
-dependency_overrides:
-  trestle:
-    git: https://github.com/vgordievskiy/trestle.git
 
 dev_dependencies:
   grinder: any
