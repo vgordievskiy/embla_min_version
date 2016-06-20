@@ -3,6 +3,7 @@ import 'package:grinder/grinder.dart';
 import 'package:embla_trestle/gateway.dart';
 import '../bin/server.dart';
 import 'migrations.dart';
+import './PartitionMagic/PostgresPartitions.dart';
 
 import '../test/test_data/init_data.dart';
 
@@ -22,6 +23,13 @@ rollback() async {
   await gateway.connect();
   await gateway.rollback(migrations);
   await gateway.disconnect();
+}
+
+@Task()
+initpart() async {
+  loadPartitionMagic().then((String src){
+      print(src);
+  });
 }
 
 @Task()

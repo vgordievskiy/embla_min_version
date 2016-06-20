@@ -47,3 +47,24 @@ class CreateEntitiesTableMigration extends Migration {
     await gateway.drop(table_name);
   }
 }
+
+class CreateDealsTableMigration extends Migration {
+
+  String table_name = 'deals';
+
+  @override
+  Future run(Gateway gateway) async {
+    await gateway.create(table_name, (schema) {
+      schema.id();
+      schema.timestamp('created_at').nullable(false);
+      schema.timestamp('updated_at').nullable(false);
+      schema.int('user_id');
+      schema.int('entity_id');
+    });
+  }
+
+  @override
+  Future rollback(Gateway gateway) async {
+    await gateway.drop(table_name);
+  }
+}
