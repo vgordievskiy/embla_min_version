@@ -27,9 +27,12 @@ rollback() async {
 
 @Task()
 initpart() async {
-  loadPartitionMagic().then((String src){
-      print(src);
-  });
+  if(driver is PostgresqlDriver) {
+    String script = await loadPartitionMagic();
+    (driver as PostgresqlDriver).execute(script, []);
+  } else {
+    print("driver is not PostgresqlDriver");
+  }
 }
 
 @Task()
