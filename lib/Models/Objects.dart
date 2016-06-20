@@ -2,15 +2,15 @@ library tradem_srv.models.objects;
 import 'package:embla_trestle/embla_trestle.dart';
 
 class EntityType {
-  static final List<EntityType> values = [ EntityType.ROOM ];
-  static EntityType fromInt(int ind) => values[ind];
-  
   final _value;
-  final int _intValue;
-  const EntityType._internal(this._value, this._intValue);
+  const EntityType._internal(this._value);
   toString() => 'EntityType.$_value';
 
-  static const ROOM = const EntityType._internal('ROOM', 0);
+  static const COMMERCIAL_PLACE =
+    const EntityType._internal('COMMERCIAL_PLACE');
+
+  static final List<EntityType> values = [ EntityType.COMMERCIAL_PLACE ];
+  static EntityType fromInt(int ind) => values[ind];
 }
 
 class Entity extends Model {
