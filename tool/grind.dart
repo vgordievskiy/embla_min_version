@@ -27,7 +27,6 @@ rollback() async {
   await gateway.disconnect();
 }
 
-
 @Task()
 initpart() async {
   if(driver is PostgresqlDriver) {
