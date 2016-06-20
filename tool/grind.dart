@@ -1,6 +1,8 @@
 
 import 'package:grinder/grinder.dart';
 import 'package:embla_trestle/gateway.dart';
+import 'package:postgresql/postgresql.dart' as postgresql;
+
 import '../bin/server.dart';
 import 'migrations.dart';
 import './PartitionMagic/PostgresPartitions.dart';
@@ -25,11 +27,21 @@ rollback() async {
   await gateway.disconnect();
 }
 
+
 @Task()
 initpart() async {
   if(driver is PostgresqlDriver) {
     String script = await loadPartitionMagic();
-    (driver as PostgresqlDriver).execute(script, []);
+    final String username = config['username'];
+    final String password = config['password'];
+    final String database = config['database'];
+    final String host = 'localhost';
+    final int port = 5432;
+    String uri = 'postgres://$username:$password@$host:$port/$database';
+    postgresql.Connection con = await postgresql.connect(uri);
+    int res = await con.execute(script);
+    print("Create PartitionMagic: $res");
+    con.close();
   } else {
     print("driver is not PostgresqlDriver");
   }

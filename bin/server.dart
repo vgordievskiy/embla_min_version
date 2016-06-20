@@ -9,11 +9,19 @@ export 'package:embla/bootstrap.dart';
 
 import '../test/test_data/init_data.dart' as test;
 
+final Map config = {
+  'username': 'postgres',
+  'password': 'bno9mjc',
+  'database': 'tradem'
+};
+
+
 var driver = new InMemoryDriver();
 
-/*var driver = new PostgresqlDriver(username: 'postgres',
-                                  password: 'bno9mjc',
-                                  database: 'tradem');
+/*
+var driver = new PostgresqlDriver(username: config['username'],
+                                  password: config['password'],
+                                  database: config['database']);
 */
 
 get embla => [
