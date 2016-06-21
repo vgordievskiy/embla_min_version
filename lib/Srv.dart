@@ -13,6 +13,7 @@ import 'package:trestle/gateway.dart';
 import 'Models/Users.dart';
 import 'package:trestle/trestle.dart';
 
+export 'Geo/PostgisPsqlDriver.dart';
 export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
 export 'Middleware/Auth.dart';

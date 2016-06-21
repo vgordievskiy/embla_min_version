@@ -19,9 +19,9 @@ final Map config = {
 var driver = new InMemoryDriver();
 
 /*
-var driver = new PostgresqlDriver(username: config['username'],
-                                  password: config['password'],
-                                  database: config['database']);
+var driver = new Srv.PostgisPsqlDriver(username: config['username'],
+                                       password: config['password'],
+                                       database: config['database']);
 */
 
 get embla => [
