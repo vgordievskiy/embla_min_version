@@ -34,7 +34,7 @@ main() async {
 
     test(".split() splits the string on the delimiter", () async {
       //var tmp = await rest.Get("$serverUrl/test");
-      print(tmp);
+      //print(tmp);
       expect("foo,bar,baz", allOf([
         contains("foo"),
         isNot(startsWith("bar")),
