@@ -14,13 +14,13 @@ final Map config = {
 };
 
 
-//var driver = new InMemoryDriver();
+var driver = new InMemoryDriver();
 
-//*
+/*
 var driver = new Srv.PostgisPsqlDriver(username: config['username'],
                                        password: config['password'],
                                        database: config['database']);
-//*/
+*/
 
 get embla => [
   new DatabaseBootstrapper(

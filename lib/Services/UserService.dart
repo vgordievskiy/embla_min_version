@@ -43,6 +43,10 @@ class UserService extends Controller {
   Future<User> getUserById(int id) async
     => users.find(id);
 
+  @Post() create() {
+    return {'msg' : 'ok'};
+  }
+
   @Get('/') action() {
     return 'Response';
   }

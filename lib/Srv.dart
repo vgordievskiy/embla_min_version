@@ -16,6 +16,7 @@ import 'package:trestle/trestle.dart';
 export 'Geo/PostgisPsqlDriver.dart';
 export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
+export 'Services/UserCreator.dart';
 export 'Middleware/Auth.dart';
 export 'Middleware/CORS.dart';
 

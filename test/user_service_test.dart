@@ -1,19 +1,34 @@
 import "package:test/test.dart";
 import 'package:trestle/gateway.dart';
+import 'package:embla/http.dart';
 import "package:embla/application.dart";
+import 'package:embla/http_basic_middleware.dart';
+import 'package:embla_trestle/embla_trestle.dart';
 import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
-import 'package:tradem_srv/Services/UserService.dart';
-
-import '../bin/server.dart' as Srv;
+import 'package:tradem_srv/Srv.dart' as Srv;
 
 main() async {
   Application app;
-  Srv.driver = new InMemoryDriver();
+  var driver = new InMemoryDriver();
   final String serverUrl = "http://localhost:9090";
 
   setUpAll(() async {
-    List<Bootstrapper> bootstrappers = Srv.embla;
+    List<Bootstrapper> bootstrappers = [
+      new DatabaseBootstrapper(
+        driver: driver
+      ),
+      new Srv.HttpsBootstrapper(
+        port: 9090,
+        pipeline: pipe(
+          LoggerMiddleware, RemoveTrailingSlashMiddleware,
+          Route.post('login/', Srv.JwtLoginMiddleware),
+          Route.post('users/', Srv.UserCreator),
+          Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
+        )
+      ),
+      new Srv.TrademSrv()
+    ];
     app = await Application.boot(bootstrappers);
   });
   tearDownAll(() async {
@@ -33,8 +48,8 @@ main() async {
     });
 
     test(".split() splits the string on the delimiter", () async {
-      //var tmp = await rest.Get("$serverUrl/test");
-      //print(tmp);
+      var tmp = await rest.Create("$serverUrl/users");
+      print(tmp);
       expect("foo,bar,baz", allOf([
         contains("foo"),
         isNot(startsWith("bar")),
