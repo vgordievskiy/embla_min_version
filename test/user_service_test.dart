@@ -10,19 +10,20 @@ import '../bin/server.dart' as Srv;
 main() async {
   Application app;
   Srv.driver = new InMemoryDriver();
+  final String serverUrl = "http://localhost:9090";
 
-  setUp(() async {
+  setUpAll(() async {
     List<Bootstrapper> bootstrappers = Srv.embla;
     app = await Application.boot(bootstrappers);
   });
-  tearDown(() async {
+  tearDownAll(() async {
     await app.exit();
   });
 
   group("int", () {
 
-    //IoHttpCommunicator cmn = new IoHttpCommunicator();
-    //RestAdapter rest;
+    IoHttpCommunicator cmn = new IoHttpCommunicator();
+    RestAdapter rest = new RestAdapter(cmn);
 
     setUp(() async {
       print("!!!");
@@ -31,7 +32,9 @@ main() async {
       print("222");
     });
 
-    test(".split() splits the string on the delimiter", () {
+    test(".split() splits the string on the delimiter", () async {
+      //var tmp = await rest.Get("$serverUrl/test");
+      print(tmp);
       expect("foo,bar,baz", allOf([
         contains("foo"),
         isNot(startsWith("bar")),
