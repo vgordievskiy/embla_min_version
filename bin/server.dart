@@ -7,8 +7,6 @@ import 'package:embla_trestle/embla_trestle.dart';
 export 'package:embla/application.dart';
 export 'package:embla/bootstrap.dart';
 
-import '../test/test_data/init_data.dart' as test;
-
 final Map config = {
   'username': 'postgres',
   'password': 'bno9mjc',
@@ -16,13 +14,13 @@ final Map config = {
 };
 
 
-var driver = new InMemoryDriver();
+//var driver = new InMemoryDriver();
 
-/*
+//*
 var driver = new Srv.PostgisPsqlDriver(username: config['username'],
                                        password: config['password'],
                                        database: config['database']);
-*/
+//*/
 
 get embla => [
   new DatabaseBootstrapper(
@@ -37,6 +35,5 @@ get embla => [
       Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
     )
   ),
-  new Srv.TrademSrv(),
-  new test.InitTestData(new Gateway(driver))
+  new Srv.TrademSrv()
 ];

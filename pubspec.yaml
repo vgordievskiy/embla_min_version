@@ -32,3 +32,4 @@ dependency_overrides:
 
 dev_dependencies:
   grinder: any
+  test: any
