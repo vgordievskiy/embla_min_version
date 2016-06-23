@@ -31,12 +31,7 @@ get embla => [
     pipeline: pipe(
       LoggerMiddleware, Srv.CORSMiddleware,
       Route.post('login/', Srv.JwtLoginMiddleware),
-      Route.post('test/', Srv.InputParserMiddleware, (Srv.Input req) async {
-        Map tmp = req.body;
-        print(tmp);
-        return 'ok';
-      }),
-      RemoveTrailingSlashMiddleware, InputParserMiddleware,
+      RemoveTrailingSlashMiddleware, Srv.InputParserMiddleware,
       Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
     )
   ),

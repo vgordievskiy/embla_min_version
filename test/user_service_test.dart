@@ -23,6 +23,11 @@ main() async {
         pipeline: pipe(
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
+          Route.post('test/', Srv.InputParserMiddleware, (Srv.Input req) async {
+            Map tmp = req.body;
+            print(tmp);
+            return 'ok';
+          }),
           Route.post('users/', Srv.UserCreator),
           Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
         )
