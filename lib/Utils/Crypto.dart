@@ -3,7 +3,6 @@ library tradem_srv.utils.crypro;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-
 String encryptPassword(String pass) {
   var toEncrypt = new SHA1();
   toEncrypt.add(UTF8.encode(pass));
