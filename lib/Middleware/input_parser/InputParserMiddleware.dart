@@ -11,6 +11,9 @@ import 'raw_parser.dart';
 import 'multi_part_parser.dart';
 import 'url_encoded_parser.dart';
 
+export 'package:http_server/src/http_body.dart'
+  show HttpBodyFileUpload, HttpBody;
+
 class InputParserMiddleware extends Middleware {
   final RawInputParser _raw = new RawInputParser();
   final List<InputParser> _parsers = [
