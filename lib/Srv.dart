@@ -19,6 +19,8 @@ export 'Services/UserService.dart';
 export 'Services/UserCreator.dart';
 export 'Middleware/Auth.dart';
 export 'Middleware/CORS.dart';
+export 'Middleware/input_parser/InputParserMiddleware.dart';
+export 'Middleware/input_parser/input_parser.dart';
 
 import 'Services/UserService.dart';
 
