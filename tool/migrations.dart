@@ -18,6 +18,7 @@ class CreateUsersTableMigration extends Migration {
       schema.timestamp('updated_at').nullable(false);
       schema.string('email').unique();
       schema.string('password');
+      schema.json('data'); /*some personal configs*/
     });
   }
 

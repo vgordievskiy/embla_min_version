@@ -5,11 +5,13 @@ class User extends Model {
   @field int id;
   @field String email;
   @field String password;
+  @field Map data;
 
   Map toJson() {
     return {
       'id' : id,
-      'email' : email
+      'email' : email,
+      'data' : data
     };
   }
 }
