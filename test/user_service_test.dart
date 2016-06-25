@@ -28,7 +28,7 @@ main() async {
             print(tmp);
             return 'ok';
           }),
-          Route.post('users/', Srv.UserCreator),
+//          Route.post('users/', Srv.UserCreator),
           Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
         )
       ),
@@ -52,7 +52,7 @@ main() async {
       print("222");
     });
 
-    test(".split() splits the string on the delimiter", () async {
+    test("create user", () async {
       var tmp = await rest.Create("$serverUrl/users");
       print(tmp);
       expect("foo,bar,baz", allOf([

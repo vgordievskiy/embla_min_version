@@ -41,6 +41,7 @@ class TrademSrv extends Bootstrapper {
     ..secret = 'bno9mjc'
     ..lookupByUserName = this.lookupByUsername
     ..validateUserPass = this.validateUserPass
+    ..excludeHandler = this.excludeUrlForAuth
     ..welcomeHandler = this.welcomeHandler;
   }
 
@@ -70,6 +71,14 @@ class TrademSrv extends Bootstrapper {
       return new Some(new UserPrincipal(username, user.id));
     }
     return const None();
+  }
+
+  Future<bool> excludeUrlForAuth(Uri uri, String method) async {
+    bool ret = false;
+    if(uri.path == "/users" && method == "POST") {
+      ret = true;
+    }
+    return ret;
   }
 
   Future<String> welcomeHandler(UserPrincipal cred) async {

@@ -13,6 +13,7 @@ typedef Future<Option<Principal>> TLookupByUsername(String username);
 typedef Future<Option<Principal>>
   TValidateUserPass(String username, String password);
 typedef Future<String> TWelcomeHandler(Principal cred);
+typedef Future<bool> TExcludeHandler(Uri uri, String method);
 
 class AuthConfig {
   String issuer;
@@ -21,7 +22,18 @@ class AuthConfig {
   Duration totalSessionTimeout = const Duration(days: 7);
   TLookupByUsername lookupByUserName;
   TValidateUserPass  validateUserPass;
+  TExcludeHandler excludeHandler;
   TWelcomeHandler welcomeHandler;
+}
+
+class AuthHelpers {
+  static Future<bool> isExcludeForAuth(Request request) {
+    AuthConfig config = Utils.$(AuthConfig);
+    if(config.excludeHandler != null) {
+      return config.excludeHandler(request.requestedUri, request.method);
+    }
+    return new Future.value(false);
+  }
 }
 
 class JwtAuthMiddleware extends Middleware {
@@ -40,7 +52,11 @@ class JwtAuthMiddleware extends Middleware {
 
   Future<Response> handle(Request request) async {
     try {
-      return await _JwtAuthMiddleware(auth)(request);
+      if(!await AuthHelpers.isExcludeForAuth(request)) {
+        return await _JwtAuthMiddleware(auth)(request);
+      } else {
+        return super.handle(request);
+      }
     } catch (e) {
       return this.abortForbidden('access denied');
     }
@@ -105,11 +121,16 @@ abstract class UriFilterBase extends Middleware implements Authoriser {
   TUrlFilterHandler get filter;
 
   Future<Response> handle(Request request) async {
-    bool isApproved = await isAuthorised(request);
-    if(isApproved) {
-      return super.handle(request);
+    bool isExcludeAuth = await AuthHelpers.isExcludeForAuth(request);
+    if(!isExcludeAuth) {
+      bool isApproved = await isAuthorised(request);
+      if(isApproved) {
+        return super.handle(request);
+      } else {
+        return this.abortForbidden('access denied');
+      }
     } else {
-      return this.abortForbidden('access denied');
+      return super.handle(request);
     }
   }
 

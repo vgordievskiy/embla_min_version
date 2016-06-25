@@ -18,7 +18,7 @@ class UserCreator extends Middleware {
     return {'msg' : 'ok'};
   }
 
-  Future<Response> handle(Request request) async {
+  /*Future<Response> handle(Request request) async {
     return ok(create());
-  }
+  }*/
 }
