@@ -3,84 +3,47 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io' show ContentType, HttpHeaders;
 import 'package:embla/http.dart';
+import 'package:http_server/src/http_body_impl.dart';
+import 'package:http_server/src/http_body.dart';
 
 import 'input_parser.dart';
-import 'raw_parser.dart';
 
 class UrlEncodedInputParser extends InputParser {
-  final RawInputParser _raw = new RawInputParser();
+  @override
+  Future parse(Stream<List<int>> body, Encoding encoding, [Request request]) async {
+    HttpBody parsedBody = await HttpBodyHandlerImpl.process(body,
+      new _HttpHeaders(request.headers,
+        ContentType.parse(request.headers['content-type'])), UTF8);
+    return parsedBody.body;
+  }
 
   @override
   String get mimeType => 'application/x-www-form-urlencoded';
+}
 
-  Future<Map<String, String>> parse(Stream<List<int>> body, Encoding encoding,
-                                    [Request request]) async
-  {
-    final value = await body.map(encoding.decode).join('\n');
-    return parseQueryString(value);
+class _HttpHeaders implements HttpHeaders {
+  final Map<String, String> headers;
+  ContentType _contentType;
+
+  _HttpHeaders(this.headers, this._contentType);
+
+  @override
+  List<String> operator [](String name) {
+    return headers[name].split(";");
   }
 
-  // This is absolutely horrendous, but works
-  Map<String, String> parseQueryString(String query) {
-    _verifyQueryString(query);
+  @override
+  ContentType get contentType => _contentType;
 
-    final parts = query.split('&');
-    final Iterable<String> rawKeys = parts.map((s) => s.split('=').map(Uri.decodeComponent).first);
-    final List<String> values = parts.map((s) => s.split('=').map(Uri.decodeComponent).last).toList();
-    final map = {};
-    final rootNamePattern = new RegExp(r'^([^\[]+)(.*)$');
-    final contPattern = new RegExp(r'^\[(.*?)\](.*)$');
-    dynamic nextValue() {
-      return _raw.parseString(values.removeAt(0));
-    }
-    for (var restOfKey in rawKeys) {
-      final rootMatch = rootNamePattern.firstMatch(restOfKey);
-      final rootKey = rootMatch[1];
-      final rootCont = rootMatch[2];
-      if (rootCont == '') {
-        map[rootKey] = nextValue();
-        continue;
-      }
-      dynamic target = map;
-      dynamic targetKey = rootKey;
-
-      restOfKey = rootCont;
-
-      while (contPattern.hasMatch(restOfKey)) {
-        final contMatch = contPattern.firstMatch(restOfKey);
-        final keyName = contMatch[1];
-        if (keyName == '') {
-          target[targetKey] ??= [];
-          (target[targetKey] as List).add(null);
-          target = target[targetKey];
-          targetKey = target.length - 1;
-        } else if (new RegExp(r'^\d+$').hasMatch(keyName)) {
-          final List targetList = target[targetKey] ??= [];
-          final index = int.parse(keyName);
-          if (targetList.length == index) {
-            targetList.add(null);
-          } else {
-            targetList[index] ??= null;
-          }
-          target = targetList;
-          targetKey = index;
-        } else {
-          target[targetKey] ??= {};
-          (target[targetKey] as Map)[keyName] ??= null;
-          target = target[targetKey];
-          targetKey = keyName;
-        }
-        restOfKey = contMatch[2];
-      }
-      target[targetKey] = nextValue();
-    }
-    return new Map.unmodifiable(map);
+  @override
+  void forEach(void f(String name, List<String> values)) {
+    headers.forEach((k, v) => f(k, v.split(";")));
   }
 
-  void _verifyQueryString(String query) {
-    final pattern = new RegExp(r'^(?:[^\[]+(?:\[[^\[\]]*\])*(?:\=.*?)?)$');
-    if (!pattern.hasMatch(query)) {
-      throw new Exception('$query is not a valid query string');
-    }
+  @override
+  String value(String name) {
+    return headers[name];
   }
+
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

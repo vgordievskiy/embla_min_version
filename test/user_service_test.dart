@@ -22,8 +22,9 @@ main() async {
         port: 9090,
         pipeline: pipe(
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
+          Srv.InputParserMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
-          Route.post('test/', Srv.InputParserMiddleware, (Srv.Input req) async {
+          Route.post('test/', (Srv.Input req) async {
             Map tmp = req.body;
             print(tmp);
             return 'ok';
@@ -52,7 +53,7 @@ main() async {
     });
 
     test("create user", () async {
-      var tmp = await rest.Create("$serverUrl/users");
+      var tmp = await rest.Create("$serverUrl/users", { 'user' : 'gardi' });
       print(tmp);
       expect("foo,bar,baz", allOf([
         contains("foo"),

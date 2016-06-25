@@ -9,6 +9,7 @@ import 'package:shelf_auth/shelf_auth.dart';
 
 import '../Models/Users.dart';
 import '../Middleware/Auth.dart';
+import '../Middleware/input_parser/input_parser.dart';
 
 class UserPrincipal extends Principal {
   int id;
@@ -43,8 +44,8 @@ class UserService extends Controller {
   Future<User> getUserById(int id) async
     => users.find(id);
 
-  @Post('/') create() {
-    return {'msg' : 'ok'};
+  @Post('/') create(Input args) {
+    return {'msg' : 'ok', 'args' : args.body};
   }
 
   @Get('/') action() {
