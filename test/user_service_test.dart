@@ -28,7 +28,6 @@ main() async {
             print(tmp);
             return 'ok';
           }),
-//          Route.post('users/', Srv.UserCreator),
           Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
         )
       ),
