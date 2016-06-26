@@ -6,6 +6,7 @@ import "package:embla/application.dart";
 import 'package:embla/http_basic_middleware.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart';
+import 'package:SemplexClientCmn/Utils/Interfaces/ICommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 
@@ -28,6 +29,9 @@ main() async {
 
   final String serverUrl = "http://localhost:9090";
 
+  IoHttpCommunicator cmn = new IoHttpCommunicator();
+  RestAdapter rest = new RestAdapter(cmn);
+
   setUpAll(() async {
     List<Bootstrapper> bootstrappers = [
       new DatabaseBootstrapper(
@@ -37,8 +41,8 @@ main() async {
         port: 9090,
         pipeline: pipe(
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
-          Srv.InputParserMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
+          Srv.InputParserMiddleware,
           Route.post('test/', (Srv.Input req) async {
             Map tmp = req.body;
             print(tmp);
@@ -55,7 +59,7 @@ main() async {
     await app.exit();
   });
 
-  group("user service: ", () {
+  group("user service creation: ", () {
 
     IoHttpCommunicator cmn = new IoHttpCommunicator();
     RestAdapter rest = new RestAdapter(cmn);
@@ -80,7 +84,7 @@ main() async {
       ]));
     });
 
-    test("create exist user user", () async {
+    test("create exist user", () async {
       try {
         var resp = await rest.Create("$serverUrl/users",
           { 'email' : 'gardi',
@@ -91,6 +95,41 @@ main() async {
         expect(resp.Status, /*Conflict*/409);
         expect(resp.Data, 'user exist');
       }
+    });
+  });
+
+  group("user service get and auth: ", () {
+
+    setUpAll(() async {
+      Map<String, String> args = {
+        'username' : 'gardi',
+        'password' : 'bno9mjc'
+      };
+      HttpRequestAdapter req =
+        new HttpRequestAdapter.Post("$serverUrl/login", args, null);
+      try {
+        IResponse resp = await rest.GetCommunicator().SendRequest(req);
+        if (resp.Status == 200) {
+          final String authorization = resp.Headers["authorization"];
+          rest.GetCommunicator().AddDefaultHeaders("authorization", authorization);
+        }
+      } catch(e) {
+        throw e;
+      }
+    });
+
+    setUp(() async {
+      print("---------------");
+    });
+    tearDown(() async {
+
+    });
+
+    test("get user", () async {
+      Map resp = await rest.Get("$serverUrl/users/1");
+      expect(resp, allOf([
+        containsPair('id', 1),
+        containsPair('email', 'gardi')]));
     });
   });
 }
