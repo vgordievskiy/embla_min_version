@@ -64,7 +64,7 @@ main() async {
       print("---------------");
     });
     tearDown(() async {
-      
+
     });
 
     test("create user", () async {
@@ -91,14 +91,6 @@ main() async {
         expect(resp.Status, /*Conflict*/409);
         expect(resp.Data, 'user exist');
       }
-    });
-
-    test(".split() splits the string on the delimiter", () {
-      expect("foo,bar,baz", allOf([
-        contains("foo"),
-        isNot(startsWith("bar")),
-        endsWith("baz")
-      ]));
     });
   });
 }
