@@ -12,3 +12,7 @@ class Utils {
   static Injector get injector => _injector;
   static $(Type type) => _injector.get(type);
 }
+
+bool expect(Map obj, String key) {
+  return obj.containsKey(key) && obj[key] != null;
+}

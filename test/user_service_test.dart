@@ -77,6 +77,19 @@ main() async {
       ]));
     });
 
+    test("create user", () async {
+      var tmp = await rest.Create("$serverUrl/users",
+        { 'email' : 'gardi',
+          'password' : 'bno9mjc'
+      });
+      print(tmp);
+      expect("foo,bar,baz", allOf([
+        contains("foo"),
+        isNot(startsWith("bar")),
+        endsWith("baz")
+      ]));
+    });
+
     test(".split() splits the string on the delimiter", () {
       expect("foo,bar,baz", allOf([
         contains("foo"),

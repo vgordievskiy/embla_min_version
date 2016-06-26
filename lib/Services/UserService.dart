@@ -7,6 +7,8 @@ import 'package:embla/http_annotations.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 
+import '../Utils/Utils.dart';
+import '../Utils/Crypto.dart';
 import '../Models/Users.dart';
 import '../Middleware/Auth.dart';
 import '../Middleware/input_parser/input_parser.dart';
@@ -46,11 +48,24 @@ class UserService extends Controller {
 
   @Post('/') create(Input args) async {
     Map params = args.body;
-    User user = new User()
-      ..email = params['email']
-      ..password = params['password'];
-    await users.save(user);
-    return {'msg' : 'ok', 'userId' : user.id};
+    if(expect(params, 'email') &&
+       expect(params, 'password')) {
+        try {
+           //check exist user
+           User user = await getUserByName(params['email']);
+           this.abortConflict('user exist');
+        } catch (err){
+          if (err is HttpException) rethrow;
+        }
+
+        User user = new User()
+          ..email = params['email']
+          ..password = params['password'];
+        await users.save(user);
+        return {'msg' : 'ok', 'userId' : user.id};
+    } else {
+      this.abortBadRequest('wrong data');
+    }
   }
 
   @Get('/') action() {
