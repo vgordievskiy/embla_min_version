@@ -3,15 +3,16 @@ library tradem_srv;
 import 'dart:async';
 import 'package:di/di.dart';
 import 'package:embla/application.dart';
-
-import 'Utils/Utils.dart';
-import 'Middleware/Auth.dart';
 import 'package:option/option.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 import 'package:http_exception/http_exception.dart';
 import 'package:trestle/gateway.dart';
-import 'Models/Users.dart';
 import 'package:trestle/trestle.dart';
+
+import 'Utils/Utils.dart';
+import 'Middleware/Auth.dart';
+import 'Models/Users.dart';
+import './Utils/Crypto.dart' as crypto;
 
 export 'Geo/PostgisPsqlDriver.dart';
 export 'Utils/HttpsBootstrapper.dart';
@@ -57,7 +58,7 @@ class TrademSrv extends Bootstrapper {
   {
     User user = await _getUserByName(username);
 
-    if(user.password == password) {
+    if(user.password == crypto.encryptPassword(password)) {
         return new Some(new UserPrincipal(username, user.id));
     }
     throw new UnauthorizedException();

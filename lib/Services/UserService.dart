@@ -8,7 +8,7 @@ import 'package:embla_trestle/embla_trestle.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 
 import '../Utils/Utils.dart';
-import '../Utils/Crypto.dart';
+import '../Utils/Crypto.dart' as crypto;
 import '../Models/Users.dart';
 import '../Middleware/Auth.dart';
 import '../Middleware/input_parser/input_parser.dart';
@@ -60,7 +60,7 @@ class UserService extends Controller {
 
         User user = new User()
           ..email = params['email']
-          ..password = params['password'];
+          ..password = crypto.encryptPassword(params['password']);
         await users.save(user);
         return {'msg' : 'ok', 'userId' : user.id};
     } else {
