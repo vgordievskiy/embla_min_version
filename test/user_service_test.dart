@@ -1,3 +1,4 @@
+import 'dart:convert';
 import "package:test/test.dart";
 import 'package:trestle/gateway.dart';
 import 'package:embla/http.dart';
@@ -14,13 +15,15 @@ final Map config = {
   'database': 'tradem'
 };
 
+/*
 var driver = new Srv.PostgisPsqlDriver(username: config['username'],
                                        password: config['password'],
                                        database: config['database']);
+*/
 
 main() async {
   Application app;
-  driver = new InMemoryDriver();
+  var driver = new InMemoryDriver();
 
 
   final String serverUrl = "http://localhost:9090";
@@ -52,42 +55,42 @@ main() async {
     await app.exit();
   });
 
-  group("int", () {
+  group("user service: ", () {
 
     IoHttpCommunicator cmn = new IoHttpCommunicator();
     RestAdapter rest = new RestAdapter(cmn);
 
     setUp(() async {
-      print("!!!");
+      print("---------------");
     });
     tearDown(() async {
-      print("222");
+      
     });
 
     test("create user", () async {
-      var tmp = await rest.Create("$serverUrl/users",
+      var resp = await rest.Create("$serverUrl/users",
         { 'email' : 'gardi',
           'password' : 'bno9mjc'
       });
-      print(tmp);
-      expect("foo,bar,baz", allOf([
-        contains("foo"),
-        isNot(startsWith("bar")),
-        endsWith("baz")
+      resp = JSON.decode(resp);
+
+      expect(resp, allOf([
+        containsPair('msg', 'ok'),
+        containsPair('userId', 1)
       ]));
     });
 
-    test("create user", () async {
-      var tmp = await rest.Create("$serverUrl/users",
-        { 'email' : 'gardi',
-          'password' : 'bno9mjc'
-      });
-      print(tmp);
-      expect("foo,bar,baz", allOf([
-        contains("foo"),
-        isNot(startsWith("bar")),
-        endsWith("baz")
-      ]));
+    test("create exist user user", () async {
+      try {
+        var resp = await rest.Create("$serverUrl/users",
+          { 'email' : 'gardi',
+            'password' : 'bno9mjc'
+        });
+      } catch(err) {
+        IoHttpResponseAdapter resp = err;
+        expect(resp.Status, /*Conflict*/409);
+        expect(resp.Data, 'user exist');
+      }
     });
 
     test(".split() splits the string on the delimiter", () {
