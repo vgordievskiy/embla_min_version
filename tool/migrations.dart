@@ -3,7 +3,8 @@ import 'package:embla_trestle/gateway.dart';
 
 final migrations = [
   CreateUsersTableMigration,
-  CreateEntitiesTableMigration
+  CreateEntitiesTableMigration,
+  CreateDealsTableMigration
 ].toSet();
 
 class CreateUsersTableMigration extends Migration {

@@ -8,9 +8,21 @@ import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart'
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 
+final Map config = {
+  'username': 'postgres',
+  'password': 'bno9mjc',
+  'database': 'tradem'
+};
+
+var driver = new Srv.PostgisPsqlDriver(username: config['username'],
+                                       password: config['password'],
+                                       database: config['database']);
+
 main() async {
   Application app;
-  var driver = new InMemoryDriver();
+  driver = new InMemoryDriver();
+
+
   final String serverUrl = "http://localhost:9090";
 
   setUpAll(() async {
@@ -53,7 +65,10 @@ main() async {
     });
 
     test("create user", () async {
-      var tmp = await rest.Create("$serverUrl/users", { 'user' : 'gardi' });
+      var tmp = await rest.Create("$serverUrl/users",
+        { 'email' : 'gardi',
+          'password' : 'bno9mjc'
+      });
       print(tmp);
       expect("foo,bar,baz", allOf([
         contains("foo"),

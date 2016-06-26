@@ -44,8 +44,13 @@ class UserService extends Controller {
   Future<User> getUserById(int id) async
     => users.find(id);
 
-  @Post('/') create(Input args) {
-    return {'msg' : 'ok', 'args' : args.body};
+  @Post('/') create(Input args) async {
+    Map params = args.body;
+    User user = new User()
+      ..email = params['email']
+      ..password = params['password'];
+    await users.save(user);
+    return {'msg' : 'ok', 'userId' : user.id};
   }
 
   @Get('/') action() {

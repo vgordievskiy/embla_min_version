@@ -11,7 +11,13 @@ class PostgisPsqlDriver extends PostgresqlDriver {
   ) : super(host: host, username: username, password: password, port: port,
             database: database, ssl: ssl);
 
+  @override
   Stream<Map<String, dynamic>> get(Query query, Iterable<String> fields) {
     return super.get(query, fields);
   }
+
+  @override
+  Future connect() => super.connect();
+  @override
+  Future disconnect() => super.disconnect();
 }
