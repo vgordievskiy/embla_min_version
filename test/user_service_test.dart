@@ -64,13 +64,6 @@ main() async {
     IoHttpCommunicator cmn = new IoHttpCommunicator();
     RestAdapter rest = new RestAdapter(cmn);
 
-    setUp(() async {
-      print("---------------");
-    });
-    tearDown(() async {
-
-    });
-
     test("create user", () async {
       var resp = await rest.Create("$serverUrl/users",
         { 'email' : 'gardi',
@@ -116,13 +109,6 @@ main() async {
       } catch(e) {
         throw e;
       }
-    });
-
-    setUp(() async {
-      print("---------------");
-    });
-    tearDown(() async {
-
     });
 
     test("get user", () async {
