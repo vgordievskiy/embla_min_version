@@ -88,4 +88,8 @@ class UserService extends Controller {
     return this.ok('');
   }
 
+  @Get('/:id/deals') getUserDeals({String id}) async {
+    return {'empty' : 'empty'};
+  }
+
 }
