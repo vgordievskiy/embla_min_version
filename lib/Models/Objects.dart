@@ -11,6 +11,7 @@ class EntityType {
 
   static final List<EntityType> values = [ EntityType.COMMERCIAL_PLACE ];
   static EntityType fromInt(int ind) => values[ind];
+  static int toInt(EntityType type) => values.indexOf(type);
 }
 
 class Entity extends Model {
