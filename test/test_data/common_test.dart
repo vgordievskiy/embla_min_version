@@ -5,6 +5,7 @@ import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:trestle/gateway.dart';
 import 'dart:async';
 
+import 'init_data.dart';
 
 class TestCommon {
   static String srvUrl = "http://localhost:9090";
@@ -53,7 +54,8 @@ class TestCommon {
     }
     return null;
   }
-}
 
-class Fufure {
+  static Future initTestData() async {
+
+  }
 }
