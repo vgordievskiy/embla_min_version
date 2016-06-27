@@ -7,6 +7,7 @@ import 'package:trestle/gateway.dart';
 
 class TestCommon {
   static String srvUrl = "http://localhost:9090";
+  static String userUrl;
 
   static final Map config = {
     'username': 'postgres',

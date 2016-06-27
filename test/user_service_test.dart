@@ -63,7 +63,7 @@ main() async {
 
     test("create exist user", () async {
       try {
-        var resp = await rest.Create("$serverUrl/users", 
+        var resp = await rest.Create("$serverUrl/users",
                                      TestCommon.userDataCreate);
       } catch(err) {
         IoHttpResponseAdapter resp = err;
@@ -83,6 +83,7 @@ main() async {
         if (resp.Status == 200) {
           final String authorization = resp.Headers["authorization"];
           cmn.AddDefaultHeaders("authorization", authorization);
+          TestCommon.userUrl = resp.Data;
         }
       } catch(e) {
         throw e;
@@ -90,7 +91,7 @@ main() async {
     });
 
     test("get user", () async {
-      Map resp = await rest.Get("$serverUrl/users/1");
+      Map resp = await rest.Get("$serverUrl/${TestCommon.userUrl}");
       expect(resp, allOf([
         containsPair('id', 1),
         containsPair('email', 'gardi')]));
@@ -98,8 +99,8 @@ main() async {
 
     test("update user", () async {
       Map data = {'user' : 'test'};
-      await rest.Update("$serverUrl/users/1/data", data);
-      Map resp = await rest.Get("$serverUrl/users/1/data");
+      await rest.Update("$serverUrl/${TestCommon.userUrl}/data", data);
+      Map resp = await rest.Get("$serverUrl/${TestCommon.userUrl}/data");
       expect(resp, data);
     });
   });
