@@ -17,9 +17,6 @@ main() async {
 
   final String serverUrl = TestCommon.srvUrl;
 
-  IoHttpCommunicator cmn = new IoHttpCommunicator();
-  RestAdapter rest = new RestAdapter(cmn);
-
   setUpAll(() async {
     List<Bootstrapper> bootstrappers = [
       new DatabaseBootstrapper(
@@ -76,22 +73,11 @@ main() async {
   group("user service get and auth: ", () {
 
     setUpAll(() async {
-      HttpRequestAdapter req =
-        new HttpRequestAdapter.Post("$serverUrl/login", TestCommon.userData, null);
-      try {
-        IResponse resp = await cmn.SendRequest(req);
-        if (resp.Status == 200) {
-          final String authorization = resp.Headers["authorization"];
-          cmn.AddDefaultHeaders("authorization", authorization);
-          TestCommon.userUrl = resp.Data;
-        }
-      } catch(e) {
-        throw e;
-      }
+      await TestCommon.login();
     });
 
     test("get user", () async {
-      Map resp = await rest.Get("$serverUrl/${TestCommon.userUrl}");
+      Map resp = await TestCommon.net.Get("$serverUrl/${TestCommon.userUrl}");
       expect(resp, allOf([
         containsPair('id', 1),
         containsPair('email', 'gardi')]));
@@ -99,8 +85,8 @@ main() async {
 
     test("update user", () async {
       Map data = {'user' : 'test'};
-      await rest.Update("$serverUrl/${TestCommon.userUrl}/data", data);
-      Map resp = await rest.Get("$serverUrl/${TestCommon.userUrl}/data");
+      await TestCommon.net.Update("$serverUrl/${TestCommon.userUrl}/data", data);
+      Map resp = await TestCommon.net.Get("$serverUrl/${TestCommon.userUrl}/data");
       expect(resp, data);
     });
   });

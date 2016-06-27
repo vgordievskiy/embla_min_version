@@ -3,6 +3,7 @@ import 'package:SemplexClientCmn/Utils/Interfaces/ICommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:trestle/gateway.dart';
+import 'dart:async';
 
 
 class TestCommon {
@@ -35,4 +36,24 @@ class TestCommon {
                                        password: config['password'],
                                        database: config['database']);
   }
+
+  static Future<String> login() async {
+    HttpRequestAdapter req =
+      new HttpRequestAdapter.Post("$srvUrl/login", TestCommon.userData, null);
+    try {
+      IResponse resp = await cmn.SendRequest(req);
+      if (resp.Status == 200) {
+        final String authorization = resp.Headers["authorization"];
+        cmn.AddDefaultHeaders("authorization", authorization);
+        TestCommon.userUrl = resp.Data;
+        return TestCommon.userUrl;
+      }
+    } catch(e) {
+      throw e;
+    }
+    return null;
+  }
+}
+
+class Fufure {
 }
