@@ -40,7 +40,7 @@ class UserService extends Controller {
 
   UserService(this.users);
 
-  Future<User> getUserByName(String username) async
+  Future<User> getUserByName(String username)
     => users.where((user) => user.email == username).first();
 
   Future<User> getUserById(int id) => users.find(id);
