@@ -29,7 +29,7 @@ class InitTestData extends Bootstrapper {
   }
 
   initSomeUsers() async {
-    {
+    /*{
       User user = new User()
         ..email = 'gardi'
         ..password = '1';
@@ -40,7 +40,7 @@ class InitTestData extends Bootstrapper {
         ..email = 'gardi2'
         ..password = '2';
       await users.save(user);
-    }
+    }*/
   }
 
   initSomeObjects() async {

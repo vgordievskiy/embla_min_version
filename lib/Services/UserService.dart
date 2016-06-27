@@ -63,7 +63,8 @@ class UserService extends Controller {
 
         User user = new User()
           ..email = params['email']
-          ..password = crypto.encryptPassword(params['password']);
+          ..password = crypto.encryptPassword(params['password'])
+          ..enabled = true;
         await users.save(user);
         return {'msg' : 'ok', 'userId' : user.id};
     } else {
