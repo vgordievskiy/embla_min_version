@@ -28,6 +28,7 @@ class TestCommon {
   };
 
   static var driver = new InMemoryDriver();
+  static Gateway gateway = new Gateway(driver);
 
   static IoHttpCommunicator cmn = new IoHttpCommunicator();
   static RestAdapter net = new RestAdapter(cmn);
