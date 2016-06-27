@@ -101,7 +101,7 @@ main() async {
       HttpRequestAdapter req =
         new HttpRequestAdapter.Post("$serverUrl/login", args, null);
       try {
-        IResponse resp = await rest.GetCommunicator().SendRequest(req);
+        IResponse resp = await cmn.GetCommunicator().SendRequest(req);
         if (resp.Status == 200) {
           final String authorization = resp.Headers["authorization"];
           rest.GetCommunicator().AddDefaultHeaders("authorization", authorization);
