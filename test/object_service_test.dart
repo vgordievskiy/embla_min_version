@@ -6,6 +6,7 @@ import "package:embla/application.dart";
 import 'package:embla/http_basic_middleware.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
+import 'package:tradem_srv/Models/Objects.dart';
 
 import './test_data/common_test.dart';
 
@@ -44,11 +45,11 @@ main() async {
     });
 
     test("get objects", () async {
+      Repository<Entity> objects = new Repository(TestCommon.gateway);
       List resp = await TestCommon.net.Get("$serverUrl/objects");
-      print(resp);
-      /*expect(resp, allOf([
-        containsPair('id', 1),
-        containsPair('email', 'gardi')])); */
+      List<Entity> origin = await objects.all().toList();
+      expect(resp, allOf([
+        hasLength(resp)]));
     });
   });
 }
