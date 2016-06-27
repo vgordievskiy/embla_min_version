@@ -67,8 +67,10 @@ class UserService extends Controller {
     }
   }
 
-  @Get('/:id') getUser({String id}) async {
-    return getUserById(int.parse(id));
+  @Get('/:id') getUser({String id}) => getUserById(int.parse(id));
+
+  @Put('/:id') updateUser({String id}) {
+
   }
 
 }
