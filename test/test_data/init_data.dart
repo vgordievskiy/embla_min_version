@@ -48,7 +48,13 @@ class InitTestData extends Bootstrapper {
     {
       Entity obj = new Entity();
       obj.type = EntityType.toInt(EntityType.COMMERCIAL_PLACE);
-      obj.data = {'hello':'world'};
+      obj.data = {'name':'shop'};
+      await entities.save(obj);
+    }
+    {
+      Entity obj = new Entity();
+      obj.type = EntityType.toInt(EntityType.COMMERCIAL_PLACE);
+      obj.data = {'name':'home'};
       await entities.save(obj);
     }
   }
