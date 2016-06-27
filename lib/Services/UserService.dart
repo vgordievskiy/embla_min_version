@@ -68,10 +68,6 @@ class UserService extends Controller {
     }
   }
 
-  @Get('/') action() {
-    return 'Response';
-  }
-
   @Get('/:id') getUser({String id}) async {
     return getUserById(int.parse(id));
   }
