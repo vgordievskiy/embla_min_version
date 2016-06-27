@@ -104,7 +104,7 @@ main() async {
         IResponse resp = await cmn.SendRequest(req);
         if (resp.Status == 200) {
           final String authorization = resp.Headers["authorization"];
-          rest.GetCommunicator().AddDefaultHeaders("authorization", authorization);
+          cmn.AddDefaultHeaders("authorization", authorization);
         }
       } catch(e) {
         throw e;
