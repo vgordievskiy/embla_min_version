@@ -46,7 +46,7 @@ class InitTestData extends Bootstrapper {
   initSomeObjects() async {
     {
       Entity obj = new Entity();
-      obj.type = 1;
+      obj.type = EntityType.toInt(EntityType.COMMERCIAL_PLACE);
       obj.data = {'hello':'world'};
       await entities.save(obj);
     }
