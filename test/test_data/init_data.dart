@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:embla/application.dart';
 import 'package:trestle/gateway.dart';
 import 'package:trestle/trestle.dart';
@@ -20,7 +21,7 @@ class InitTestData extends Bootstrapper {
   }
 
   @Hook.init
-  init() async {
+  Future init() async {
     await gateway.connect();
     await gateway.migrate(data.migrations);
     await initSomeUsers();

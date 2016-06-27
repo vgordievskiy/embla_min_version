@@ -45,6 +45,7 @@ main() async {
 
     setUpAll(() async {
       await TestCommon.login();
+      await TestCommon.initTestData();
     });
 
     test("get user", () async {

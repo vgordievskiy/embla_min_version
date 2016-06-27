@@ -56,6 +56,8 @@ class TestCommon {
   }
 
   static Future initTestData() async {
-
+    Gateway gateway = new Gateway(driver);
+    InitTestData initializer = new InitTestData(gateway);
+    await initializer.init();
   }
 }
