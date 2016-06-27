@@ -25,12 +25,7 @@ main() async {
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
           Srv.InputParserMiddleware,
-          Route.post('test/', (Srv.Input req) async {
-            Map tmp = req.body;
-            print(tmp);
-            return 'ok';
-          }),
-          Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
+          Route.all('objects/*', Srv.ObjectService)
         )
       ),
       new Srv.TrademSrv()
@@ -41,25 +36,19 @@ main() async {
     await app.exit();
   });
 
-  group("user service get and auth: ", () {
+  group("object service get: ", () {
 
     setUpAll(() async {
       await TestCommon.login();
       await TestCommon.initTestData();
     });
 
-    test("get user", () async {
-      Map resp = await TestCommon.net.Get("$serverUrl/${TestCommon.userUrl}");
-      expect(resp, allOf([
+    test("get objects", () async {
+      List resp = await TestCommon.net.Get("$serverUrl/objects");
+      print(resp);
+      /*expect(resp, allOf([
         containsPair('id', 1),
-        containsPair('email', 'gardi')]));
-    });
-
-    test("update user", () async {
-      Map data = {'user' : 'test'};
-      await TestCommon.net.Update("$serverUrl/${TestCommon.userUrl}/data", data);
-      Map resp = await TestCommon.net.Get("$serverUrl/${TestCommon.userUrl}/data");
-      expect(resp, data);
+        containsPair('email', 'gardi')])); */
     });
   });
 }

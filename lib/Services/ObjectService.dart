@@ -16,4 +16,8 @@ class ObjectService extends Controller {
 
   ObjectService(this.entities);
 
+  @Get('/') getAllObjects() {
+    return entities.all().toList();
+  }
+
 }
