@@ -43,8 +43,7 @@ class UserService extends Controller {
   Future<User> getUserByName(String username) async
     => users.where((user) => user.email == username).first();
 
-  Future<User> getUserById(int id) async
-    => users.find(id);
+  Future<User> getUserById(int id) => users.find(id);
 
   @Post('/') create(Input args) async {
     Map params = args.body;
