@@ -69,11 +69,16 @@ class UserService extends Controller {
 
   @Get('/:id') getUser({String id}) => getUserById(int.parse(id));
 
+  @Get('/:id/data') getUsetData({String id}) async {
+    User user = await getUserById(int.parse(id));
+    return user.data;
+  }
+
   bool _filterData(Map data) {
     return true;
   }
 
-  @Put('/:id') updateUser(Input args, {String id}) async {
+  @Put('/:id/data') updateUser(Input args, {String id}) async {
     User user =  await getUserById(int.parse(id));
     Map params = args.body;
     if(_filterData(params)) {

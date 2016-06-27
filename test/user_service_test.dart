@@ -119,11 +119,10 @@ main() async {
     });
 
     test("update user", () async {
-      await rest.Update("$serverUrl/users/1", {'user' : 'test'});
-      Map resp = await rest.Get("$serverUrl/users/1");
-      expect(resp, allOf([
-        containsPair('data', {'user' : 'test'})
-      ]));
+      Map data = {'user' : 'test'};
+      await rest.Update("$serverUrl/users/1/data", data);
+      Map resp = await rest.Get("$serverUrl/users/1/data");
+      expect(resp, data);
     });
   });
 }
