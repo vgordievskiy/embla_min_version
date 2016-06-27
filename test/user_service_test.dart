@@ -67,7 +67,7 @@ main() async {
     test("create user", () async {
       var resp = await rest.Create("$serverUrl/users",
         { 'email' : 'gardi',
-          'password' : 'bno9mjc'
+          'password' : 'testPass'
       });
       resp = JSON.decode(resp);
 
@@ -81,7 +81,7 @@ main() async {
       try {
         var resp = await rest.Create("$serverUrl/users",
           { 'email' : 'gardi',
-            'password' : 'bno9mjc'
+            'password' : 'testPass'
         });
       } catch(err) {
         IoHttpResponseAdapter resp = err;
@@ -96,7 +96,7 @@ main() async {
     setUpAll(() async {
       Map<String, String> args = {
         'username' : 'gardi',
-        'password' : 'bno9mjc'
+        'password' : 'testPass'
       };
       HttpRequestAdapter req =
         new HttpRequestAdapter.Post("$serverUrl/login", args, null);
