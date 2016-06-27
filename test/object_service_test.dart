@@ -14,10 +14,8 @@ import './test_data/common_test.dart';
 
 main() async {
   Application app;
-  final String serverUrl = TestCommon.srvUrl;
 
-  IoHttpCommunicator cmn = new IoHttpCommunicator();
-  RestAdapter rest = new RestAdapter(cmn);
+  final String serverUrl = TestCommon.srvUrl;
 
   setUpAll(() async {
     List<Bootstrapper> bootstrappers = [
@@ -30,6 +28,11 @@ main() async {
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
           Srv.InputParserMiddleware,
+          Route.post('test/', (Srv.Input req) async {
+            Map tmp = req.body;
+            print(tmp);
+            return 'ok';
+          }),
           Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
         )
       ),
@@ -44,26 +47,21 @@ main() async {
   group("user service get and auth: ", () {
 
     setUpAll(() async {
-      Map<String, String> args = TestCommon.userData;
-      HttpRequestAdapter req =
-        new HttpRequestAdapter.Post("$serverUrl/login", args, null);
-      try {
-        IResponse resp = await cmn.SendRequest(req);
-        if (resp.Status == 200) {
-          final String authorization = resp.Headers["authorization"];
-          cmn.AddDefaultHeaders("authorization", authorization);
-        }
-      } catch(e) {
-        throw e;
-      }
+      await TestCommon.login();
     });
 
     test("get user", () async {
-      Map resp = await rest.Get("$serverUrl/users/1");
+      Map resp = await TestCommon.net.Get("$serverUrl/${TestCommon.userUrl}");
       expect(resp, allOf([
         containsPair('id', 1),
         containsPair('email', 'gardi')]));
     });
 
+    test("update user", () async {
+      Map data = {'user' : 'test'};
+      await TestCommon.net.Update("$serverUrl/${TestCommon.userUrl}/data", data);
+      Map resp = await TestCommon.net.Get("$serverUrl/${TestCommon.userUrl}/data");
+      expect(resp, data);
+    });
   });
 }
