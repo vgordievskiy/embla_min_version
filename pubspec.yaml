@@ -14,6 +14,7 @@ dependencies:
   embla_trestle: "^0.2.0"
   trestle: "^0.7.0"
   di: ">=3.3.4 <4.0.0"
+  collection: any
   http_server: any
   crypto: any
   observe: any
