@@ -1,12 +1,10 @@
 import 'dart:convert';
 import "package:test/test.dart";
-import 'package:trestle/gateway.dart';
 import 'package:embla/http.dart';
 import "package:embla/application.dart";
 import 'package:embla/http_basic_middleware.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart';
-import 'package:SemplexClientCmn/Utils/Interfaces/ICommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 
