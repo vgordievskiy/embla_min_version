@@ -10,26 +10,12 @@ import 'package:SemplexClientCmn/Utils/Interfaces/ICommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 
-import './test_data/common_test.dart' as testData;
-
-final Map config = {
-  'username': 'postgres',
-  'password': 'bno9mjc',
-  'database': 'tradem'
-};
-
-/*
-var driver = new Srv.PostgisPsqlDriver(username: config['username'],
-                                       password: config['password'],
-                                       database: config['database']);
-*/
+import './test_data/common_test.dart';
 
 main() async {
   Application app;
-  var driver = new InMemoryDriver();
 
-
-  final String serverUrl = "http://localhost:9090";
+  final String serverUrl = TestCommon.srvUrl;
 
   IoHttpCommunicator cmn = new IoHttpCommunicator();
   RestAdapter rest = new RestAdapter(cmn);
@@ -37,7 +23,7 @@ main() async {
   setUpAll(() async {
     List<Bootstrapper> bootstrappers = [
       new DatabaseBootstrapper(
-        driver: driver
+        driver: TestCommon.driver
       ),
       new Srv.HttpsBootstrapper(
         port: 9090,
@@ -63,14 +49,10 @@ main() async {
 
   group("user service creation: ", () {
 
-    IoHttpCommunicator cmn = new IoHttpCommunicator();
-    RestAdapter rest = new RestAdapter(cmn);
+    RestAdapter rest = TestCommon.net;
 
     test("create user", () async {
-      var resp = await rest.Create("$serverUrl/users",
-        { 'email' : 'gardi',
-          'password' : 'testPass'
-      });
+      var resp = await rest.Create("$serverUrl/users", TestCommon.userDataCreate);
       resp = JSON.decode(resp);
 
       expect(resp, allOf([
@@ -81,10 +63,8 @@ main() async {
 
     test("create exist user", () async {
       try {
-        var resp = await rest.Create("$serverUrl/users",
-          { 'email' : 'gardi',
-            'password' : 'testPass'
-        });
+        var resp = await rest.Create("$serverUrl/users", 
+                                     TestCommon.userDataCreate);
       } catch(err) {
         IoHttpResponseAdapter resp = err;
         expect(resp.Status, /*Conflict*/409);
@@ -96,9 +76,8 @@ main() async {
   group("user service get and auth: ", () {
 
     setUpAll(() async {
-      Map<String, String> args = testData.userData;
       HttpRequestAdapter req =
-        new HttpRequestAdapter.Post("$serverUrl/login", args, null);
+        new HttpRequestAdapter.Post("$serverUrl/login", TestCommon.userData, null);
       try {
         IResponse resp = await cmn.SendRequest(req);
         if (resp.Status == 200) {

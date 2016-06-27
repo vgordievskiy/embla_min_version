@@ -12,24 +12,9 @@ import 'package:tradem_srv/Srv.dart' as Srv;
 
 import './test_data/common_test.dart';
 
-final Map config = {
-  'username': 'postgres',
-  'password': 'bno9mjc',
-  'database': 'tradem'
-};
-
-/*
-var driver = new Srv.PostgisPsqlDriver(username: config['username'],
-                                       password: config['password'],
-                                       database: config['database']);
-*/
-
 main() async {
   Application app;
-  var driver = new InMemoryDriver();
-
-
-  final String serverUrl = "http://localhost:9090";
+  final String serverUrl = TestCommon.srvUrl;
 
   IoHttpCommunicator cmn = new IoHttpCommunicator();
   RestAdapter rest = new RestAdapter(cmn);
@@ -37,7 +22,7 @@ main() async {
   setUpAll(() async {
     List<Bootstrapper> bootstrappers = [
       new DatabaseBootstrapper(
-        driver: driver
+        driver: TestCommon.driver
       ),
       new Srv.HttpsBootstrapper(
         port: 9090,
@@ -59,10 +44,7 @@ main() async {
   group("user service get and auth: ", () {
 
     setUpAll(() async {
-      Map<String, String> args = {
-        'username' : 'gardi',
-        'password' : 'testPass'
-      };
+      Map<String, String> args = TestCommon.userData;
       HttpRequestAdapter req =
         new HttpRequestAdapter.Post("$serverUrl/login", args, null);
       try {
