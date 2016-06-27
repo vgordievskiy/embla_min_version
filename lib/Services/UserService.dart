@@ -45,6 +45,10 @@ class UserService extends Controller {
 
   Future<User> getUserById(int id) => users.find(id);
 
+  bool _filterData(Map data) {
+    return true;
+  }
+
   @Post('/') create(Input args) async {
     Map params = args.body;
     if(expect(params, 'email') &&
@@ -72,10 +76,6 @@ class UserService extends Controller {
   @Get('/:id/data') getUsetData({String id}) async {
     User user = await getUserById(int.parse(id));
     return user.data;
-  }
-
-  bool _filterData(Map data) {
-    return true;
   }
 
   @Put('/:id/data') updateUser(Input args, {String id}) async {
