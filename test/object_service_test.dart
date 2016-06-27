@@ -10,7 +10,7 @@ import 'package:SemplexClientCmn/Utils/Interfaces/ICommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 
-import './test_data/common_test.dart' as testData;
+import './test_data/common_test.dart';
 
 final Map config = {
   'username': 'postgres',
@@ -45,11 +45,6 @@ main() async {
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
           Srv.InputParserMiddleware,
-          Route.post('test/', (Srv.Input req) async {
-            Map tmp = req.body;
-            print(tmp);
-            return 'ok';
-          }),
           Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
         )
       ),
@@ -61,42 +56,13 @@ main() async {
     await app.exit();
   });
 
-  group("user service creation: ", () {
-
-    IoHttpCommunicator cmn = new IoHttpCommunicator();
-    RestAdapter rest = new RestAdapter(cmn);
-
-    test("create user", () async {
-      var resp = await rest.Create("$serverUrl/users",
-        { 'email' : 'gardi',
-          'password' : 'testPass'
-      });
-      resp = JSON.decode(resp);
-
-      expect(resp, allOf([
-        containsPair('msg', 'ok'),
-        containsPair('userId', 1)
-      ]));
-    });
-
-    test("create exist user", () async {
-      try {
-        var resp = await rest.Create("$serverUrl/users",
-          { 'email' : 'gardi',
-            'password' : 'testPass'
-        });
-      } catch(err) {
-        IoHttpResponseAdapter resp = err;
-        expect(resp.Status, /*Conflict*/409);
-        expect(resp.Data, 'user exist');
-      }
-    });
-  });
-
   group("user service get and auth: ", () {
 
     setUpAll(() async {
-      Map<String, String> args = testData.userData;
+      Map<String, String> args = {
+        'username' : 'gardi',
+        'password' : 'testPass'
+      };
       HttpRequestAdapter req =
         new HttpRequestAdapter.Post("$serverUrl/login", args, null);
       try {
@@ -117,11 +83,5 @@ main() async {
         containsPair('email', 'gardi')]));
     });
 
-    test("update user", () async {
-      Map data = {'user' : 'test'};
-      await rest.Update("$serverUrl/users/1/data", data);
-      Map resp = await rest.Get("$serverUrl/users/1/data");
-      expect(resp, data);
-    });
   });
 }
