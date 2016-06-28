@@ -1,5 +1,8 @@
 library tradem_srv.models.users;
+import 'dart:async';
 import 'package:embla_trestle/embla_trestle.dart';
+import 'package:tradem_srv/Middleware/Auth.dart';
+import 'package:shelf_auth/shelf_auth.dart';
 
 class UserGroup {
   final String _value;
@@ -34,5 +37,25 @@ class User extends Model {
       'email' : email,
       'data' : data
     };
+  }
+}
+
+class UserPrincipal extends Principal {
+  int id;
+  UserPrincipal(String name, this.id) : super(name);
+}
+
+class UserFilter extends UriFilterBase {
+
+  @override
+  TUrlFilterHandler get filter => _filter;
+
+  Future<bool> _filter(UserPrincipal cred, Uri uri) async {
+    try {
+      int userId = int.parse(uri.pathSegments[0]);
+      return userId == cred.id;
+    } catch(e) {
+      return false;
+    }
   }
 }

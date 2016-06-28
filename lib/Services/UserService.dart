@@ -13,28 +13,6 @@ import '../Models/Users.dart';
 import '../Middleware/Auth.dart';
 import '../Middleware/input_parser/input_parser.dart';
 
-class UserPrincipal extends Principal {
-  int id;
-  UserPrincipal(String name, this.id) : super(name);
-}
-
-class UserFilter extends UriFilterBase {
-  final UserService userSrv;
-  UserFilter(this.userSrv);
-
-  @override
-  TUrlFilterHandler get filter => _filter;
-
-  Future<bool> _filter(UserPrincipal cred, Uri uri) async {
-    try {
-      int userId = int.parse(uri.pathSegments[0]);
-      return userId == cred.id;
-    } catch(e) {
-      return false;
-    }
-  }
-}
-
 class UserService extends Controller {
   final Repository<User> users;
 

@@ -22,6 +22,7 @@ export 'Middleware/Auth.dart';
 export 'Middleware/CORS.dart';
 export 'Middleware/input_parser/InputParserMiddleware.dart';
 export 'Middleware/input_parser/input_parser.dart';
+export 'Models/Users.dart' show UserPrincipal, UserFilter;
 
 import 'Services/UserService.dart';
 
