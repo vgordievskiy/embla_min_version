@@ -23,8 +23,10 @@ class ObjectManService extends Controller {
         EntityType type = EntityType.fromStr(params['type']);
         Entity obj = new Entity()
           ..type = EntityType.toInt(type)
-          ..pieces = params['pieces']
-          ..data = params['data'];
+          ..pieces = int.parse(params['pieces'])
+          ..data = JSON.decode(params['data']);
+        await entities.save(obj);
+        return ok('');
     } else {
       this.abortBadRequest('wrong data');
     }

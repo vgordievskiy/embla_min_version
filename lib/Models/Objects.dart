@@ -4,6 +4,7 @@ import 'package:embla_trestle/embla_trestle.dart';
 class EntityType {
   final _value;
   const EntityType._internal(this._value);
+  String get Str => _value;
   toString() => 'EntityType.$_value';
 
   static const COMMERCIAL_PLACES = const EntityType._internal('COMMERCIAL_PLACES');
@@ -28,7 +29,7 @@ class Entity extends Model {
   Map toJson() {
     return {
       'id' : id,
-      'type' : EntityType.fromInt(type).toString(),
+      'type' : EntityType.fromInt(type).Str,
       'pieces' : pieces,
       'data' : data
     };

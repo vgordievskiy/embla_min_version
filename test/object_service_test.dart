@@ -31,8 +31,10 @@ main() async {
             new Srv.UserGroupFilter(UserGroup.USER.Str), Srv.UserIdFilter,
             Srv.UserService),
           Route.get('objects/', Srv.ObjectService),
-          Route.post('objects/', Srv.ObjectManService)
-
+          Route.post('objects/',
+            Srv.JwtAuthMiddleware,
+            new Srv.UserGroupFilter(UserGroup.USER.Str),
+            Srv.ObjectManService)
         )
       ),
       new Srv.TrademSrv()
@@ -49,6 +51,16 @@ main() async {
       await TestCommon.createTestUser();
       await TestCommon.login();
       await TestCommon.initTestData();
+    });
+
+    test("create object", () async {
+      Map data = {
+        'type' : EntityType.COMMERCIAL_PLACES.Str,
+        'pieces' : 1000,
+        'data': JSON.encode(
+          { 'objects' : [{'name' : 'place1'}, {'name' : 'place2'} ] })
+      };
+      var resp = await TestCommon.net.Create("$serverUrl/objects", data);
     });
 
     test("get objects", () async {
