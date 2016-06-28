@@ -7,6 +7,7 @@ import 'package:shelf_auth/shelf_auth.dart';
 class UserGroup {
   final String _value;
   const UserGroup._internal(this._value);
+  String get Str => _value;
   toString() => 'UserGroup.$_value';
 
   static const USER =

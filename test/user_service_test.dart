@@ -9,6 +9,7 @@ import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 
 import './test_data/common_test.dart';
+import 'package:tradem_srv/Models/Users.dart';
 
 main() async {
   Application app;
@@ -31,7 +32,9 @@ main() async {
             print(tmp);
             return 'ok';
           }),
-          Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserIdFilter, Srv.UserService)
+          Route.all('users/*', Srv.JwtAuthMiddleware,
+            new Srv.UserGroupFilter(UserGroup.USER.Str), Srv.UserIdFilter,
+            Srv.UserService)
         )
       ),
       new Srv.TrademSrv()
