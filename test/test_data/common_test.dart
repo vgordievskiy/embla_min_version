@@ -39,6 +39,9 @@ class TestCommon {
                                        database: config['database']);
   }
 
+  static Future createTestUser()
+    => net.Create("$srvUrl/users", TestCommon.userDataCreate);
+
   static Future<String> login() async {
     HttpRequestAdapter req =
       new HttpRequestAdapter.Post("$srvUrl/login", TestCommon.userData, null);

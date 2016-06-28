@@ -42,6 +42,7 @@ main() async {
   group("object service get: ", () {
 
     setUpAll(() async {
+      await TestCommon.createTestUser();
       await TestCommon.login();
       await TestCommon.initTestData();
     });
