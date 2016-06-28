@@ -28,7 +28,7 @@ class ObjectManService extends Controller {
             'objects' : JSON.decode(params['data'])
           };
         await entities.save(obj);
-        return ok('');
+        return {'msg':'ok', 'id' : obj.id};
     } else {
       this.abortBadRequest('wrong data');
     }

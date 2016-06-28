@@ -60,6 +60,8 @@ main() async {
         'data': JSON.encode([ {'name' : 'place1'}, {'name' : 'place2'} ])
       };
       var resp = await TestCommon.net.Create("$serverUrl/objects", data);
+      expect(JSON.decode(resp), containsPair('msg', 'ok'));
+      expect(JSON.decode(resp), contains('id'));
     });
 
     test("get objects", () async {
