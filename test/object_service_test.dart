@@ -57,8 +57,7 @@ main() async {
       Map data = {
         'type' : EntityType.COMMERCIAL_PLACES.Str,
         'pieces' : 1000,
-        'data': JSON.encode(
-          { 'objects' : [{'name' : 'place1'}, {'name' : 'place2'} ] })
+        'data': JSON.encode([ {'name' : 'place1'}, {'name' : 'place2'} ])
       };
       var resp = await TestCommon.net.Create("$serverUrl/objects", data);
     });
@@ -70,6 +69,8 @@ main() async {
       expect(resp.length, equals(origin.length));
       for(int ind = 0; ind < origin.length; ++ind) {
         expect(resp[ind]['id'], equals(origin[ind].id));
+        expect(resp[ind]['data'], contains('objects'));
+        expect(resp[ind]['data']['objects'], isList);
       }
     });
   });
