@@ -19,6 +19,7 @@ export 'Geo/PostgisPsqlDriver.dart';
 export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
 export 'Services/ObjectService.dart';
+export 'Services/Management/ObjectManService.dart';
 export 'Middleware/Auth.dart';
 export 'Middleware/AuthPrincipal.dart';
 export 'Middleware/UserFilters/UserByIdFilter.dart';

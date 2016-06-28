@@ -26,7 +26,9 @@ main() async {
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
           Srv.InputParserMiddleware,
-          Route.get('objects/*', Srv.ObjectService)
+          Route.get('objects/', Srv.ObjectService),
+          Route.post('objects/', Srv.ObjectManService)
+
         )
       ),
       new Srv.TrademSrv()
