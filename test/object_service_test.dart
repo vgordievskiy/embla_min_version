@@ -9,6 +9,7 @@ import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:tradem_srv/Models/Objects.dart';
 
 import './test_data/common_test.dart';
+import 'package:tradem_srv/Models/Users.dart';
 
 main() async {
   Application app;
@@ -26,6 +27,9 @@ main() async {
           LoggerMiddleware, RemoveTrailingSlashMiddleware,
           Route.post('login/', Srv.JwtLoginMiddleware),
           Srv.InputParserMiddleware,
+          Route.all('users/*', Srv.JwtAuthMiddleware,
+            new Srv.UserGroupFilter(UserGroup.USER.Str), Srv.UserIdFilter,
+            Srv.UserService),
           Route.get('objects/', Srv.ObjectService),
           Route.post('objects/', Srv.ObjectManService)
 
