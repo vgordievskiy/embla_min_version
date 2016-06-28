@@ -49,6 +49,9 @@ main() async {
       List resp = await TestCommon.net.Get("$serverUrl/objects");
       List<Entity> origin = await entities.all().toList();
       expect(resp.length, equals(origin.length));
+      for(int ind = 0; ind < origin.length; ++ind) {
+        expect(resp[ind]['id'], equals(origin[ind].id));
+      }
     });
   });
 }
