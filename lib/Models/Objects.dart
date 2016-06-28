@@ -6,11 +6,13 @@ class EntityType {
   const EntityType._internal(this._value);
   toString() => 'EntityType.$_value';
 
-  static const COMMERCIAL_PLACE =
-    const EntityType._internal('COMMERCIAL_PLACE');
+  static const COMMERCIAL_PLACES =
+    const EntityType._internal('COMMERCIAL_PLACES');
 
-  static final List<EntityType> values = [ EntityType.COMMERCIAL_PLACE ];
+  static final List<EntityType> values = [ EntityType.COMMERCIAL_PLACES ];
   static EntityType fromInt(int ind) => values[ind];
+  static EntityType fromStr(String val)
+    => values.firstWhere((EntityType el) => el._value == val);
   static int toInt(EntityType type) => values.indexOf(type);
 }
 
