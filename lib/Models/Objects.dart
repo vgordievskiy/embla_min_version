@@ -22,14 +22,14 @@ class EntityType {
 
 class Entity extends Model {
   @field int id;
-  @field int type;
+  @field String type;
   @field int pieces;
   @field Map data;
 
   Map toJson() {
     return {
       'id' : id,
-      'type' : EntityType.fromInt(type).Str,
+      'type' : type,
       'pieces' : pieces,
       'data' : data
     };

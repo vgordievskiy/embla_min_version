@@ -47,7 +47,7 @@ class InitTestData extends Bootstrapper {
   initSomeObjects() async {
     {
       Entity obj = new Entity();
-      obj.type = EntityType.toInt(EntityType.COMMERCIAL_PLACES);
+      obj.type = EntityType.COMMERCIAL_PLACES.Str;
       obj.data = {
         'objects' : [{'name':'shop'}]
       };
@@ -55,7 +55,7 @@ class InitTestData extends Bootstrapper {
     }
     {
       Entity obj = new Entity();
-      obj.type = EntityType.toInt(EntityType.LANDS);
+      obj.type = EntityType.LANDS.Str;
       obj.data = {
         'objects' : [ {'name':'land'} ]
       };

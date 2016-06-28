@@ -22,7 +22,7 @@ class ObjectManService extends Controller {
        expect(params, 'pieces')) {
         EntityType type = EntityType.fromStr(params['type']);
         Entity obj = new Entity()
-          ..type = EntityType.toInt(type)
+          ..type = EntityType.fromStr(params['type']).Str
           ..pieces = int.parse(params['pieces'])
           ..data = {
             'objects' : JSON.decode(params['data'])
