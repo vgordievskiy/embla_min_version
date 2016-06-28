@@ -4,16 +4,13 @@ import 'package:tradem_srv/Middleware/Auth.dart';
 import 'package:tradem_srv/Middleware/AuthPrincipal.dart';
 
 class UserGroupFilter extends UriFilterBase {
+  final String group;
+  UserGroupFilter(this.group);
 
   @override
   TUrlFilterHandler get filter => _filter;
 
   Future<bool> _filter(UserPrincipal cred, Uri uri) async {
-    try {
-      int userId = int.parse(uri.pathSegments[0]);
-      return userId == cred.id;
-    } catch(e) {
-      return false;
-    }
+    return cred.group == this.group;
   }
 }
