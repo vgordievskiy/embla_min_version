@@ -64,7 +64,7 @@ class TrademSrv extends Bootstrapper {
     User user = await _getUserByName(username);
 
     if(user.password == crypto.encryptPassword(password)) {
-        return new Some(new UserPrincipal(username, user.id));
+        return new Some(new UserPrincipal(username, user.id, user.group));
     }
     throw new UnauthorizedException();
   }
@@ -73,7 +73,7 @@ class TrademSrv extends Bootstrapper {
   {
     User user = await _getUserByName(username);
     if(user != null) {
-      return new Some(new UserPrincipal(username, user.id));
+      return new Some(new UserPrincipal(username, user.id, user.group));
     }
     return const None();
   }
