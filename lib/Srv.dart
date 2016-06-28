@@ -11,6 +11,7 @@ import 'package:trestle/trestle.dart';
 
 import 'Utils/Utils.dart';
 import 'Middleware/Auth.dart';
+import 'Middleware/AuthPrincipal.dart';
 import 'Models/Users.dart';
 import './Utils/Crypto.dart' as crypto;
 
@@ -19,10 +20,12 @@ export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
 export 'Services/ObjectService.dart';
 export 'Middleware/Auth.dart';
+export 'Middleware/AuthPrincipal.dart';
+export 'Middleware/UserFilters/UserByIdFilter.dart';
+export 'Middleware/UserFilters/UserGroupFilter.dart';
 export 'Middleware/CORS.dart';
 export 'Middleware/input_parser/InputParserMiddleware.dart';
 export 'Middleware/input_parser/input_parser.dart';
-export 'Models/Users.dart' show UserPrincipal, UserFilter;
 
 import 'Services/UserService.dart';
 

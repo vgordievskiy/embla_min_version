@@ -31,7 +31,7 @@ main() async {
             print(tmp);
             return 'ok';
           }),
-          Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserFilter, Srv.UserService)
+          Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserIdFilter, Srv.UserService)
         )
       ),
       new Srv.TrademSrv()
