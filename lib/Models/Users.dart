@@ -2,7 +2,7 @@ library tradem_srv.models.users;
 import 'package:embla_trestle/embla_trestle.dart';
 
 class UserGroup {
-  final _value;
+  final String _value;
   const UserGroup._internal(this._value);
   toString() => 'UserGroup.$_value';
 
@@ -17,6 +17,7 @@ class UserGroup {
     [ UserGroup.USER, UserGroup.MANAGER, UserGroup.ADMIN ];
   static UserGroup fromInt(int ind) => values[ind];
   static int toInt(UserGroup group) => values.indexOf(group);
+  static String toStr(UserGroup group) => group._value;
 }
 
 class User extends Model {
