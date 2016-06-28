@@ -6,6 +6,7 @@ class User extends Model {
   @field String email;
   @field String password;
   @field bool enabled;
+  @field String group;
   @field Map data;
 
   Map toJson() {
