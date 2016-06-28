@@ -45,11 +45,10 @@ main() async {
     });
 
     test("get objects", () async {
-      Repository<Entity> objects = new Repository(TestCommon.gateway);
+      Repository<Entity> entities = new Repository<Entity>(TestCommon.gateway);
       List resp = await TestCommon.net.Get("$serverUrl/objects");
-      List<Entity> origin = await objects.all().toList();
-      expect(resp, allOf([
-        hasLength(resp)]));
+      List<Entity> origin = await entities.all().toList();
+      expect(resp.length, equals(origin.length));
     });
   });
 }
