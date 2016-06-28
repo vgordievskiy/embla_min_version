@@ -18,10 +18,12 @@ class ObjectManService extends Controller {
   @Post('/') create(Input args) async {
     Map params = args.body;
     if(expect(params, 'type') &&
-       expect(params, 'data')) {
+       expect(params, 'data') &&
+       expect(params, 'pieces')) {
         EntityType type = EntityType.fromStr(params['type']);
         Entity obj = new Entity()
           ..type = EntityType.toInt(type)
+          ..pieces = params['pieces']
           ..data = params['data'];
     } else {
       this.abortBadRequest('wrong data');

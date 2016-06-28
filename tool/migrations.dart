@@ -41,7 +41,8 @@ class CreateEntitiesTableMigration extends Migration {
       schema.id();
       schema.timestamp('created_at').nullable(false);
       schema.timestamp('updated_at').nullable(false);
-      schema.int('type');
+      schema.int('type').nullable(false);
+      schema.int('pieces').nullable(false);
       schema.json('data');
     });
   }
