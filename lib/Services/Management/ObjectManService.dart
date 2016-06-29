@@ -51,8 +51,27 @@ class ObjectManService extends Controller {
     }
   }
 
-  @Put('/:id/enable') update(Input args) async {
-    return _returnOk('id', null);
+  @Put('/:id') update(Input args, {String id}) async {
+    Map params = args.body;
+    if(expect(params, 'field') && expect(params, 'value')) {
+      Entity obj = await _getObjById(id);
+      switch (new Symbol(params['field'])) {
+        case #type:
+          obj.type = EntityType.fromStr(params['value']).Str;
+          break;
+        case #pieces:
+          obj.pieces = int.parse(params['value']);
+          break;
+        case #data:
+          obj.data = { 'value' : JSON.decode(params['value']) };
+          break;
+      }
+      await entities.save(obj);
+      return obj;
+    } else {
+      this.abortBadRequest('wrong data');
+    }
+
   }
 
   @Put('/:id/enable') enableObj({String id}) => _setEnableValue(id, true);
