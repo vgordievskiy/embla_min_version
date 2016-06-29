@@ -17,7 +17,7 @@ class ObjectService extends Controller {
   ObjectService(this.entities);
 
   @Get('/') getAllObjects() {
-    return entities.all().toList();
+    return entities.where((el) => el.enabled == true).get().toList();
   }
 
 }

@@ -67,7 +67,8 @@ main() async {
     test("get objects", () async {
       Repository<Entity> objects = new Repository<Entity>(TestCommon.gateway);
       List resp = await TestCommon.net.Get("$serverUrl/objects");
-      List<Entity> origin = await objects.all().toList();
+      List<Entity> origin = await objects
+        .where((el) => el.enabled == true).get().toList();
       expect(resp.length, equals(origin.length));
       for(int ind = 0; ind < origin.length; ++ind) {
         expect(resp[ind]['id'], equals(origin[ind].id));
