@@ -52,7 +52,7 @@ class ObjectManService extends Controller {
   }
 
   @Put('/:id/enable') update(Input args) async {
-    return return _returnOk('id', null);
+    return _returnOk('id', null);
   }
 
   @Put('/:id/enable') enableObj({String id}) => _setEnableValue(id, true);
