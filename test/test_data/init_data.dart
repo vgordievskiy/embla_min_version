@@ -48,6 +48,7 @@ class InitTestData extends Bootstrapper {
     {
       Entity obj = new Entity();
       obj.type = EntityType.COMMERCIAL_PLACES.Str;
+      obj.enabled = true;
       obj.data = {
         'value' : [{'name':'shop'}]
       };
@@ -56,6 +57,7 @@ class InitTestData extends Bootstrapper {
     {
       Entity obj = new Entity();
       obj.type = EntityType.LANDS.Str;
+      obj.enabled = true;
       obj.data = {
         'value' : [ {'name':'land'} ]
       };

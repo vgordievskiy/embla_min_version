@@ -24,6 +24,7 @@ class Entity extends Model {
   @field int id;
   @field String type;
   @field int pieces;
+  @field bool enabled;
   @field Map data;
 
   Map toJson() {

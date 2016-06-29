@@ -43,6 +43,7 @@ class CreateEntitiesTableMigration extends Migration {
       schema.timestamp('updated_at').nullable(false);
       schema.string('type').nullable(false);
       schema.int('pieces').nullable(false);
+      schema.boolean('enabled').nullable(false);
       schema.json('data');
     });
   }
