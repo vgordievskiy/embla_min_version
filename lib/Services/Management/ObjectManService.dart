@@ -15,6 +15,19 @@ class ObjectManService extends Controller {
 
   ObjectManService(this.entities);
 
+  Future<Entity> _getObjById(String id) => entities.find(int.parse(id));
+
+  Future _setEnableValue(String id, bool enabled) async {
+    try {
+      Entity obj = await _getObjById(id);
+      obj.enabled = true;
+      await entities.save(obj);
+      return {'msg':'ok', 'id' : obj.id};
+    } catch(err) {
+      return abortNotFound();
+    }
+  }
+
   @Post('/') create(Input args) async {
     Map params = args.body;
     if(expect(params, 'type') &&
@@ -34,5 +47,8 @@ class ObjectManService extends Controller {
       this.abortBadRequest('wrong data');
     }
   }
+
+  @Put('/:id/enable') enableObj({String id}) => _setEnableValue(id, true);
+  @Delete('/:id/enable') disableObj({String id})  => _setEnableValue(id, false);
 
 }
