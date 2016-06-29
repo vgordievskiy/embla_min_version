@@ -16,8 +16,14 @@ class ObjectService extends Controller {
 
   ObjectService(this.entities);
 
+  Future<Entity> _getObjById(String id) => entities.find(int.parse(id));
+
+  _returnOk(String key, var value) => {'msg':'ok', key : value};
+
   @Get('/') getAllObjects() {
     return entities.where((el) => el.enabled == true).get().toList();
   }
+
+  @Get('/:id') getObject({String id}) => _getObjById(id);
 
 }

@@ -30,8 +30,8 @@ main() async {
           Route.all('users/*', Srv.JwtAuthMiddleware,
             new Srv.UserGroupFilter(UserGroup.USER.Str), Srv.UserIdFilter,
             Srv.UserService),
-          Route.get('objects/', Srv.ObjectService),
-          Route.post('objects/',
+          Route.get('objects/*', Srv.ObjectService),
+          Route.match(const ['POST', 'PUT', 'DELETE'], 'objects/*',
             Srv.JwtAuthMiddleware,
             new Srv.UserGroupFilter(UserGroup.USER.Str),
             Srv.ObjectManService)
@@ -75,6 +75,17 @@ main() async {
         expect(resp[ind]['data'], contains('value'));
         expect(resp[ind]['data']['value'], isList);
       }
+    });
+
+    test("update object", () async {
+      Map obj = await TestCommon.net.Get("$serverUrl/objects/2");
+      expect(obj, containsPair('pieces', 1000));
+      await TestCommon.net.Update("$serverUrl/objects/2", {
+        'field' : 'pieces',
+        'value' : '2000'
+      });
+      obj = await TestCommon.net.Get("$serverUrl/objects/2");
+      expect(obj, containsPair('pieces', 2000));
     });
   });
 }
