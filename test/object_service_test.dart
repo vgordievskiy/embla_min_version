@@ -71,8 +71,8 @@ main() async {
       expect(resp.length, equals(origin.length));
       for(int ind = 0; ind < origin.length; ++ind) {
         expect(resp[ind]['id'], equals(origin[ind].id));
-        expect(resp[ind]['data'], contains('objects'));
-        expect(resp[ind]['data']['objects'], isList);
+        expect(resp[ind]['data'], contains('value'));
+        expect(resp[ind]['data']['value'], isList);
       }
     });
   });

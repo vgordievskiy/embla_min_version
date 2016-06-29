@@ -49,7 +49,7 @@ class InitTestData extends Bootstrapper {
       Entity obj = new Entity();
       obj.type = EntityType.COMMERCIAL_PLACES.Str;
       obj.data = {
-        'objects' : [{'name':'shop'}]
+        'value' : [{'name':'shop'}]
       };
       await entities.save(obj);
     }
@@ -57,7 +57,7 @@ class InitTestData extends Bootstrapper {
       Entity obj = new Entity();
       obj.type = EntityType.LANDS.Str;
       obj.data = {
-        'objects' : [ {'name':'land'} ]
+        'value' : [ {'name':'land'} ]
       };
       await entities.save(obj);
     }

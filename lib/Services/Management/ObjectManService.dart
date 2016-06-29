@@ -25,7 +25,7 @@ class ObjectManService extends Controller {
           ..type = EntityType.fromStr(params['type']).Str
           ..pieces = int.parse(params['pieces'])
           ..data = {
-            'objects' : JSON.decode(params['data'])
+            'value' : JSON.decode(params['data'])
           };
         await entities.save(obj);
         return {'msg':'ok', 'id' : obj.id};
