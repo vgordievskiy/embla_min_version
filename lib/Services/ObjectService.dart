@@ -20,7 +20,8 @@ class ObjectService extends Controller {
 
   _returnOk(String key, var value) => {'msg':'ok', key : value};
 
-  @Get('/') getAllObjects() {
+  @Get('/') getAllObjects(Input query) {
+    Map params = query.body;
     return entities.where((el) => el.enabled == true).get().toList();
   }
 

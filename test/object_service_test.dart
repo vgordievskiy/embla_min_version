@@ -66,7 +66,7 @@ main() async {
 
     test("get objects", () async {
       Repository<Entity> objects = new Repository<Entity>(TestCommon.gateway);
-      List resp = await TestCommon.net.Get("$serverUrl/objects");
+      List resp = await TestCommon.net.Get("$serverUrl/objects?count=10&page=0");
       List<Entity> origin = await objects
         .where((el) => el.enabled == true).get().toList();
       expect(resp.length, equals(origin.length));
