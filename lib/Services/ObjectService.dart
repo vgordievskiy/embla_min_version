@@ -20,9 +20,20 @@ class ObjectService extends Controller {
 
   _returnOk(String key, var value) => {'msg':'ok', key : value};
 
-  @Get('/') getAllObjects(Input query) {
-    Map params = query.body;
-    return entities.where((el) => el.enabled == true).get().toList();
+  @Get('/') getAllObjects(Input args) {
+    Map params = args.body;
+    RepositoryQuery query = entities.where((el) => el.enabled == true);
+
+    if(params.containsKey('count')) {
+      final int count = int.parse(params['count']);
+      query = query.limit(count);
+      if(params.containsKey(params['page'])) {
+        final int offset = int.parse(params['page']) * count;
+        query = query.offset(offset);
+      }
+    }
+    
+    return query.get().toList();
   }
 
   @Get('/:id') getObject({String id}) => _getObjById(id);
