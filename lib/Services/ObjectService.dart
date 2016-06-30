@@ -7,11 +7,11 @@ import 'package:embla/http_annotations.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 
 import '../Utils/Utils.dart';
+import '../Utils/QueryLimit.dart';
 import '../Models/Objects.dart';
 import '../Middleware/input_parser/input_parser.dart';
 
-
-class ObjectService extends Controller {
+class ObjectService extends Controller with QueryLimit {
   final Repository<Entity> entities;
 
   ObjectService(this.entities);
@@ -26,13 +26,14 @@ class ObjectService extends Controller {
 
     if(params.containsKey('count')) {
       final int count = int.parse(params['count']);
-      query = query.limit(count);
       if(params.containsKey(params['page'])) {
-        final int offset = int.parse(params['page']) * count;
-        query = query.offset(offset);
+        final int page = int.parse(params['page']);
+        query = limit(query, count, page);
+      } else {
+        query = limit(query, count);
       }
     }
-    
+
     return query.get().toList();
   }
 
