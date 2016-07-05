@@ -78,7 +78,6 @@ main() async {
     });
 
     test("get limit objects", () async {
-      Repository<Entity> objects = new Repository<Entity>(TestCommon.gateway);
       List resp = await TestCommon.net.Get("$serverUrl/objects?count=1&page=0");
       expect(resp.length, equals(1));
     });
