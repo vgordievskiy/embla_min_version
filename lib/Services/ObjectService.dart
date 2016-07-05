@@ -26,7 +26,7 @@ class ObjectService extends Controller with QueryLimit {
 
     if(params.containsKey('count')) {
       final int count = int.parse(params['count']);
-      if(params.containsKey(params['page'])) {
+      if(params.containsKey('page')) {
         final int page = int.parse(params['page']);
         query = limit(query, count, page);
       } else {

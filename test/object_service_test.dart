@@ -82,6 +82,11 @@ main() async {
       expect(resp.length, equals(1));
     });
 
+    test("get limit objects", () async {
+      List resp = await TestCommon.net.Get("$serverUrl/objects?count=2&page=0");
+      expect(resp.length, equals(1));
+    });
+
     test("update object", () async {
       Map obj = await TestCommon.net.Get("$serverUrl/objects/2");
       expect(obj, containsPair('pieces', 1000));

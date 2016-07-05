@@ -4,11 +4,11 @@ import 'package:trestle/trestle.dart';
 class QueryLimit
 {
   RepositoryQuery limit(RepositoryQuery query, int count, [int page = null]) {
-    query = query.limit(count);
     if(page != null) {
       final int offset = count * page;
       query = query.offset(offset);
     }
+    query = query.limit(count);
     return query;
   }
 }
