@@ -66,7 +66,7 @@ main() async {
 
     test("get objects", () async {
       Repository<Entity> objects = new Repository<Entity>(TestCommon.gateway);
-      List resp = await TestCommon.net.Get("$serverUrl/objects?count=10&page=0");
+      List resp = await TestCommon.net.Get("$serverUrl/objects");
       List<Entity> origin = await objects
         .where((el) => el.enabled == true).get().toList();
       expect(resp.length, equals(origin.length));
@@ -75,6 +75,12 @@ main() async {
         expect(resp[ind]['data'], contains('value'));
         expect(resp[ind]['data']['value'], isList);
       }
+    });
+
+    test("get limit objects", () async {
+      Repository<Entity> objects = new Repository<Entity>(TestCommon.gateway);
+      List resp = await TestCommon.net.Get("$serverUrl/objects?count=1&page=0");
+      expect(resp.length, equals(1));
     });
 
     test("update object", () async {
