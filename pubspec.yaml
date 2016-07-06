@@ -23,8 +23,6 @@ dependencies:
   simple_features: any
   harvest:
     git: https://github.com/vgordievskiy/harvest.git
-  SemplexClientCmn:
-    git: https://dal.semplex.ru:4322/git/ClientCommon.git
   params:
     git:
       url: https://github.com/DisDis/params.git
@@ -34,5 +32,7 @@ dependency_overrides:
   trestle: ^0.8.0
 
 dev_dependencies:
+  SemplexClientCmn:
+    git: https://github.com/vgordievskiy/ClientCommon.git
   grinder: any
   test: any
