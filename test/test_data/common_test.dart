@@ -13,12 +13,12 @@ class TestCommon {
 
   static final Map config = {
     'username': 'postgres',
-    'password': 'bno9mjc',
-    'database': 'tradem'
+    'password': 'test',
+    'database': 'testdb'
   };
 
   static final Map<String, String> userData = {
-    'username' : 'gardi',
+    'username' : 'user1',
     'password' : 'testPass'
   };
 
