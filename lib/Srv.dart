@@ -33,6 +33,10 @@ class SrvBase extends Bootstrapper {
   AuthConfig authConfig = new AuthConfig();
   UserService userService;
 
+  final String issuer;
+  final String secret;
+  SrvBase(this.issuer, this.secret);
+
   @Hook.init
   init() {
     _injector = new ModuleInjector([ new Module()
@@ -41,8 +45,8 @@ class SrvBase extends Bootstrapper {
     Utils.setInjector(_injector);
 
     authConfig
-    ..issuer = 'Semplex'
-    ..secret = 'bno9mjc'
+    ..issuer = issuer
+    ..secret = secret
     ..lookupByUserName = this.lookupByUsername
     ..validateUserPass = this.validateUserPass
     ..excludeHandler = this.excludeUrlForAuth

@@ -37,7 +37,7 @@ main() async {
             Srv.UserService)
         )
       ),
-      new Srv.SrvBase()
+      new Srv.SrvBase("SrvTest", 'SrvTestSecret')
     ];
     app = await Application.boot(bootstrappers);
   });
