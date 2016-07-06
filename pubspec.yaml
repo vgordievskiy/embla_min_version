@@ -1,0 +1,38 @@
+name: 'tradem_srv'
+version: 0.0.2
+description: The Semplex base server
+
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+
+dependencies:
+  args: '>=0.10.0 <0.14.0'
+  shelf: '>=0.6.0 <0.7.0'
+  shelf_auth: any
+  meta: any
+  embla: "^0.2.2"
+  embla_trestle: "^0.2.0"
+  trestle: "^0.7.0"
+  di: ">=3.3.4 <4.0.0"
+  collection: any
+  http_server: any
+  crypto: any
+  observe: any
+  ini: "^1.1.0"
+  state_machine: any
+  simple_features: any
+  harvest:
+    git: https://github.com/vgordievskiy/harvest.git
+  SemplexClientCmn:
+    git: https://dal.semplex.ru:4322/git/ClientCommon.git
+  params:
+    git:
+      url: https://github.com/DisDis/params.git
+      ref: v0.2.0
+
+dependency_overrides:
+  trestle: ^0.8.0
+
+dev_dependencies:
+  grinder: any
+  test: any
