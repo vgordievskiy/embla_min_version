@@ -9,7 +9,7 @@ export 'package:embla/bootstrap.dart';
 
 final Map config = {
   'username': 'postgres',
-  'password': 'bno9mjc',
+  'password': 'testpass',
   'database': 'tradem'
 };
 
