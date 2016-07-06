@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'package:embla_trestle/gateway.dart';
 
-final migrations = [
-  CreateUsersTableMigration
-].toSet();
-
 class CreateUsersTableMigration extends Migration {
 
   String table_name = 'users';

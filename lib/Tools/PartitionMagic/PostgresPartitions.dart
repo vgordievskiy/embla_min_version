@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:async';
 
 final String _relativePath =
-  "tool/PartitionMagic/SqlScript/_2gis_partition_magic.sql";
+  "lib/Tools/PartitionMagic/SqlScript/_2gis_partition_magic.sql";
 
 Future<String> loadPartitionMagic() async {
   File file = new File(_relativePath);
