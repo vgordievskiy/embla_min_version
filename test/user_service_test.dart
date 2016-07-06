@@ -6,10 +6,10 @@ import 'package:embla/http_basic_middleware.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
-import 'package:tradem_srv/Srv.dart' as Srv;
+import 'package:srv_base/Srv.dart' as Srv;
 
 import './test_data/common_test.dart';
-import 'package:tradem_srv/Models/Users.dart';
+import 'package:srv_base/Models/Users.dart';
 
 main() async {
   Application app;

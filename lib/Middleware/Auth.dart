@@ -1,4 +1,4 @@
-library tradem_srv.middleware.auth;
+library srv_base.middleware.auth;
 
 import 'dart:async';
 import 'package:shelf/shelf.dart' as shelf;

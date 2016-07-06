@@ -1,4 +1,4 @@
-library tradem_srv.middleware.cors;
+library srv_base.middleware.cors;
 import 'dart:async';
 import 'package:embla/http.dart';
 import 'package:embla/src/http/response_maker.dart';

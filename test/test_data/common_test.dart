@@ -1,7 +1,7 @@
 import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart';
 import 'package:SemplexClientCmn/Utils/Interfaces/ICommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
-import 'package:tradem_srv/Srv.dart' as Srv;
+import 'package:srv_base/Srv.dart' as Srv;
 import 'package:trestle/gateway.dart';
 import 'dart:async';
 

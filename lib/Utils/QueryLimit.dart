@@ -1,4 +1,4 @@
-library tradem_srv.utils.query_limit;
+library srv_base.utils.query_limit;
 import 'package:trestle/trestle.dart';
 
 class QueryLimit

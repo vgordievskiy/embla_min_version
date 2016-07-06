@@ -1,7 +1,7 @@
-library tradem_srv.middleware.user_filters.user_by_id_filter;
+library srv_base.middleware.user_filters.user_by_id_filter;
 import 'dart:async';
-import 'package:tradem_srv/Middleware/Auth.dart';
-import 'package:tradem_srv/Middleware/AuthPrincipal.dart';
+import 'package:srv_base/Middleware/Auth.dart';
+import 'package:srv_base/Middleware/AuthPrincipal.dart';
 
 class UserIdFilter extends UriFilterBase {
 

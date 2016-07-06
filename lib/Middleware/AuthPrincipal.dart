@@ -1,4 +1,4 @@
-library tradem_srv.middleware.auth_principal;
+library srv_base.middleware.auth_principal;
 import 'package:shelf_auth/shelf_auth.dart';
 
 class UserPrincipal extends Principal {

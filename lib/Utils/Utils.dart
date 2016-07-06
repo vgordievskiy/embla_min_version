@@ -1,4 +1,4 @@
-library tradem_srv.utils.utils;
+library srv_base.utils.utils;
 
 export 'package:di/di.dart';
 import 'package:di/di.dart';

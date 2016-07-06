@@ -1,4 +1,4 @@
-library tradem_srv.middleware.input_parser.i_input_parser;
+library srv_base.middleware.input_parser.i_input_parser;
 import 'dart:async';
 import 'dart:convert';
 import 'package:embla/http.dart';

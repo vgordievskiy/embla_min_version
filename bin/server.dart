@@ -1,4 +1,4 @@
-import 'package:tradem_srv/Srv.dart' as Srv;
+import 'package:srv_base/Srv.dart' as Srv;
 import 'package:embla/http.dart';
 import 'package:embla/http_basic_middleware.dart';
 import 'package:trestle/gateway.dart';

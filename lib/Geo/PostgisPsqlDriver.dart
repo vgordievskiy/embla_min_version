@@ -1,4 +1,4 @@
-library tradem_srv.geo.postgis_psql_driver;
+library srv_base.geo.postgis_psql_driver;
 
 import 'dart:async';
 import 'package:trestle/src/drivers/drivers.dart';

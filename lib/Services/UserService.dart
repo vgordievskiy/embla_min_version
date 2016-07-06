@@ -1,4 +1,4 @@
-library tradem_srv.services.user_service;
+library srv_base.services.user_service;
 
 import 'dart:async';
 import 'dart:convert';

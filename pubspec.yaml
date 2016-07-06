@@ -1,4 +1,4 @@
-name: 'tradem_srv'
+name: 'srv_base'
 version: 0.0.2
 description: The Semplex base server
 
@@ -23,10 +23,6 @@ dependencies:
   simple_features: any
   harvest:
     git: https://github.com/vgordievskiy/harvest.git
-  params:
-    git:
-      url: https://github.com/DisDis/params.git
-      ref: v0.2.0
 
 dependency_overrides:
   trestle: ^0.8.0

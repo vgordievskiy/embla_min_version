@@ -1,4 +1,4 @@
-library tradem_srv;
+library srv_base;
 
 import 'dart:async';
 import 'package:di/di.dart';

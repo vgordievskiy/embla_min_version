@@ -1,7 +1,7 @@
-library tradem_srv.models.users;
+library srv_base.models.users;
 import 'dart:async';
 import 'package:embla_trestle/embla_trestle.dart';
-import 'package:tradem_srv/Middleware/Auth.dart';
+import 'package:srv_base/Middleware/Auth.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 
 class UserGroup {

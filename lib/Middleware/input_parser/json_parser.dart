@@ -1,4 +1,4 @@
-library tradem_srv.middleware.input_parser.json_parser;
+library srv_base.middleware.input_parser.json_parser;
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io' show ContentType, HttpHeaders;
