@@ -28,7 +28,7 @@ export 'Middleware/input_parser/input_parser.dart';
 
 import 'Services/UserService.dart';
 
-class TrademSrv extends Bootstrapper {
+class SrvBase extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
   UserService userService;

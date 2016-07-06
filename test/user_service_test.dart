@@ -37,7 +37,7 @@ main() async {
             Srv.UserService)
         )
       ),
-      new Srv.TrademSrv()
+      new Srv.SrvBase()
     ];
     app = await Application.boot(bootstrappers);
   });
