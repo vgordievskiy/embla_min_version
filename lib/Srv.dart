@@ -16,6 +16,7 @@ import 'Models/Users.dart';
 import './Utils/Crypto.dart' as crypto;
 
 export 'Geo/PostgisPsqlDriver.dart';
+export 'Utils/Utils.dart';
 export 'Utils/HttpsBootstrapper.dart';
 export 'Services/UserService.dart';
 export 'Middleware/Auth.dart';
