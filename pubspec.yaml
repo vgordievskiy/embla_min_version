@@ -17,6 +17,7 @@ dependencies:
   collection: any
   http_server: any
   crypto: any
+  dart_jwt: any
   observe: any
   ini: "^1.1.0"
   state_machine: any
