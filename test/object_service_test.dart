@@ -1,6 +1,5 @@
 import 'dart:convert';
 import "package:test/test.dart";
-import 'package:trestle/gateway.dart';
 import 'package:embla/http.dart';
 import "package:embla/application.dart";
 import 'package:embla/http_basic_middleware.dart';
@@ -8,8 +7,8 @@ import 'package:embla_trestle/embla_trestle.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:tradem_srv/Models/Objects.dart';
 
+import 'package:srv_base/Models/Users.dart';
 import './test_data/common_test.dart';
-import 'package:tradem_srv/Models/Users.dart';
 
 main() async {
   Application app;
@@ -84,7 +83,7 @@ main() async {
 
     test("get limit objects", () async {
       List resp = await TestCommon.net.Get("$serverUrl/objects?count=2&page=0");
-      expect(resp.length, equals(1));
+      expect(resp.length, equals(2));
     });
 
     test("update object", () async {

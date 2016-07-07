@@ -5,7 +5,7 @@ import 'package:trestle/trestle.dart';
 
 import '../../tool/migrations.dart' as data;
 
-import 'package:tradem_srv/Models/Users.dart';
+import 'package:srv_base/Models/Users.dart';
 import 'package:tradem_srv/Models/Objects.dart';
 
 class InitTestData extends Bootstrapper {

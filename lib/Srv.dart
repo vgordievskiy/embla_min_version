@@ -4,36 +4,22 @@ import 'dart:async';
 import 'package:di/di.dart';
 import 'package:embla/application.dart';
 import 'package:option/option.dart';
-import 'package:shelf_auth/shelf_auth.dart';
 import 'package:http_exception/http_exception.dart';
-import 'package:trestle/gateway.dart';
-import 'package:trestle/trestle.dart';
 
-import 'Utils/Utils.dart';
-import 'Middleware/Auth.dart';
-import 'Middleware/AuthPrincipal.dart';
-import 'Models/Users.dart';
-import './Utils/Crypto.dart' as crypto;
+import 'package:srv_base/Srv.dart';
+import 'package:srv_base/Utils/Crypto.dart' as crypto;
+import 'package:srv_base/Models/Users.dart';
 
-export 'Geo/PostgisPsqlDriver.dart';
-export 'Utils/HttpsBootstrapper.dart';
-export 'Services/UserService.dart';
+export 'package:srv_base/Srv.dart';
 export 'Services/ObjectService.dart';
 export 'Services/Management/ObjectManService.dart';
-export 'Middleware/Auth.dart';
-export 'Middleware/AuthPrincipal.dart';
-export 'Middleware/UserFilters/UserByIdFilter.dart';
-export 'Middleware/UserFilters/UserGroupFilter.dart';
-export 'Middleware/CORS.dart';
-export 'Middleware/input_parser/InputParserMiddleware.dart';
-export 'Middleware/input_parser/input_parser.dart';
 
-import 'Services/UserService.dart';
+import 'Services/UserService.dart' as srv;
 
 class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
-  UserService userService;
+  srv.UserService userService;
 
   @Hook.init
   init() {
@@ -52,8 +38,8 @@ class TrademSrv extends Bootstrapper {
   }
 
   @Hook.interaction
-  initUserSrv(UserService srv) {
-    this.userService = srv;
+  initUserSrv(srv.UserService userSrv) {
+    this.userService = userSrv;
   }
 
   Future<User> _getUserByName(String username)

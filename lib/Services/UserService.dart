@@ -1,17 +1,16 @@
 library tradem_srv.services.user_service;
 
 import 'dart:async';
-import 'dart:convert';
 import 'package:embla/http.dart';
 import 'package:embla/http_annotations.dart';
 import 'package:embla_trestle/embla_trestle.dart';
-import 'package:shelf_auth/shelf_auth.dart';
 
-import '../Utils/Utils.dart';
-import '../Utils/Crypto.dart' as crypto;
-import '../Models/Users.dart';
-import '../Middleware/Auth.dart';
-import '../Middleware/input_parser/input_parser.dart';
+import 'package:srv_base/Utils/Utils.dart';
+import 'package:srv_base/Utils/Crypto.dart' as crypto;
+import 'package:srv_base/Middleware/input_parser/input_parser.dart';
+import 'package:srv_base/Models/Users.dart';
+
+export 'package:srv_base/Models/Users.dart';
 
 class UserService extends Controller {
   final Repository<User> users;

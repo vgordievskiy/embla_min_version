@@ -1,7 +1,7 @@
 import 'package:tradem_srv/Srv.dart' as Srv;
+import 'package:srv_base/Srv.dart' as base;
 import 'package:embla/http.dart';
 import 'package:embla/http_basic_middleware.dart';
-import 'package:trestle/gateway.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 
 export 'package:embla/application.dart';
@@ -17,22 +17,23 @@ final Map config = {
 //var driver = new InMemoryDriver();
 
 //*
-var driver = new Srv.PostgisPsqlDriver(username: config['username'],
-                                       password: config['password'],
-                                       database: config['database']);
+var driver = new base.PostgisPsqlDriver(username: config['username'],
+                                        password: config['password'],
+                                        database: config['database']);
 //*/
 
 get embla => [
   new DatabaseBootstrapper(
     driver: driver
   ),
-  new Srv.HttpsBootstrapper(
+  new base.HttpsBootstrapper(
     port: 9090,
     pipeline: pipe(
-      LoggerMiddleware, Srv.CORSMiddleware,
-      Route.post('login/', Srv.JwtLoginMiddleware),
-      RemoveTrailingSlashMiddleware, Srv.InputParserMiddleware,
-      Route.all('users/*', Srv.JwtAuthMiddleware, Srv.UserIdFilter, Srv.UserService)
+      LoggerMiddleware, base.CORSMiddleware,
+      Route.post('login/', base.JwtLoginMiddleware),
+      RemoveTrailingSlashMiddleware, base.InputParserMiddleware,
+      Route.all('users/*', base.JwtAuthMiddleware, base.UserIdFilter,
+                Srv.UserService)
     )
   ),
   new Srv.TrademSrv()
