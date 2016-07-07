@@ -96,5 +96,13 @@ main() async {
       obj = await TestCommon.net.Get("$serverUrl/objects/2");
       expect(obj, containsPair('pieces', 2000));
     });
+
+    test("disable object", () async {
+      {
+        var resp = await TestCommon.net.Delete("$serverUrl/objects/1/enable");
+      }
+      Map resp = await TestCommon.net.Get("$serverUrl/objects/1");
+      expect(resp['enabled'], false);
+    });
   });
 }

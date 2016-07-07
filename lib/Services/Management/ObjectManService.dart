@@ -22,7 +22,7 @@ class ObjectManService extends Controller {
   Future _setEnableValue(String id, bool enabled) async {
     try {
       Entity obj = await _getObjById(id);
-      obj.enabled = true;
+      obj.enabled = enabled;
       await entities.save(obj);
       return _returnOk('id', obj.id);
     } catch(err) {
