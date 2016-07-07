@@ -101,8 +101,18 @@ main() async {
       {
         var resp = await TestCommon.net.Delete("$serverUrl/objects/1/enable");
       }
-      Map resp = await TestCommon.net.Get("$serverUrl/objects/1");
-      expect(resp['enabled'], false);
+      List resp = await TestCommon.net.Get("$serverUrl/objects");
+      for(Map item in resp) {
+        expect(item, isNot(containsPair('id', 1)));
+      }
+    });
+
+    test("enable object", () async {
+      {
+        var resp = await TestCommon.net.Update("$serverUrl/objects/1/enable");
+      }
+      List resp = await TestCommon.net.Get("$serverUrl/objects");
+      expect(resp, contains(containsPair('id', 1)));
     });
   });
 }
