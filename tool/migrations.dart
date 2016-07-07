@@ -41,8 +41,10 @@ class CreateDealsTableMigration extends Migration {
       schema.id();
       schema.timestamp('created_at').nullable(false);
       schema.timestamp('updated_at').nullable(false);
-      schema.int('user_id');
-      schema.int('entity_id');
+      schema.int('user_id').nullable(false);
+      schema.int('entity_id').nullable(false);
+      schema.int('count').nullable(false);
+      schema.double('item_price').nullable(false);
     });
   }
 
