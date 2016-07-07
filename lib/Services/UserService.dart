@@ -9,6 +9,7 @@ import 'package:srv_base/Utils/Utils.dart';
 import 'package:srv_base/Utils/Crypto.dart' as crypto;
 import 'package:srv_base/Middleware/input_parser/input_parser.dart';
 import 'package:srv_base/Models/Users.dart';
+import '../Utils/Deals.dart';
 
 export 'package:srv_base/Models/Users.dart';
 
@@ -71,4 +72,14 @@ class UserService extends Controller {
     return {'empty' : 'empty'};
   }
 
+  @Post('/:id/deals') addUserDeals(Input args, {String id}) async {
+    Map params = args.body;
+    if(expect(params, 'object_id')) {
+      Deal deal = await DealsUtils.createFromId(int.parse(id),
+                                                int.parse(params['object_id']));
+      return deal;
+    } else {
+      this.abortBadRequest('wrong data');
+    }
+  }
 }
