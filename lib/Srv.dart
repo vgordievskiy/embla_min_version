@@ -21,8 +21,10 @@ import 'Services/UserService.dart' as srv;
 class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
-  srv.UserService userService;
 
+  /*Services */
+    srv.UserService userService;
+  /*----*/
   @Hook.init
   init() {
     _injector = new ModuleInjector([ new Module()
