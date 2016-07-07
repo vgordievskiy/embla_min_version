@@ -2,6 +2,7 @@ library tradem_srv;
 
 import 'dart:async';
 import 'package:di/di.dart';
+import 'package:di/type_literal.dart';
 import 'package:embla/application.dart';
 import 'package:option/option.dart';
 import 'package:http_exception/http_exception.dart';
@@ -9,6 +10,7 @@ import 'package:http_exception/http_exception.dart';
 import 'package:srv_base/Srv.dart';
 import 'package:srv_base/Utils/Crypto.dart' as crypto;
 import 'package:srv_base/Models/Users.dart';
+import 'package:trestle/trestle.dart';
 
 export 'package:srv_base/Srv.dart';
 export 'Services/ObjectService.dart';
@@ -25,6 +27,8 @@ class TrademSrv extends Bootstrapper {
   init() {
     _injector = new ModuleInjector([ new Module()
       ..bind(AuthConfig, toFactory: () => authConfig)
+      ..bind(new TypeLiteral<Repository<User>>().type,
+          toFactory: () => userService.users)
     ]);
     Utils.setInjector(_injector);
 
