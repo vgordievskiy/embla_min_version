@@ -1,7 +1,7 @@
 library tradem_srv.models.deals;
 import 'package:embla_trestle/embla_trestle.dart';
 
-class Entity extends Model {
+class Deal extends Model {
   @field int id;
   @field int user_id;
   @field int entity_id;
