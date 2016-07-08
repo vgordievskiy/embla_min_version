@@ -17,8 +17,8 @@ class CreateEntitiesTableMigration extends Migration {
   Future run(Gateway gateway) async {
     await gateway.create(table_name, (schema) {
       schema.id();
-      schema.timestamp('created_at').nullable(false);
-      schema.timestamp('updated_at').nullable(false);
+      schema.timestamp('created_at');
+      schema.timestamp('updated_at');
       schema.string('type').nullable(false);
       schema.int('pieces').nullable(false);
       schema.boolean('enabled').nullable(false);
@@ -41,8 +41,8 @@ class CreateDealsTableMigration extends Migration {
   Future run(Gateway gateway) async {
     await gateway.create(table_name, (schema) {
       schema.id();
-      schema.timestamp('created_at').nullable(false);
-      schema.timestamp('updated_at').nullable(false);
+      schema.timestamp('created_at');
+      schema.timestamp('updated_at');
       schema.int('user_id').nullable(false);
       schema.int('entity_id').nullable(false);
       schema.int('count').nullable(false);
@@ -64,8 +64,8 @@ class CreatePriceTableMigration extends Migration {
   Future run(Gateway gateway) async {
     await gateway.create(table_name, (schema) {
       schema.id();
-      schema.timestamp('created_at').nullable(false);
-      schema.timestamp('updated_at').nullable(false);
+      schema.timestamp('created_at');
+      schema.timestamp('updated_at');
       schema.int('entity_id').nullable(false);
       schema.real('price').nullable(false);
     });
