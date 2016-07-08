@@ -1,8 +1,9 @@
-import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:srv_base/Srv.dart' as base;
 import 'package:embla/http.dart';
 import 'package:embla/http_basic_middleware.dart';
 import 'package:embla_trestle/embla_trestle.dart';
+import 'package:tradem_srv/Services/UserService.dart';
+import 'package:tradem_srv/Srv.dart' as Srv;
 
 export 'package:embla/application.dart';
 export 'package:embla/bootstrap.dart';
@@ -32,8 +33,7 @@ get embla => [
       LoggerMiddleware, base.CORSMiddleware,
       Route.post('login/', base.JwtLoginMiddleware),
       RemoveTrailingSlashMiddleware, base.InputParserMiddleware,
-      Route.all('users/*', base.JwtAuthMiddleware, base.UserIdFilter,
-                Srv.UserService)
+      Route.all('users/*', base.JwtAuthMiddleware, base.UserIdFilter, UserService)
     )
   ),
   new Srv.TrademSrv()
