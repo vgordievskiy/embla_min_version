@@ -69,7 +69,31 @@ main() async {
       expect(resp.length, equals(1));
     });
 
-
+    test("check add price", () async {
+      double price = 1234.5;
+      {
+        var resp = await TestCommon.net
+          .Create("$serverUrl/objects/1/price", { 'value' : price});
+        expect(JSON.decode(resp), containsPair('msg', 'ok'));
+      }
+      {
+        Map data = {
+          'object_id' : 1,
+          'count' : 100
+        };
+        var resp = await TestCommon.net
+          .Create("$serverUrl/${TestCommon.userUrl}/deals", data);
+        expect(JSON.decode(resp), containsPair('msg', 'ok'));
+      }
+      {
+        List resp = await TestCommon.net
+          .Get("$serverUrl/${TestCommon.userUrl}/deals");
+        expect(resp, allOf([
+          contains(containsPair('id', 2)),
+          contains(containsPair('item_price', price))
+        ]));
+      }
+    });
 
   });
 }
