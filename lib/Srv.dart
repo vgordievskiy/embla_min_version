@@ -19,6 +19,7 @@ export 'Services/Management/ObjectManService.dart';
 import 'Services/UserService.dart' as srv;
 import 'Models/Objects.dart';
 import 'Models/Deals.dart';
+import 'Models/Prices.dart';
 
 class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
@@ -31,6 +32,7 @@ class TrademSrv extends Bootstrapper {
     Repository<User> _users;
     Repository<Entity> _entities;
     Repository<Deal> _deals;
+    Repository<Price> _prices;
   /*------------*/
   @Hook.init
   init() {
@@ -38,6 +40,7 @@ class TrademSrv extends Bootstrapper {
       ..bind(AuthConfig, toFactory: () => authConfig)
       ..bind(new TypeLiteral<Repository<User>>().type, toFactory: () => _users)
       ..bind(new TypeLiteral<Repository<Deal>>().type, toFactory: () => _deals)
+      ..bind(new TypeLiteral<Repository<Price>>().type, toFactory: () => _prices)
       ..bind(new TypeLiteral<Repository<Entity>>().type,
           toFactory: () => _entities)
     ]);
@@ -70,6 +73,11 @@ class TrademSrv extends Bootstrapper {
   @Hook.interaction
   initDeals(Repository<Deal> deals) {
     this._deals = deals;
+  }
+
+  @Hook.interaction
+  initPrices(Repository<Price> prices) {
+    this._prices = prices;
   }
 
   Future<User> _getUserByName(String username)
