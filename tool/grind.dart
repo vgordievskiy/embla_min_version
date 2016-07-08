@@ -24,6 +24,7 @@ String getPostgresUri() {
 @DefaultTask()
 run() async {
   await migrate();
+  await initpart();
 }
 
 @Task()
