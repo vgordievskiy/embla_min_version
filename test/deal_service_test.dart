@@ -60,14 +60,16 @@ main() async {
       };
       var resp = await TestCommon.net
         .Create("$serverUrl/${TestCommon.userUrl}/deals", data);
-      print(resp);
+      expect(JSON.decode(resp), containsPair('msg', 'ok'));
     });
 
     test("get deal", () async {
-      var resp = await TestCommon.net
+      List resp = await TestCommon.net
         .Get("$serverUrl/${TestCommon.userUrl}/deals");
-      print(resp);
+      expect(resp.length, equals(1));
     });
+
+
 
   });
 }
