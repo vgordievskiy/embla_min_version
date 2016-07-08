@@ -21,6 +21,11 @@ String getPostgresUri() {
   return'postgres://$username:$password@$host:$port/$database';
 }
 
+Map<String, String> partitions = {
+  'deals' : 'entity_id',
+  'prices' : 'entity_id'
+};
+
 @DefaultTask()
 run() async {
   await migrate();
@@ -43,14 +48,10 @@ rollback() async {
 
 @Task()
 initpart() async {
-  if(driver is PostgresqlDriver) {
-    String script = await loadPartitionMagic();
-    postgresql.Connection con = await postgresql.connect(getPostgresUri());
-    int res = await con.execute(script);
-    print("Create PartitionMagic: $res");
-    con.close();
-  } else {
-    print("driver is not PostgresqlDriver");
+  final String psqlUri = getPostgresUri();
+  await PsqlPartitions.initpart(driver, psqlUri);
+  for(String table in partitions.keys) {
+    await PsqlPartitions.createPartition(psqlUri, table, partitions[table]);
   }
 }
 
