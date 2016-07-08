@@ -22,6 +22,11 @@ String getPostgresUri() {
 }
 
 @DefaultTask()
+run() async {
+  await migrate();
+}
+
+@Task()
 migrate() async {
   await gateway.connect();
   await gateway.migrate(migrations);
