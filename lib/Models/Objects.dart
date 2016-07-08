@@ -35,6 +35,7 @@ class Entity extends Model {
       'id' : id,
       'type' : type,
       'pieces' : pieces,
+      'busy_part' : busy_part,
       'data' : data
     };
   }
