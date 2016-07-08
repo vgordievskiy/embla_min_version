@@ -6,7 +6,7 @@ import 'package:postgresql/postgresql.dart' as postgresql;
 import 'package:trestle/src/drivers/drivers.dart';
 
 final String _relativePath =
-  "lib/Tools/PartitionMagic/SqlScript/_2gis_partition_magic.sql";
+  "packages/srv_base/Tools/PartitionMagic/SqlScript/_2gis_partition_magic.sql";
 
 Future<String> loadPartitionMagic() async {
   File file = new File(_relativePath);

@@ -10,7 +10,7 @@ class Utils {
   }
 
   static Injector get injector => _injector;
-  static $(Type type) => _injector.get(type);
+  static $(Type type, [Type annotation]) => _injector.get(type, annotation);
 }
 
 bool expect(Map obj, String key) {
