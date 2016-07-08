@@ -5,7 +5,8 @@ import 'package:srv_base/Tools/migrations.dart';
 final migrations = [
   CreateUsersTableMigration,
   CreateEntitiesTableMigration,
-  CreateDealsTableMigration
+  CreateDealsTableMigration,
+  CreatePriceTableMigration
 ].toSet();
 
 class CreateEntitiesTableMigration extends Migration {
@@ -45,6 +46,27 @@ class CreateDealsTableMigration extends Migration {
       schema.int('user_id').nullable(false);
       schema.int('entity_id').nullable(false);
       schema.int('count').nullable(false);
+      schema.double('item_price').nullable(false);
+    });
+  }
+
+  @override
+  Future rollback(Gateway gateway) async {
+    await gateway.drop(table_name);
+  }
+}
+
+class CreatePriceTableMigration extends Migration {
+
+  String table_name = 'prices';
+
+  @override
+  Future run(Gateway gateway) async {
+    await gateway.create(table_name, (schema) {
+      schema.id();
+      schema.timestamp('created_at').nullable(false);
+      schema.timestamp('updated_at').nullable(false);
+      schema.int('entity_id').nullable(false);
       schema.double('item_price').nullable(false);
     });
   }
