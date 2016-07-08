@@ -12,7 +12,7 @@ dependencies:
 dependency_overrides:
   trestle: ^0.8.0
   dart_jwt: ^0.5.1
-  
+
 dev_dependencies:
   SemplexClientCmn:
     git: https://github.com/vgordievskiy/ClientCommon.git

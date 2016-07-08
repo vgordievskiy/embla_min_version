@@ -9,6 +9,9 @@ import 'package:srv_base/Models/Users.dart';
 import 'package:tradem_srv/Models/Objects.dart';
 import 'package:tradem_srv/Models/Prices.dart';
 
+/*workaround for run all tests*/
+void main() {}
+
 class InitTestData extends Bootstrapper {
 
   final Gateway gateway;
