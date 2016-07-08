@@ -19,10 +19,17 @@ class DealsUtils {
     return Utils.$(new TypeLiteral<Repository<Entity>>().type);
   }
 
+  static Repository<Deal> deals() {
+    return Utils.$(new TypeLiteral<Repository<Deal>>().type);
+  }
+
   static Future<Deal> create(User user, Entity obj, int count, double price) async
   {
     if(obj.free_part < count) {
       throw 'request part for buy are big';
+    }
+    if(!obj.enabled) {
+      throw 'object is disabled';
     }
     Deal deal = new Deal()
       ..user_id = user.id
@@ -46,6 +53,10 @@ class DealsUtils {
       }
       throw new ArgumentError('wrong data');
     }
+  }
+
+  static Stream<Deal> getDeals(User user) {
+    return deals().where((deal) => deal.user_id == user.id).get();
   }
 
 }

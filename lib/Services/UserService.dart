@@ -15,8 +15,9 @@ export 'package:srv_base/Models/Users.dart';
 
 class UserService extends Controller {
   final Repository<User> users;
+  final Repository<Deal> deals;
 
-  UserService(this.users);
+  UserService(this.users, this.deals);
 
   Future<User> getUserByName(String username)
     => users.where((user) => user.email == username).first();
@@ -71,7 +72,8 @@ class UserService extends Controller {
   }
 
   @Get('/:id/deals') getUserDeals({String id}) async {
-    return {'empty' : 'empty'};
+    User user =  await getUserById(int.parse(id));
+    return DealsUtils.getDeals(user).toList();
   }
 
   @Post('/:id/deals') addUserDeals(Input args, {String id}) async {
@@ -84,6 +86,7 @@ class UserService extends Controller {
                         int.parse(params['object_id']),
                         int.parse(params['count']),
                         100.0);
+        await deals.save(deal);
         return _returnOk('id', deal.id);
       } catch (err) {
         if(err is ArgumentError) {

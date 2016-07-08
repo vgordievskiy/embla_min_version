@@ -53,12 +53,6 @@ main() async {
       await TestCommon.initTestData();
     });
 
-    test("get deal", () async {
-      var resp = await TestCommon.net
-        .Get("$serverUrl/${TestCommon.userUrl}/deals");
-      print(resp);
-    });
-
     test("create deal", () async {
       Map data = {
         'object_id' : 1,
@@ -66,6 +60,12 @@ main() async {
       };
       var resp = await TestCommon.net
         .Create("$serverUrl/${TestCommon.userUrl}/deals", data);
+      print(resp);
+    });
+
+    test("get deal", () async {
+      var resp = await TestCommon.net
+        .Get("$serverUrl/${TestCommon.userUrl}/deals");
       print(resp);
     });
 
