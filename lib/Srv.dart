@@ -30,13 +30,15 @@ class TrademSrv extends Bootstrapper {
   /*Repositories*/
     Repository<User> _users;
     Repository<Entity> _entities;
+    Repository<Deal> _deals;
   /*------------*/
   @Hook.init
   init() {
     _injector = new ModuleInjector([ new Module()
       ..bind(AuthConfig, toFactory: () => authConfig)
       ..bind(new TypeLiteral<Repository<User>>().type, toFactory: () => _users)
-      ..bind(new TypeLiteral<Repository<Entity>>().type, 
+      ..bind(new TypeLiteral<Repository<Deal>>().type, toFactory: () => _deals)
+      ..bind(new TypeLiteral<Repository<Entity>>().type,
           toFactory: () => _entities)
     ]);
     Utils.setInjector(_injector);
@@ -63,6 +65,11 @@ class TrademSrv extends Bootstrapper {
   @Hook.interaction
   initEntities(Repository<Entity> entities) {
     this._entities = entities;
+  }
+
+  @Hook.interaction
+  initDeals(Repository<Deal> deals) {
+    this._deals = deals;
   }
 
   Future<User> _getUserByName(String username)

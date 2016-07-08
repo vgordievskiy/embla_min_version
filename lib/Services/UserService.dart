@@ -73,7 +73,7 @@ class UserService extends Controller {
 
   @Get('/:id/deals') getUserDeals({String id}) async {
     User user =  await getUserById(int.parse(id));
-    return DealsUtils.getDeals(user).toList();
+    return await DealsUtils.getDeals(user).toList();
   }
 
   @Post('/:id/deals') addUserDeals(Input args, {String id}) async {
@@ -92,7 +92,7 @@ class UserService extends Controller {
         if(err is ArgumentError) {
           this.abortBadRequest('wrong data: ${err.message}');
         } else {
-          this.abortBadRequest('wrond data');
+          this.abortBadRequest('wrong data');
         }
       }
     } else {

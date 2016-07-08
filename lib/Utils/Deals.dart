@@ -36,6 +36,10 @@ class DealsUtils {
       ..entity_id = obj.id
       ..count = count
       ..item_price = price;
+    {
+      obj.busy_part += count;
+      await entities().save(obj);
+    }
     return deal;
   }
 
