@@ -18,6 +18,10 @@ class PricesUtils {
     return prices().where((item) => item.entity_id == obj.id).get().last;
   }
 
+  static Stream<Price> getPrices(Entity obj) {
+    return prices().where((item) => item.entity_id == obj.id).get();
+  }
+
   static Future<Price> addPrice(Entity obj, double priceValue) async {
     Price price = new Price()
       ..entity_id = obj.id

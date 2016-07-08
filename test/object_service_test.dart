@@ -114,5 +114,14 @@ main() async {
       List resp = await TestCommon.net.Get("$serverUrl/objects");
       expect(resp, contains(containsPair('id', 1)));
     });
+
+    test("get object prices", () async {
+      List resp = await TestCommon.net.Get("$serverUrl/objects/1/prices");
+      expect(resp, allOf([
+        contains(containsPair('id', 1)),
+        contains(containsPair('entity_id', 1)),
+        contains(containsPair('price', 1000.0))
+      ]));
+    });
   });
 }

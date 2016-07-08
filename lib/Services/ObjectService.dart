@@ -8,6 +8,7 @@ import 'package:embla_trestle/embla_trestle.dart';
 import 'package:srv_base/Utils/QueryLimit.dart';
 import 'package:srv_base/Middleware/input_parser/input_parser.dart';
 import '../Models/Objects.dart';
+import '../Utils/Prices.dart';
 
 class ObjectService extends Controller with QueryLimit {
   final Repository<Entity> entities;
@@ -36,5 +37,8 @@ class ObjectService extends Controller with QueryLimit {
   }
 
   @Get('/:id') getObject({String id}) => _getObjById(id);
+
+  @Get('/:id/prices') getPrices({String id}) async
+    => PricesUtils.getPrices(await _getObjById(id));
 
 }
