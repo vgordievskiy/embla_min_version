@@ -29,4 +29,10 @@ class PsqlPartitions {
       print("driver is not PostgresqlDriver");
     }
   }
+
+  static createPartition(String psqlUri, table, String field) async {
+    postgresql.Connection con = await postgresql.connect(psqlUri);
+    int res = await con.execute(createPartitionQuery(table, field));
+    con.close();
+  }
 }
