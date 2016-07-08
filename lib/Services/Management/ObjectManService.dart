@@ -8,6 +8,7 @@ import 'package:embla_trestle/embla_trestle.dart';
 import 'package:srv_base/Utils/Utils.dart';
 import 'package:srv_base/Middleware/input_parser/input_parser.dart';
 import '../../Models/Objects.dart';
+import '../../Utils/Prices.dart';
 
 class ObjectManService extends Controller {
   final Repository<Entity> entities;
@@ -76,5 +77,17 @@ class ObjectManService extends Controller {
 
   @Put('/:id/enable') enableObj({String id}) => _setEnableValue(id, true);
   @Delete('/:id/enable') disableObj({String id})  => _setEnableValue(id, false);
+
+  @Post('/:id/price') addPrice(Input args, {String id}) async {
+    Map params = args.body;
+    if(expect(params, 'value')) {
+      Entity obj = await _getObjById(id);
+      final double value = double.parse(params['value']);
+      Price price = await PricesUtils.addPrice(obj, value);
+      return _returnOk('id', price.id);
+    } else {
+      this.abortBadRequest('wrong data');
+    }
+  }
 
 }
