@@ -78,11 +78,20 @@ class UserService extends Controller {
     Map params = args.body;
     if(expect(params, 'object_id') &&
        expect(params, 'count')) {
-      Deal deal = await DealsUtils.createFromId(int.parse(id),
-                                                int.parse(params['object_id']),
-                                                int.parse(params['count']),
-                                                100.0);
-      return _returnOk('id', deal.id);
+      try {
+        Deal deal = await DealsUtils
+          .createFromId(int.parse(id),
+                        int.parse(params['object_id']),
+                        int.parse(params['count']),
+                        100.0);
+        return _returnOk('id', deal.id);
+      } catch (err) {
+        if(err is ArgumentError) {
+          this.abortBadRequest('wrong data: ${err.message}');
+        } else {
+          this.abortBadRequest('wrond data');
+        }
+      }
     } else {
       this.abortBadRequest('wrong data');
     }
