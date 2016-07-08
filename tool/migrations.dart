@@ -67,7 +67,7 @@ class CreatePriceTableMigration extends Migration {
       schema.timestamp('created_at').nullable(false);
       schema.timestamp('updated_at').nullable(false);
       schema.int('entity_id').nullable(false);
-      schema.double('item_price').nullable(false);
+      schema.double('price').nullable(false);
     });
   }
 
