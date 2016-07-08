@@ -50,6 +50,7 @@ class InitTestData extends Bootstrapper {
       obj.type = EntityType.COMMERCIAL_PLACES.Str;
       obj.enabled = true;
       obj.pieces = 1000;
+      obj.busy_part = 0;
       obj.data = {
         'value' : [{'name':'shop'}]
       };
@@ -60,6 +61,7 @@ class InitTestData extends Bootstrapper {
       obj.type = EntityType.LANDS.Str;
       obj.enabled = true;
       obj.pieces = 1000;
+      obj.busy_part = 0;
       obj.data = {
         'value' : [ {'name':'land'} ]
       };

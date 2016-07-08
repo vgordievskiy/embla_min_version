@@ -26,6 +26,7 @@ class Entity extends Model {
   @field int pieces;
   @field bool enabled;
   @field Map data;
+  @field int busy_part;
 
   Map toJson() {
     return {

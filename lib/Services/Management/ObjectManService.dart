@@ -40,6 +40,7 @@ class ObjectManService extends Controller {
           ..type = EntityType.fromStr(params['type']).Str
           ..pieces = int.parse(params['pieces'])
           ..enabled = false
+          ..busy_part = 0
           ..data = {
             'value' : JSON.decode(params['data'])
           };

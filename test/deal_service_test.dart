@@ -61,7 +61,8 @@ main() async {
 
     test("create deal", () async {
       Map data = {
-        'object_id' : 1
+        'object_id' : 1,
+        'count' : 100
       };
       var resp = await TestCommon.net
         .Create("$serverUrl/${TestCommon.userUrl}/deals", data);

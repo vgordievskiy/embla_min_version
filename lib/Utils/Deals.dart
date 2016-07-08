@@ -19,16 +19,27 @@ class DealsUtils {
     return Utils.$(new TypeLiteral<Repository<Entity>>().type);
   }
 
-  static Future<Deal> createFromId(int user_id, int entity_id) async {
+  static Future<Deal> createFromId(int user_id,
+                                   int entity_id,
+                                   int count,
+                                   double price) async {
     try {
       User user = await users().find(user_id);
       Entity obj = await entities().find(entity_id);
+      if(obj.busy_part >= count) {
+        throw 'request part for buy are big';
+      }
       Deal deal = new Deal()
         ..user_id = user_id
-        ..entity_id = entity_id;
+        ..entity_id = entity_id
+        ..count = count
+        ..item_price = price;
       return deal;
     } catch (err) {
-      throw new ArgumentError('userd id or entity id wrong');
+      if(err is String) {
+          throw new ArgumentError(err);
+      }
+      throw new ArgumentError('wrong data');
     }
   }
 

@@ -23,6 +23,8 @@ class UserService extends Controller {
 
   Future<User> getUserById(int id) => users.find(id);
 
+  _returnOk(String key, var value) => {'msg':'ok', key : value};
+
   bool _filterData(Map data) {
     return true;
   }
@@ -74,10 +76,13 @@ class UserService extends Controller {
 
   @Post('/:id/deals') addUserDeals(Input args, {String id}) async {
     Map params = args.body;
-    if(expect(params, 'object_id')) {
+    if(expect(params, 'object_id') &&
+       expect(params, 'count')) {
       Deal deal = await DealsUtils.createFromId(int.parse(id),
-                                                int.parse(params['object_id']));
-      return deal;
+                                                int.parse(params['object_id']),
+                                                int.parse(params['count']),
+                                                100.0);
+      return _returnOk('id', deal.id);
     } else {
       this.abortBadRequest('wrong data');
     }

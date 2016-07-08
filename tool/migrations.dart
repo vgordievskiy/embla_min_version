@@ -22,6 +22,7 @@ class CreateEntitiesTableMigration extends Migration {
       schema.int('pieces').nullable(false);
       schema.boolean('enabled').nullable(false);
       schema.json('data');
+      schema.int('busy_part');
     });
   }
 
