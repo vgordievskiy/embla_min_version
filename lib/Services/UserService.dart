@@ -10,6 +10,7 @@ import 'package:srv_base/Utils/Crypto.dart' as crypto;
 import 'package:srv_base/Middleware/input_parser/input_parser.dart';
 import 'package:srv_base/Models/Users.dart';
 import '../Utils/Deals.dart';
+import '../Utils/Prices.dart';
 
 export 'package:srv_base/Models/Users.dart';
 
@@ -84,8 +85,7 @@ class UserService extends Controller {
         Deal deal = await DealsUtils
           .createFromId(int.parse(id),
                         int.parse(params['object_id']),
-                        int.parse(params['count']),
-                        100.0);
+                        int.parse(params['count']));
         await deals.save(deal);
         return _returnOk('id', deal.id);
       } catch (err) {

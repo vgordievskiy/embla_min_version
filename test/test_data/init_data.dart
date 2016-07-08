@@ -7,12 +7,14 @@ import '../../tool/migrations.dart' as data;
 
 import 'package:srv_base/Models/Users.dart';
 import 'package:tradem_srv/Models/Objects.dart';
+import 'package:tradem_srv/Models/Prices.dart';
 
 class InitTestData extends Bootstrapper {
 
   final Gateway gateway;
   Repository<User> users;
   Repository<Entity> entities;
+  Repository<Price> prices;
 
   InitTestData(this.gateway)
   {
@@ -44,6 +46,13 @@ class InitTestData extends Bootstrapper {
     }*/
   }
 
+  Future _addPrice(Entity obj, double price) async {
+    Price item = new Price()
+      ..price = price
+      ..entity_id = obj.id;
+   return prices.save(item);
+  }
+
   initSomeObjects() async {
     {
       Entity obj = new Entity();
@@ -55,6 +64,7 @@ class InitTestData extends Bootstrapper {
         'value' : [{'name':'shop'}]
       };
       await entities.save(obj);
+      await _addPrice(obj, 1000.0);
     }
     {
       Entity obj = new Entity();
@@ -66,6 +76,7 @@ class InitTestData extends Bootstrapper {
         'value' : [ {'name':'land'} ]
       };
       await entities.save(obj);
+      await _addPrice(obj, 900.0);
     }
   }
 
