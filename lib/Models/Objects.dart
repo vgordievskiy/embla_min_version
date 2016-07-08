@@ -28,6 +28,8 @@ class Entity extends Model {
   @field Map data;
   @field int busy_part;
 
+  int get free_part => pieces - busy_part;
+
   Map toJson() {
     return {
       'id' : id,
