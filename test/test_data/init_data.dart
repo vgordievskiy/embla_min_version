@@ -20,6 +20,7 @@ class InitTestData extends Bootstrapper {
   {
     users = new Repository<User>(this.gateway);
     entities = new Repository<Entity>(this.gateway);
+    prices = new Repository<Price>(this.gateway);
   }
 
   @Hook.init
