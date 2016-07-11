@@ -22,7 +22,7 @@ class MessageService extends Controller {
   MessageService()
   {
     _bus = Utils.$(MessageBus);
-    _bus.subscribe(GetUserData,(GetUserData event){
+    _bus.subscribe(CreateUser,(CreateUser event){
       print("MESSAGE !!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.user.id}");
     });
   }

@@ -27,9 +27,7 @@ import 'Models/Prices.dart';
 class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
-
   MessageBus _bus = new MessageBus();
-
   /*Services */
     srv.UserService userService;
   /*----*/
@@ -39,6 +37,9 @@ class TrademSrv extends Bootstrapper {
     Repository<Deal> _deals;
     Repository<Price> _prices;
   /*------------*/
+
+  MessageService _messsges;
+
   @Hook.init
   init() {
     _injector = new ModuleInjector([ new Module()
@@ -59,6 +60,9 @@ class TrademSrv extends Bootstrapper {
     ..validateUserPass = this.validateUserPass
     ..excludeHandler = this.excludeUrlForAuth
     ..welcomeHandler = this.welcomeHandler;
+
+    //TODO: Move it in another place
+    _messsges = new MessageService();
   }
 
   @Hook.interaction
