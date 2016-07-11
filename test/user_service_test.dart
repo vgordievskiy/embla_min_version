@@ -83,7 +83,7 @@ main() async {
       Map resp = await TestCommon.net.Get("$serverUrl/${TestCommon.userUrl}");
       expect(resp, allOf([
         containsPair('id', 1),
-        containsPair('email', 'gardi')]));
+        containsPair('email', 'v.gordievskiy@gmail.com')]));
     });
 
     test("update user", () async {

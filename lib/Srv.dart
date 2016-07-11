@@ -7,6 +7,8 @@ import 'package:embla/application.dart';
 import 'package:option/option.dart';
 import 'package:http_exception/http_exception.dart';
 import 'package:harvest/harvest.dart';
+import 'package:logging/logging.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 import 'package:srv_base/Srv.dart';
 import 'package:srv_base/Utils/Crypto.dart' as crypto;
@@ -63,6 +65,21 @@ class TrademSrv extends Bootstrapper {
 
     //TODO: Move it in another place
     _messsges = new MessageService();
+
+    setupConsoleLog();
+  }
+
+  void setupConsoleLog([Level level = Level.INFO]) {
+    Logger.root.level = level;
+    Logger.root.onRecord.listen((LogRecord rec) {
+
+      if (rec.level >= Level.SEVERE) {
+        var stack = rec.stackTrace != null ? "\n${Trace.format(rec.stackTrace)}" : "";
+        print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message} - ${rec.error}${stack}');
+      } else {
+        print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message}');
+      }
+    });
   }
 
   @Hook.interaction

@@ -21,7 +21,7 @@ class TestCommon {
   };
 
   static final Map<String, String> userData = {
-    'username' : 'gardi',
+    'username' : 'v.gordievskiy@gmail.com',
     'password' : 'testPass'
   };
 
