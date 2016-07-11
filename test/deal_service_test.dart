@@ -73,7 +73,7 @@ main() async {
       double price = 1234.5;
       {
         var resp = await TestCommon.net
-          .Create("$serverUrl/objects/1/price", { 'value' : price});
+          .Create("$serverUrl/objects/1/price", {'value' : price});
         expect(JSON.decode(resp), containsPair('msg', 'ok'));
       }
       {
