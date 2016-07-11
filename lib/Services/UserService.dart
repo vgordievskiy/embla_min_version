@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:embla/http.dart';
 import 'package:embla/http_annotations.dart';
 import 'package:embla_trestle/embla_trestle.dart';
+import 'package:harvest/harvest.dart';
+import '../Events/LogicEventTypes.dart';
 
 import 'package:srv_base/Utils/Utils.dart';
 import 'package:srv_base/Utils/Crypto.dart' as crypto;
@@ -17,8 +19,15 @@ export 'package:srv_base/Models/Users.dart';
 class UserService extends Controller {
   final Repository<User> users;
   final Repository<Deal> deals;
+  MessageBus _bus;
 
-  UserService(this.users, this.deals);
+  UserService(this.users, this.deals)
+  {
+    _bus = Utils.$(MessageBus);
+    _bus.subscribe(CreateUser.type(),(GenericEvent<CreateUser> event){
+      print("!!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.data.user.email}");
+    });
+  }
 
   Future<User> getUserByName(String username)
     => users.where((user) => user.email == username).first();
@@ -49,6 +58,9 @@ class UserService extends Controller {
           ..enabled = true
           ..group = UserGroup.toStr(UserGroup.USER);
         await users.save(user);
+        {
+          _bus.publish(CreateUser.create(user));
+        }
         return {'msg' : 'ok', 'userId' : user.id};
     } else {
       this.abortBadRequest('wrong data');

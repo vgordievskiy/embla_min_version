@@ -3,7 +3,7 @@ import 'package:harvest/harvest.dart';
 
 class GenericEvent<T> extends DomainEvent {
   Type get internalType => T;
-  final dynamic data;
+  final T data;
 
   GenericEvent([this.data = null]);
 }
