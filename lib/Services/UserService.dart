@@ -24,9 +24,6 @@ class UserService extends Controller {
   UserService(this.users, this.deals)
   {
     _bus = Utils.$(MessageBus);
-    _bus.subscribe(GetUserData,(GetUserData event){
-      print("!!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.user.id}");
-    });
   }
 
   Future<User> getUserByName(String username)

@@ -17,4 +17,13 @@ import '../Utils/Prices.dart';
 export 'package:srv_base/Models/Users.dart';
 
 class MessageService extends Controller {
+  MessageBus _bus;
+
+  MessageService()
+  {
+    _bus = Utils.$(MessageBus);
+    _bus.subscribe(GetUserData,(GetUserData event){
+      print("MESSAGE !!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.user.id}");
+    });
+  }
 }
