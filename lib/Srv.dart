@@ -6,6 +6,7 @@ import 'package:di/type_literal.dart';
 import 'package:embla/application.dart';
 import 'package:option/option.dart';
 import 'package:http_exception/http_exception.dart';
+import 'package:harvest/harvest.dart';
 
 import 'package:srv_base/Srv.dart';
 import 'package:srv_base/Utils/Crypto.dart' as crypto;
@@ -25,6 +26,8 @@ class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
 
+  MessageBus _bus = new MessageBus.async();
+
   /*Services */
     srv.UserService userService;
   /*----*/
@@ -38,6 +41,7 @@ class TrademSrv extends Bootstrapper {
   init() {
     _injector = new ModuleInjector([ new Module()
       ..bind(AuthConfig, toFactory: () => authConfig)
+      ..bind(MessageBus, toValue: _bus)
       ..bind(new TypeLiteral<Repository<User>>().type, toFactory: () => _users)
       ..bind(new TypeLiteral<Repository<Deal>>().type, toFactory: () => _deals)
       ..bind(new TypeLiteral<Repository<Price>>().type, toFactory: () => _prices)
