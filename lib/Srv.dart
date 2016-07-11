@@ -30,7 +30,7 @@ class TrademSrv extends Bootstrapper {
 
   /*Services */
     srv.UserService userService;
-  /*----*/
+  /*---------*/
   /*Repositories*/
     Repository<User> _users;
     Repository<Entity> _entities;
