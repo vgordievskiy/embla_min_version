@@ -5,7 +5,7 @@ import 'package:embla/http.dart';
 import 'package:embla/http_annotations.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:harvest/harvest.dart';
-import '../Events/LogicEventTypes.dart';
+import '../Events/UserEvents.dart';
 
 import 'package:srv_base/Utils/Utils.dart';
 import 'package:srv_base/Utils/Crypto.dart' as crypto;

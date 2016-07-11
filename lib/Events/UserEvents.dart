@@ -14,3 +14,12 @@ class CreateUser {
   User user;
   CreateUser(this.user);
 }
+
+class GetUserData {
+  static Type type() => new TypeLiteral<GenericEvent<GetUserData>>().type;
+  static create(User user)
+    => new GenericEvent<GetUserData>(new GetUserData(user));
+
+  User user;
+  GetUserData(this.user);
+}
