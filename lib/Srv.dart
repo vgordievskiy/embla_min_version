@@ -42,8 +42,8 @@ class TrademSrv extends Bootstrapper {
     _injector = new ModuleInjector([ new Module()
       ..bind(AuthConfig, toFactory: () => authConfig)
       ..bind(MessageBus, toValue: _bus)
-      ..bind(new TypeLiteral<Repository<User>>().type, toValue: _users)
-      ..bind(new TypeLiteral<Repository<Deal>>().type, toValue: _deals)
+      ..bind(new TypeLiteral<Repository<User>>().type,  toValue: _users)
+      ..bind(new TypeLiteral<Repository<Deal>>().type,  toValue: _deals)
       ..bind(new TypeLiteral<Repository<Price>>().type, toValue: _prices)
       ..bind(new TypeLiteral<Repository<Entity>>().type,
           toFactory: () => _entities)
