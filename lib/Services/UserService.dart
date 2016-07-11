@@ -24,8 +24,8 @@ class UserService extends Controller {
   UserService(this.users, this.deals)
   {
     _bus = Utils.$(MessageBus);
-    _bus.subscribe(GetUserData.type(),(GenericEvent<GetUserData> event){
-      print("!!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.data.user.id}");
+    _bus.subscribe(GetUserData.type(),(GetUserData event){
+      print("!!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.user.id}");
     });
   }
 

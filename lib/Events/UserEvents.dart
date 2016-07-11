@@ -6,20 +6,18 @@ export 'Generic/GenericEvent.dart';
 
 import 'package:srv_base/Models/Users.dart';
 
-class CreateUser {
-  static Type type() => new TypeLiteral<GenericEvent<CreateUser>>().type;
-  static create(User user)
-    => new GenericEvent<CreateUser>(new CreateUser(user));
+class CreateUser extends GenericEvent<User> {
+  static Type type() => new TypeLiteral<CreateUser>().type;
+  static create(User user) => new CreateUser(user);
 
-  User user;
-  CreateUser(this.user);
+  User get user => this.data;
+  CreateUser(User user): super(user);
 }
 
-class GetUserData {
-  static Type type() => new TypeLiteral<GenericEvent<GetUserData>>().type;
-  static create(User user)
-    => new GenericEvent<GetUserData>(new GetUserData(user));
+class GetUserData extends GenericEvent<User> {
+  static Type type() => new TypeLiteral<GetUserData>().type;
+  static create(User user) => new GetUserData(user);
 
-  User user;
-  GetUserData(this.user);
+  User get user => this.data;
+  GetUserData(User user): super(user);
 }
