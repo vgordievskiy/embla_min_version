@@ -8,6 +8,7 @@ import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart'
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:srv_base/Srv.dart' as base;
+import 'package:tradem_srv/Services/UserService.dart';
 
 import './test_data/common_test.dart';
 import 'package:srv_base/Models/Users.dart';
@@ -35,7 +36,7 @@ main() async {
           }),
           Route.all('users/*', base.JwtAuthMiddleware,
             new base.UserGroupFilter(UserGroup.USER.Str), base.UserIdFilter,
-            Srv.UserService)
+            UserService)
         )
       ),
       new Srv.TrademSrv()

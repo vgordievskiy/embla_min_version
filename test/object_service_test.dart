@@ -5,6 +5,7 @@ import "package:embla/application.dart";
 import 'package:embla/http_basic_middleware.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
+import 'package:tradem_srv/Services/UserService.dart';
 import 'package:tradem_srv/Models/Objects.dart';
 
 import 'package:srv_base/Models/Users.dart';
@@ -28,7 +29,7 @@ main() async {
           Srv.InputParserMiddleware,
           Route.all('users/*', Srv.JwtAuthMiddleware,
             new Srv.UserGroupFilter(UserGroup.USER.Str), Srv.UserIdFilter,
-            Srv.UserService),
+            UserService),
           Route.get('objects/*', Srv.ObjectService),
           Route.match(const ['POST', 'PUT', 'DELETE'], 'objects/*',
             Srv.JwtAuthMiddleware,

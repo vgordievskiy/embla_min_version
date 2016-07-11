@@ -24,8 +24,8 @@ class UserService extends Controller {
   UserService(this.users, this.deals)
   {
     _bus = Utils.$(MessageBus);
-    _bus.subscribe(CreateUser.type(),(GenericEvent<CreateUser> event){
-      print("!!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.data.user.email}");
+    _bus.subscribe(GetUserData.type(),(GenericEvent<GetUserData> event){
+      print("!!!!!!!!!!!!!!!!!!!!!!!!!!! ${event.data.user.id}");
     });
   }
 
@@ -57,17 +57,20 @@ class UserService extends Controller {
           ..password = crypto.encryptPassword(params['password'])
           ..enabled = true
           ..group = UserGroup.toStr(UserGroup.USER);
-        await users.save(user);
-        {
-          _bus.publish(CreateUser.create(user));
-        }
+        await users.save(user)
+          .then((_) => _bus.publish(CreateUser.create(user)));
         return {'msg' : 'ok', 'userId' : user.id};
     } else {
       this.abortBadRequest('wrong data');
     }
   }
 
-  @Get('/:id') getUser({String id}) => getUserById(int.parse(id));
+  @Get('/:id') getUser({String id})
+    => getUserById(int.parse(id))
+      .then((User user) async {
+        await _bus.publish(GetUserData.create(user));
+        return user;
+      });
 
   @Get('/:id/data') getUsetData({String id}) async {
     User user = await getUserById(int.parse(id));
