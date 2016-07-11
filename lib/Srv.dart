@@ -40,7 +40,7 @@ class TrademSrv extends Bootstrapper {
   @Hook.init
   init() {
     _injector = new ModuleInjector([ new Module()
-      ..bind(AuthConfig, toFactory: () => authConfig)
+      ..bind(AuthConfig, toValue: authConfig)
       ..bind(MessageBus, toValue: _bus)
       ..bind(new TypeLiteral<Repository<User>>().type,   toValue: _users)
       ..bind(new TypeLiteral<Repository<Deal>>().type,   toValue: _deals)
