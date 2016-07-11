@@ -26,7 +26,7 @@ class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
   AuthConfig authConfig = new AuthConfig();
 
-  MessageBus _bus = new MessageBus.async();
+  MessageBus _bus = new MessageBus();
 
   /*Services */
     srv.UserService userService;
