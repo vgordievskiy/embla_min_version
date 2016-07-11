@@ -1,4 +1,4 @@
-library tradem_srv.events.generic_event;
+library tradem_srv.events.generic.generic_event;
 import 'package:harvest/harvest.dart';
 
 class GenericEvent<T> extends DomainEvent {
