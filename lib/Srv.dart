@@ -15,9 +15,11 @@ import 'package:trestle/trestle.dart';
 
 export 'package:srv_base/Srv.dart';
 export 'Services/ObjectService.dart';
+export 'Services/MessageService.dart';
 export 'Services/Management/ObjectManService.dart';
 
 import 'Services/UserService.dart' as srv;
+import 'Services/MessageService.dart';
 import 'Models/Objects.dart';
 import 'Models/Deals.dart';
 import 'Models/Prices.dart';
