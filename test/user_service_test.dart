@@ -7,9 +7,16 @@ import 'package:embla_trestle/embla_trestle.dart';
 import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart';
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:srv_base/Srv.dart' as Srv;
+import 'package:srv_base/Config/Config.dart';
 
 import './test_data/common_test.dart';
 import 'package:srv_base/Models/Users.dart';
+
+AppConfig getAppConfig() {
+  AppConfig config = new AppConfig()
+    ..isEnabledEmail = false;
+  return config;
+}
 
 main() async {
   Application app;
@@ -37,7 +44,7 @@ main() async {
             Srv.UserService)
         )
       ),
-      new Srv.SrvBase("SrvTest", 'SrvTestSecret')
+      new Srv.SrvBase("SrvTest", 'SrvTestSecret', getAppConfig())
     ];
     app = await Application.boot(bootstrappers);
   });

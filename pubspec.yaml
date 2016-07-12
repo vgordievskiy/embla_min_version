@@ -23,6 +23,7 @@ dependencies:
   simple_features: any
   harvest:
     git: https://github.com/vgordievskiy/harvest.git
+  mailer: ^1.0.0
 
 dependency_overrides:
   trestle: ^0.8.0

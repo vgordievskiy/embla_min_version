@@ -4,15 +4,17 @@ import 'dart:async';
 import 'package:di/di.dart';
 import 'package:embla/application.dart';
 import 'package:option/option.dart';
-import 'package:shelf_auth/shelf_auth.dart';
 import 'package:http_exception/http_exception.dart';
-import 'package:trestle/gateway.dart';
 import 'package:trestle/trestle.dart';
+import 'package:harvest/harvest.dart';
+import 'package:logging/logging.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 import 'Utils/Utils.dart';
 import 'Middleware/Auth.dart';
 import 'Middleware/AuthPrincipal.dart';
 import 'Models/Users.dart';
+import 'Config/Config.dart';
 import './Utils/Crypto.dart' as crypto;
 
 export 'Geo/PostgisPsqlDriver.dart';
@@ -31,32 +33,50 @@ import 'Services/UserService.dart';
 
 class SrvBase extends Bootstrapper {
   ModuleInjector _injector;
+  MessageBus _bus = new MessageBus();
+  final AppConfig config;
   AuthConfig authConfig = new AuthConfig();
   UserService userService;
 
   final String issuer;
   final String secret;
-  SrvBase(this.issuer, this.secret);
+  SrvBase(this.issuer, this.secret, this.config);
 
   @Hook.init
   init() {
     _injector = new ModuleInjector([ new Module()
+      ..bind(AppConfig, toFactory: () => config)
       ..bind(AuthConfig, toFactory: () => authConfig)
+      ..bind(MessageBus, toFactory: () => _bus)
     ]);
     Utils.setInjector(_injector);
 
     authConfig
-    ..issuer = issuer
-    ..secret = secret
-    ..lookupByUserName = this.lookupByUsername
-    ..validateUserPass = this.validateUserPass
-    ..excludeHandler = this.excludeUrlForAuth
-    ..welcomeHandler = this.welcomeHandler;
+      ..issuer = issuer
+      ..secret = secret
+      ..lookupByUserName = this.lookupByUsername
+      ..validateUserPass = this.validateUserPass
+      ..excludeHandler = this.excludeUrlForAuth
+      ..welcomeHandler = this.welcomeHandler;
+    setupConsoleLog();
   }
 
   @Hook.interaction
   initUserSrv(UserService srv) {
     this.userService = srv;
+  }
+
+  void setupConsoleLog([Level level = Level.INFO]) {
+    Logger.root.level = level;
+    Logger.root.onRecord.listen((LogRecord rec) {
+
+      if (rec.level >= Level.SEVERE) {
+        var stack = rec.stackTrace != null ? "\n${Trace.format(rec.stackTrace)}" : "";
+        print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message} - ${rec.error}${stack}');
+      } else {
+        print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message}');
+      }
+    });
   }
 
   Future<User> _getUserByName(String username)

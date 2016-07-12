@@ -7,6 +7,9 @@ import 'dart:async';
 
 import 'init_data.dart';
 
+/*workaround for run all tests*/
+void main() {}
+
 class TestCommon {
   static String srvUrl = "http://localhost:9090";
   static String userUrl;
@@ -19,6 +22,14 @@ class TestCommon {
 
   static final Map<String, String> userData = {
     'username' : 'user1',
+=======
+    'password': 'testPass',
+    'database': 'tradem'
+  };
+
+  static final Map<String, String> userData = {
+    'username' : 'v.gordievskiy@gmail.com',
+>>>>>>> semplex/embla_version
     'password' : 'testPass'
   };
 
