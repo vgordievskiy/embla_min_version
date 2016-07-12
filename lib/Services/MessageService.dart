@@ -9,6 +9,7 @@ import '../Events/UserEvents.dart';
 
 import 'package:srv_base/Utils/Utils.dart';
 import 'package:srv_base/Models/Users.dart';
+import 'package:tradem_srv/Config/Config.dart';
 import 'package:tradem_srv/Utils/Mail.dart';
 import 'package:logging/logging.dart';
 
@@ -25,9 +26,11 @@ Map<String, Map> templates = {
 class MessageService extends Controller {
   final log = new Logger("tradem.Services.MessageService");
   MessageBus _bus;
+  final AppConfig _config;
   MailSender mail = new MailSender('service@semplex.ru', 'SSemplex!2#');
 
   MessageService()
+    : _config = Utils.$(AppConfig)
   {
     _bus = Utils.$(MessageBus);
     _bus.subscribe(CreateUser,(CreateUser event) {
@@ -36,6 +39,7 @@ class MessageService extends Controller {
   }
 
   newUser(User user) {
+    if(!_config.isEnabledEmail) return new Future.value();
     log.info("create new user");
     Template mailBody = new Template(templates['new-user']['body']);
     String subj = templates['new-user']['subj'];

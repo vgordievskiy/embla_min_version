@@ -4,6 +4,7 @@ import 'package:embla/http_basic_middleware.dart';
 import 'package:embla_trestle/embla_trestle.dart';
 import 'package:tradem_srv/Services/UserService.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
+import 'package:tradem_srv/Config/Config.dart';
 
 export 'package:embla/application.dart';
 export 'package:embla/bootstrap.dart';
@@ -23,6 +24,12 @@ var driver = new base.PostgisPsqlDriver(username: config['username'],
                                         database: config['database']);
 //*/
 
+AppConfig getAppConfig() {
+  AppConfig config = new AppConfig()
+    ..isEnabledEmail = true;
+  return config;
+}
+
 get embla => [
   new DatabaseBootstrapper(
     driver: driver
@@ -36,5 +43,5 @@ get embla => [
       Route.all('users/*', base.JwtAuthMiddleware, base.UserIdFilter, UserService)
     )
   ),
-  new Srv.TrademSrv()
+  new Srv.TrademSrv(getAppConfig())
 ];

@@ -20,6 +20,7 @@ export 'Services/ObjectService.dart';
 export 'Services/MessageService.dart';
 export 'Services/Management/ObjectManService.dart';
 
+import 'Config/Config.dart';
 import 'Services/UserService.dart' as srv;
 import 'Services/MessageService.dart';
 import 'Models/Objects.dart';
@@ -28,6 +29,7 @@ import 'Models/Prices.dart';
 
 class TrademSrv extends Bootstrapper {
   ModuleInjector _injector;
+  final AppConfig config;
   AuthConfig authConfig = new AuthConfig();
   MessageBus _bus = new MessageBus();
   /*Services */
@@ -42,9 +44,12 @@ class TrademSrv extends Bootstrapper {
 
   MessageService _messsges;
 
+  TrademSrv(this.config);
+
   @Hook.init
   init() {
     _injector = new ModuleInjector([ new Module()
+      ..bind(AppConfig, toFactory: () => config)
       ..bind(AuthConfig, toFactory: () => authConfig)
       ..bind(MessageBus, toFactory: () => _bus)
       ..bind(new TypeLiteral<Repository<User>>().type,  toFactory: () => _users)

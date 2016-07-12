@@ -7,11 +7,14 @@ import 'package:embla_trestle/embla_trestle.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:srv_base/Srv.dart' as base;
 import 'package:tradem_srv/Services/UserService.dart';
+import 'package:tradem_srv/Config/Config.dart';
 
 import 'package:srv_base/Models/Users.dart';
 import './test_data/common_test.dart';
 
 main() async {
+  AppConfig config = new AppConfig()
+    ..isEnabledEmail = false;
   Application app;
 
   final String serverUrl = TestCommon.srvUrl;
@@ -37,7 +40,7 @@ main() async {
             Srv.ObjectManService)
         )
       ),
-      new Srv.TrademSrv()
+      new Srv.TrademSrv(config)
     ];
     app = await Application.boot(bootstrappers);
   });

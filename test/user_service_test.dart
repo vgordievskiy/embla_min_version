@@ -8,12 +8,16 @@ import 'package:SemplexClientCmn/Utils/HttpCommunicator/IOHttpCommunicator.dart'
 import 'package:SemplexClientCmn/Utils/RestAdapter.dart';
 import 'package:tradem_srv/Srv.dart' as Srv;
 import 'package:srv_base/Srv.dart' as base;
+import 'package:tradem_srv/Config/Config.dart';
 import 'package:tradem_srv/Services/UserService.dart';
 
 import './test_data/common_test.dart';
 import 'package:srv_base/Models/Users.dart';
 
 main() async {
+  AppConfig config = new AppConfig()
+    ..isEnabledEmail = false;
+
   Application app;
 
   final String serverUrl = TestCommon.srvUrl;
@@ -39,7 +43,7 @@ main() async {
             UserService)
         )
       ),
-      new Srv.TrademSrv()
+      new Srv.TrademSrv(config)
     ];
     app = await Application.boot(bootstrappers);
   });
