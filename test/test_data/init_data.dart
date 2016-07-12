@@ -3,7 +3,7 @@ import 'package:embla/application.dart';
 import 'package:trestle/gateway.dart';
 import 'package:trestle/trestle.dart';
 
-import '../../tool/migrations.dart' as data;
+import 'package:srv_base/Tools/migrations.dart' as data;
 
 import 'package:srv_base/Models/Users.dart';
 
@@ -23,7 +23,7 @@ class InitTestData extends Bootstrapper {
   @Hook.init
   Future init() async {
     await gateway.connect();
-    await gateway.migrate(data.migrations);
+    await gateway.migrate([data.CreateUsersTableMigration].toSet());
     await initSomeUsers();
     await gateway.disconnect();
   }
