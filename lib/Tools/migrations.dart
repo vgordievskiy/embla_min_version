@@ -9,8 +9,8 @@ class CreateUsersTableMigration extends Migration {
   Future run(Gateway gateway) async {
     await gateway.create(table_name, (schema) {
       schema.id();
-      schema.timestamp('created_at').nullable(false);
-      schema.timestamp('updated_at').nullable(false);
+      schema.timestamp('created_at');
+      schema.timestamp('updated_at');
       schema.string('email').unique();
       schema.string('password').nullable(false);
       schema.boolean('enabled').nullable(false);
