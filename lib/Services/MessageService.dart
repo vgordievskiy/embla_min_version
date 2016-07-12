@@ -15,7 +15,7 @@ export 'package:srv_base/Models/Users.dart';
 class MessageService extends Controller {
   final log = new Logger("tradem.Services.MessageService");
   MessageBus _bus;
-  MailSender mail = new MailSender('v.gordievskiy@semplex.ru', 'bno9mjc');
+  MailSender mail = new MailSender('service@semplex.ru', 'SSemplex!2#');
 
   MessageService()
   {
