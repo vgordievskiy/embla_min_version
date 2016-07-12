@@ -37,7 +37,7 @@ class MailSender
       ..password = passwd;
   }
 
-  sendMail(TMessage msg) {
+  sendMail(TMessage msg) async {
     Envelope envelope = new Envelope();
     envelope.encoding = UTF8;
     envelope.from = baseMail ?? user;
@@ -52,7 +52,7 @@ class MailSender
 
   createMailAndSend(String target, String subj, String html) {
     TMessage msg = new TMessage(subj, html, [target]);
-    sendMail(msg);
+    return sendMail(msg);
   }
 
 }
