@@ -6,6 +6,7 @@ export 'Generic/GenericEvent.dart';
 
 import 'package:srv_base/Models/Users.dart';
 
+
 class CreateUser extends GenericEvent<User> {
   static Type type() => new TypeLiteral<CreateUser>().type;
   static create(User user) => new CreateUser(user);
