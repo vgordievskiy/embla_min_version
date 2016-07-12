@@ -15,7 +15,7 @@ class TMessage {
 
 class MailSender
 {
-  final log = new Logger("tradem.Mail.Sender");
+  final log = new Logger("srv_base.Mail.Sender");
 
   SmtpOptions options;
   SmtpTransport transport;
