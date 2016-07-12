@@ -27,11 +27,12 @@ class MessageService extends Controller {
   final log = new Logger("tradem.Services.MessageService");
   MessageBus _bus;
   final AppConfig _config;
-  MailSender mail = new MailSender('service@semplex.ru', 'SSemplex!2#');
+  MailSender mail;
 
   MessageService()
     : _config = Utils.$(AppConfig)
   {
+    mail = new MailSender(_config.emailLogin, _config.emailPassword);
     _bus = Utils.$(MessageBus);
     _bus.subscribe(CreateUser,(CreateUser event) {
       return newUser(event.user);
@@ -39,7 +40,6 @@ class MessageService extends Controller {
   }
 
   newUser(User user) {
-    if(!_config.isEnabledEmail) return new Future.value();
     log.info("create new user");
     Template mailBody = new Template(templates['new-user']['body']);
     String subj = templates['new-user']['subj'];

@@ -69,7 +69,9 @@ class TrademSrv extends Bootstrapper {
     ..welcomeHandler = this.welcomeHandler;
 
     //TODO: Move it in another place
-    _messsges = new MessageService();
+    if(config.isEnabledEmail) {
+      _messsges = new MessageService();
+    }
 
     setupConsoleLog();
   }

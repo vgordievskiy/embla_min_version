@@ -26,7 +26,9 @@ var driver = new base.PostgisPsqlDriver(username: config['username'],
 
 AppConfig getAppConfig() {
   AppConfig config = new AppConfig()
-    ..isEnabledEmail = true;
+    ..isEnabledEmail = true
+    ..emailLogin = 'service@semplex.ru'
+    ..emailPassword = 'SSemplex!2#';
   return config;
 }
 
