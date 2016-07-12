@@ -12,9 +12,13 @@ import 'package:tradem_srv/Config/Config.dart';
 import 'package:srv_base/Models/Users.dart';
 import './test_data/common_test.dart';
 
-main() async {
+AppConfig getAppConfig() {
   AppConfig config = new AppConfig()
     ..isEnabledEmail = false;
+  return config;
+}
+
+main() async {
   Application app;
 
   final String serverUrl = TestCommon.srvUrl;
@@ -40,7 +44,7 @@ main() async {
             Srv.ObjectManService)
         )
       ),
-      new Srv.TrademSrv(config)
+      new Srv.TrademSrv(getAppConfig())
     ];
     app = await Application.boot(bootstrappers);
   });
