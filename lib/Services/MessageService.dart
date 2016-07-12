@@ -26,16 +26,16 @@ class MessageService extends Controller {
   MessageService()
   {
     _bus = Utils.$(MessageBus);
-    _bus.subscribe(CreateUser,(CreateUser event){
-      newUser(event.user);
+    _bus.subscribe(CreateUser,(CreateUser event) async {
+      await newUser(event.user);
     });
   }
 
-  newUser(User user) {
+  newUser(User user) async {
     Template mailBody = new Template(templates['new-user']);
     String subj = "Добро пожаловать в мир умных инвестиций";
     String html = mailBody.renderString({ 'name' : user.email });
-    mail.sendMail(new TMessage(subj, html, [user.email]));
+    await mail.sendMail(new TMessage(subj, html, [user.email]));
     log.info("send welcome email");
   }
 }

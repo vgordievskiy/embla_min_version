@@ -45,9 +45,9 @@ class MailSender
     envelope.subject = msg.subj;
     envelope.html = msg.html;
 
-    transport.send(envelope)
-      .then((envelope) => log.info('Email sent!'))
-      .catchError((e) => log.log(Level.SEVERE, 'Error occurred: $e'));
+    return transport.send(envelope)
+             .then((envelope) => log.info('Email sent!'))
+             .catchError((e) => log.log(Level.SEVERE, 'Error occurred: $e'));
   }
 
   createMailAndSend(String target, String subj, String html) {
