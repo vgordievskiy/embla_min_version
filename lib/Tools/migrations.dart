@@ -15,7 +15,8 @@ class CreateUsersTableMigration extends Migration {
       schema.string('password').nullable(false);
       schema.boolean('enabled').nullable(false);
       schema.string('group').nullable(false);
-      schema.json('data'); /*some personal configs*/
+      schema.json('data'); /*some personal data*/
+      schema.json('settings'); /*some personal settigns*/
     });
   }
 

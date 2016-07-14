@@ -31,12 +31,14 @@ class User extends Model {
   @field bool enabled;
   @field String group;
   @field Map data;
+  @field Map settings;
 
   Map toJson() {
     return {
       'id' : id,
       'email' : email,
-      'data' : data
+      'data' : data,
+      'settings' : settings
     };
   }
 }
