@@ -6,6 +6,8 @@ import 'package:mailer/mailer.dart';
 import 'package:logging/logging.dart';
 import 'Mail.dart';
 
+export 'Mail.dart' show TMessage;
+
 class IsoSender implements MailSender {
   final log = new Logger("srv_base.Mail.Sender.isolated");
   final String user;
