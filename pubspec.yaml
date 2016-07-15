@@ -21,6 +21,7 @@ dependencies:
   ini: "^1.1.0"
   state_machine: any
   simple_features: any
+  isolate: any
   threading: any
   tasks: any
   harvest:
