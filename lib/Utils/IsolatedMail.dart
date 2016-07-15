@@ -47,11 +47,14 @@ class IsoSender implements MailSender {
   }
 
   @override
-  createMailAndSend(String target, String subj, String html)
-    => _impl.createMailAndSend(target, subj, html);
+  createMailAndSend(String target, String subj, String html) async {
+    sendMail(new TMessage(subj, html, [target]));
+  }
 
   @override
-  sendMail(TMessage msg) => _impl.sendMail(msg);
+  sendMail(TMessage msg) async {
+    port.send(msg);
+  }
 
   @override
   void setUserName(String user, String passwd) {
