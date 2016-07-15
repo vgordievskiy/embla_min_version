@@ -5,12 +5,15 @@ import 'package:embla/application.dart';
 import 'package:embla/http.dart';
 
 class HttpsBootstrapper extends HttpBootstrapper {
+
+  SecurityContext securityContext;
+
   static Future<HttpServer> empty(dynamic host, int port) {
     return new Future.error('');
   }
 
   factory HttpsBootstrapper({String host: 'localhost', int port: 1337,
-    PipelineFactory pipeline})
+    PipelineFactory pipeline, SecurityContext securityContext})
       => new HttpsBootstrapper.init(host, port, pipeline);
 
   HttpsBootstrapper.init(String host, int port, PipelineFactory pipeline)
@@ -24,6 +27,11 @@ class HttpsBootstrapper extends HttpBootstrapper {
   }
 
   Future<HttpServer> initSecureSrv(dynamic host, int port) {
-    return HttpServer.bind(host, port);
+    if(securityContext == null) {
+      return HttpServer.bind(host, port);
+    } else {
+      return HttpServer.bindSecure(host, port, securityContext);
+    }
   }
+
 }
