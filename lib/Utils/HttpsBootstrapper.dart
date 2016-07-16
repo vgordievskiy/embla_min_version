@@ -30,7 +30,8 @@ class HttpsBootstrapper extends HttpBootstrapper {
     if(securityContext == null) {
       return HttpServer.bind(host, port);
     } else {
-      return HttpServer.bindSecure(host, port, securityContext);
+      return HttpServer.bindSecure(host ?? InternetAddress.ANY_IP_V4,
+                                   port, securityContext);
     }
   }
 
