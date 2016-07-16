@@ -34,9 +34,9 @@ class HttpsBootstrapper extends HttpBootstrapper {
 
   Future<HttpServer> initSecureSrv(dynamic host, int port) {
     if(securityContext == null) {
-      return HttpServer.bind(host, port);
+      return HttpServer.bind(internetAddress ?? host, port);
     } else {
-      return HttpServer.bindSecure(host ?? InternetAddress.ANY_IP_V4,
+      return HttpServer.bindSecure(internetAddress ?? host,
                                    port, securityContext);
     }
   }
