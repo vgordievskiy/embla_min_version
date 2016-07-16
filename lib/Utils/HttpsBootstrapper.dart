@@ -6,17 +6,20 @@ import 'package:embla/http.dart';
 
 class HttpsBootstrapper extends HttpBootstrapper {
 
+  final dynamic host;
+
   SecurityContext securityContext;
 
   static Future<HttpServer> empty(dynamic host, int port) {
     return new Future.error('');
   }
 
-  factory HttpsBootstrapper({String host: 'localhost', int port: 1337,
+  factory HttpsBootstrapper({dynamic host: 'localhost', int port: 1337,
     PipelineFactory pipeline, SecurityContext securityContext})
-      => new HttpsBootstrapper.init(host, port, pipeline);
+      => new HttpsBootstrapper.init(host, port, pipeline, securityContext);
 
-  HttpsBootstrapper.init(String host, int port, PipelineFactory pipeline)
+  HttpsBootstrapper.init(dynamic host, int port, PipelineFactory pipeline,
+                         this.securityContext)
     : super.internal(empty, host, port, pipeline);
 
 
