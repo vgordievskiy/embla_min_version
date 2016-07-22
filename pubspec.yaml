@@ -29,7 +29,8 @@ dependencies:
   mailer: ^1.0.0
 
 dependency_overrides:
-  trestle: ^0.8.0
+  trestle:
+    git: https://github.com/vgordievskiy/trestle.git
   dart_jwt: ^0.5.1
 
 dev_dependencies:
