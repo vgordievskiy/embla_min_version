@@ -9,7 +9,7 @@ class HttpsBootstrapper extends HttpBootstrapper {
   SecurityContext securityContext;
   InternetAddress internetAddress;
 
-  static Future<HttpServer> empty(dynamic host, int port) {
+  static Future<HttpServer> empty(dynamic host, int port, {bool shared}) {
     return new Future.error('');
   }
 

@@ -10,9 +10,9 @@ dependencies:
   shelf: '>=0.6.0 <0.7.0'
   shelf_auth: ^0.7.2
   meta: any
-  embla: "^0.2.2"
-  embla_trestle: "^0.2.0"
-  trestle: "^0.7.0"
+  embla: "^0.2.3"
+  embla_trestle: "^0.3.0"
+  trestle: "^0.10.0"
   di: ">=3.3.4 <4.0.0"
   collection: any
   http_server: any
@@ -31,7 +31,10 @@ dependencies:
 dependency_overrides:
   trestle:
     git: https://github.com/vgordievskiy/trestle.git
-  dart_jwt: ^0.5.1
+  dart_jwt:
+    git: https://bitbucket.org/aholmgren/dart_jwt.git
+  crypto: ^2.0.1
+  analyzer: 0.27.4
 
 dev_dependencies:
   SemplexClientCmn:

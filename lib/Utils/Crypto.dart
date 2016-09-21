@@ -3,8 +3,5 @@ library srv_base.utils.crypro;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-String encryptPassword(String pass) {
-  var toEncrypt = new SHA1();
-  toEncrypt.add(UTF8.encode(pass));
-  return CryptoUtils.bytesToHex(toEncrypt.close());
-}
+String encryptPassword(String pass)
+  => sha1.convert(UTF8.encode(pass)).toString();
