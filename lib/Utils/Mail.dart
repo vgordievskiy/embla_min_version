@@ -3,7 +3,7 @@ library srv_base.utils.mail;
 import 'dart:convert';
 
 import 'package:mailer/mailer.dart';
-import 'package:log4dart/log4dart.dart';
+import 'package:logging/logging.dart';
 
 class TMessage {
   String subj;
@@ -15,7 +15,7 @@ class TMessage {
 
 class MailSender
 {
-  final log = LoggerFactory.getLogger("Mail.Sender");
+  final log = new Logger("Mail.Sender");
 
   SmtpOptions options;
   SmtpTransport transport;
@@ -47,7 +47,7 @@ class MailSender
 
     return transport.send(envelope)
              .then((envelope) => log.info('Email sent!'))
-             .catchError((e) => log.error('Error occurred: $e'));
+             .catchError((e) => log.severe('Error occurred: $e'));
   }
 
   createMailAndSend(String target, String subj, String html) {
