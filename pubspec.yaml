@@ -13,6 +13,7 @@ dependencies:
   embla: "^0.2.3"
   embla_trestle: "^0.3.0"
   trestle: "^0.10.0"
+  sqlite: ^0.4.0
   di: ">=3.3.4 <4.0.0"
   collection: any
   http_server: any
