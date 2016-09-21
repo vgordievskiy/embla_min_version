@@ -3,13 +3,13 @@ library srv_base.utils.mail.isolated;
 import 'dart:async';
 import 'dart:isolate';
 import 'package:mailer/mailer.dart';
-import 'package:logging/logging.dart';
+import 'package:log4dart/log4dart.dart';
 import 'Mail.dart';
 
 export 'Mail.dart' show TMessage;
 
 class IsoSender implements MailSender {
-  final log = new Logger("srv_base.Mail.Sender.isolated");
+  final log = LoggerFactory.getLogger("MailSender.isolated");
   final String user;
   final String passwd;
   final String baseMail;

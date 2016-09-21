@@ -5,10 +5,7 @@ import 'package:di/di.dart';
 import 'package:embla/application.dart';
 import 'package:option/option.dart';
 import 'package:http_exception/http_exception.dart';
-import 'package:trestle/trestle.dart';
 import 'package:harvest/harvest.dart';
-import 'package:logging/logging.dart';
-import 'package:stack_trace/stack_trace.dart';
 
 import 'Utils/Utils.dart';
 import 'Middleware/Auth.dart';
@@ -58,25 +55,11 @@ class SrvBase extends Bootstrapper {
       ..validateUserPass = this.validateUserPass
       ..excludeHandler = this.excludeUrlForAuth
       ..welcomeHandler = this.welcomeHandler;
-    setupConsoleLog();
   }
 
   @Hook.interaction
   initUserSrv(UserService srv) {
     this.userService = srv;
-  }
-
-  void setupConsoleLog([Level level = Level.INFO]) {
-    Logger.root.level = level;
-    Logger.root.onRecord.listen((LogRecord rec) {
-
-      if (rec.level >= Level.SEVERE) {
-        var stack = rec.stackTrace != null ? "\n${Trace.format(rec.stackTrace)}" : "";
-        print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message} - ${rec.error}${stack}');
-      } else {
-        print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message}');
-      }
-    });
   }
 
   Future<User> _getUserByName(String username)
