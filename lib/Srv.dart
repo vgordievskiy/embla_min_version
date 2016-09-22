@@ -3,6 +3,8 @@ library srv_base;
 import 'dart:async';
 import 'package:di/di.dart';
 import 'package:embla/application.dart';
+import 'package:logging/logging.dart';
+import 'package:stack_trace/src/trace.dart';
 import 'package:option/option.dart';
 import 'package:http_exception/http_exception.dart';
 import 'package:harvest/harvest.dart';
@@ -41,6 +43,7 @@ class SrvBase extends Bootstrapper {
 
   @Hook.init
   init() {
+    setupConsoleLog();
     _injector = new ModuleInjector([ new Module()
       ..bind(AppConfig, toFactory: () => config)
       ..bind(AuthConfig, toFactory: () => authConfig)
@@ -56,6 +59,18 @@ class SrvBase extends Bootstrapper {
       ..excludeHandler = this.excludeUrlForAuth
       ..welcomeHandler = this.welcomeHandler;
   }
+
+  void setupConsoleLog([Level level = Level.INFO]) {
+    Logger.root.level = level;
+    Logger.root.onRecord.listen((LogRecord rec) {
+      if (rec.level >= Level.SEVERE) {
+          var stack = rec.stackTrace != null ? "\n${Trace.format(rec.stackTrace)}" : "";
+          print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message} - ${rec.error}${stack}');
+      } else {
+          print('[${rec.loggerName}] - ${rec.level.name}: ${rec.time}: ${rec.message}');
+      }
+    });
+   }
 
   @Hook.interaction
   initUserSrv(UserService srv) {
