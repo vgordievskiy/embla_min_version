@@ -8,8 +8,6 @@ class CORSMiddleware extends Middleware {
   final ResponseMaker _responseMaker = new ResponseMaker();
 
   Future<Response> handle(Request request) async {
-    if(request.method != 'OPTIONS') return super.handle(request);
-
     final String origin = request.headers['origin'];
     Map headers = {
       "Access-Control-Allow-Origin": "${origin}",
@@ -22,7 +20,12 @@ class CORSMiddleware extends Middleware {
       "Expires": "0"
     };
 
-    return new Response.ok(null, headers: headers);;
+    if(request.method == 'OPTIONS') {
+      return new Response.ok(null, headers: headers);;
+    } else {
+      return super.handle(request).then((resp)
+        => resp.change(headers: new Map.from(resp.headers)..addAll(headers)));
+    }
   }
 
 }
