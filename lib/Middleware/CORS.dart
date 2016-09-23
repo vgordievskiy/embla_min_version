@@ -8,7 +8,7 @@ class CORSMiddleware extends Middleware {
   final ResponseMaker _responseMaker = new ResponseMaker();
 
   Future<Response> handle(Request request) async {
-    final String origin = request.headers['origin'];
+    final String origin = request.headers['host'];
     Map headers = {
       "Access-Control-Allow-Origin": "${origin}",
       "Access-Control-Allow-Credentials" : "true",
