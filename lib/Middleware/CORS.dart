@@ -27,9 +27,13 @@ class CORSMiddleware extends Middleware {
       return super.handle(request)
       .then((resp)
         => resp.change(headers: new Map.from(resp.headers)..addAll(headers)))
-      .catchError((resp)
-        => new Response(resp?.statusCode ?? 500,
-            body: resp?.body ?? 'error', headers: headers));
+      .catchError((resp) {
+        int stCode = 500;
+        dynamic body = 'error';
+        try {stCode = resp.statusCode;} catch (err) {}
+        try {body = resp.body;} catch (err) {}
+        return new Response(stCode, body: body, headers: headers);
+      });
     }
   }
 
