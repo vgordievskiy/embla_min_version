@@ -24,7 +24,10 @@ class CORSMiddleware extends Middleware {
     if(request.method == 'OPTIONS') {
       return new Response.ok(null, headers: headers);;
     } else {
-      return super.handle(request).then((resp)
+      return super.handle(request)
+      .then((resp)
+        => resp.change(headers: new Map.from(resp.headers)..addAll(headers)))
+      .catchError((resp)
         => resp.change(headers: new Map.from(resp.headers)..addAll(headers)));
     }
   }
