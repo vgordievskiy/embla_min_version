@@ -9,7 +9,9 @@ class CORSMiddleware extends Middleware {
 
   Future<Response> handle(Request request) async {
     final Uri uri = request.requestedUri;
-    final String origin = "${uri.scheme}://${uri.host}:${uri.port}";
+    final String origin = request.headers.containsKey('origin')
+      ? request.headers['origin']
+      : "${uri.scheme}://${uri.host}:${uri.port}";
     Map headers = {
       "Access-Control-Allow-Origin": "${origin}",
       "Access-Control-Allow-Credentials" : "true",
