@@ -28,7 +28,7 @@ class CORSMiddleware extends Middleware {
       .then((resp)
         => resp.change(headers: new Map.from(resp.headers)..addAll(headers)))
       .catchError((resp)
-        => resp.change(headers: new Map.from(resp.headers)..addAll(headers)));
+        => new Response(resp.statusCode, body: resp.body, headers: headers));
     }
   }
 
